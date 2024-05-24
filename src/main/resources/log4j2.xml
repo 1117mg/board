@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- appender : where 로그의 출력 위치(파일, 콘솔, DB등)를 결정-->
+<!-- layout : how 어떤 형식으로 로그를 출력할지 결정 -->
+<!-- message : what -->
+<!-- logger : who 로깅 메시지를 appender에 전달. logger는 6단계의 레벨을 가지며, 레벨을 가지고 출력여부를 결정 -->
+<!-- logging event level : logger가 메시지를 기록할 지 여부를 결정하는 기준. -->
+<!-- debug -> info -> warn -> error -> fatal -->
+<!-- logger에 설정된 이벤트 등급 이상의 이벤트만 기록. -->
+
+<Configuration status="WARN">
+    <Appenders>
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout pattern="[%t] %-5level %logger{1.} - %msg%n"/>
+        </Console>
+    </Appenders>
+    <Loggers>
+        <Logger name="kr.or.ddit" level="info" additivity="false">
+            <AppenderRef ref="Console"/>
+        </Logger>
+        <Logger name="jdbc.sqltiming" level="debug" additivity="false">
+            <AppenderRef ref="Console"/>
+        </Logger>
+        <Logger name="jdbc.resultsettable" level="debug" additivity="false">
+            <AppenderRef ref="Console"/>
+        </Logger>
+        <Root level="error">
+            <AppenderRef ref="Console"/>
+        </Root>
+    </Loggers>
+</Configuration>

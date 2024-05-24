@@ -2,13 +2,14 @@ package org.study.board.dto;
 
 import lombok.Data;
 
-import java.util.Date;
+import java.sql.Timestamp;
 
 @Data
 public class User {
 
-    private Integer idx;
-    private String username;
+    private Long idx;
+    private String userId;
     private String password;
-    private Date regdate;
+    private String username;
+    private Timestamp regdate;
 }
