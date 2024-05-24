@@ -13,7 +13,10 @@ import org.study.board.dto.User;
 import org.study.board.service.UserService;
 
 import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
+import java.util.List;
 
 @RequiredArgsConstructor
 @Controller
@@ -22,6 +25,11 @@ public class UserController {
     private static final Logger log = LoggerFactory.getLogger(UserController.class);
     @Autowired
     private UserService service;
+
+    @RequestMapping("/user/main")
+    public String userMain(Model model, HttpServletRequest request) {
+        return "user/main";
+    }
 
     @GetMapping("/login")
     public String loginForm(Model model) {

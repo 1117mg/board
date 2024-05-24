@@ -10,4 +10,5 @@ import java.util.*;
 public interface UserMapper {
     User findById(Long idx);
     User findByLoginId(String userId);
+
 }

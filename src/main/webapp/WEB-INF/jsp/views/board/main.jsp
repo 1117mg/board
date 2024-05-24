@@ -2,10 +2,10 @@
 <%--<html lang="ko" xmlns:th="http://www.thymeleaf.org">--%>
 <html>
 <head>
-    <title>메인페이지</title>
+    <title>board main</title>
 </head>
 <body>
-<h1>main</h1>
+<h1>게시글 목록</h1>
 <%
     // 쿠키 배열 가져오기
     Cookie[] cookies = request.getCookies();
@@ -36,27 +36,29 @@
 <%
     }
 %>
+
 </body>
-<%--<head>
-    <meta charset="UTF-8">
-    <title th:text="|${pageName}|"></title>
-</head>
-<body>
-<div>
-    <h1><a th:href="|/${loginType}|">[[${pageName}]]</a></h1> <hr/>
-    <div th:if="${username == null}">
-        <h3>로그인 되어있지 않습니다!</h3>
-        <button th:onclick="|location.href='@{/{loginType}/join (loginType=${loginType})}'|">회원 가입</button> <br/><br/>
-        <button th:onclick="|location.href='@{/{loginType}/login (loginType=${loginType})}'|">로그인</button>
-    </div>
-    <div th:unless="${username == null}">
-        <h3>[[${username}]]님 환영합니다!</h3>
-        <button th:onclick="|location.href='@{/{loginType}/info (loginType=${loginType})}'|">유저 정보</button> <br/><br/>
-        <button th:onclick="|location.href='@{/{loginType}/admin (loginType=${loginType})}'|">관리자 페이지</button> <br/><br/>
-        <button th:onclick="|location.href='@{/{loginType}/logout (loginType=${loginType})}'|">로그아웃</button>
-    </div>
-</div>
-</body>--%>
+<script>
+    const getCookie = (key) => {
+
+        const cookies = document.cookie;
+
+        const cookieList = cookies.split("; ").map(el => el.split("="));
+
+        const obj = {};
+
+        for(let i = 0 ; i < cookieList.length ; i++) {
+            const k = cookieList[i][0];
+            const v = cookieList[i][1];
+            obj[k] = v;
+        }
+        return obj[key];
+    }
+
+    // 쿠키에 저장된 idx 값 출력
+    console.log(getCookie("idx"));
+
+</script>
 </html>
 
 
