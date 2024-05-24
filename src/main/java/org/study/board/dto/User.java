@@ -8,7 +8,7 @@ import java.util.Date;
 public class User {
 
     private Integer idx;
-    private String username;
+    private String userId;
     private String password;
     private Date regdate;
 }

@@ -1,13 +1,68 @@
 package org.study.board.controller;
 
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
+import org.study.board.dto.LoginForm;
+import org.study.board.dto.User;
+import org.study.board.service.UserService;
 
 @Controller
 public class UserController {
 
-    @RequestMapping("/login")
-    public String login(){
+    private static final Logger log = LoggerFactory.getLogger(UserController.class);
+    @Autowired
+    private UserService service;
+
+    @GetMapping("/login")
+    public String loginForm(Model model) {
+        model.addAttribute("loginType", "cookie-login");
+        model.addAttribute("pageName", "쿠키 로그인");
+
+        model.addAttribute("loginForm", new LoginForm());
         return "login";
     }
+
+    @PostMapping("/login")
+    public String login(@ModelAttribute("loginForm") LoginForm form, BindingResult bindingResult, HttpServletResponse response,
+                        Model model) {
+        model.addAttribute("loginType", "cookie-login");
+        model.addAttribute("pageName", "쿠키 로그인");
+
+        User loginUser = service.login(form.getLoginId(), form.getPassword());
+        log.info("login? {}", loginUser);
+
+        if (loginUser == null) {
+            bindingResult.reject("loginFail", "아이디 또는 비밀번호가 맞지 않습니다.");
+        }
+
+        if (bindingResult.hasErrors()) {
+            return "login";
+        }
+
+        Cookie cookie = new Cookie("idx", String.valueOf(loginUser.getIdx()));
+        cookie.setMaxAge(60 * 60);  // 쿠키 유효 시간 : 1시간
+        response.addCookie(cookie);
+
+        // 로그인 성공 처리
+        return "redirect:/main";
+    }
+
+    @GetMapping("/logout")
+    public String logout(HttpServletResponse response, Model model) {
+        model.addAttribute("loginType", "cookie-login");
+        model.addAttribute("pageName", "쿠키 로그인");
+
+        Cookie cookie = new Cookie("idx", null);
+        cookie.setMaxAge(0);
+        response.addCookie(cookie);
+        return "redirect:/main";
+    }
+
 }
