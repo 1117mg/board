@@ -22,7 +22,9 @@
             }
         }
     }
-
+%>
+<input type="button" value="UserList" onclick="location.href='/user/main'"><br/><br/>
+<%
     // 로그인 상태에 따라 버튼 표시
     if (isLoggedIn) {
     // 로그아웃 버튼 표시
@@ -33,6 +35,7 @@
     // 로그인 버튼 표시
 %>
 <input type="button" value="Login" onclick="location.href='/login'"><br/><br/>
+<input type="button" value="Join" onclick="location.href='/join'"><br/><br/>
 <%
     }
 %>

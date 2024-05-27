@@ -1,10 +1,14 @@
 package org.study.board.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.study.board.dto.JoinForm;
 import org.study.board.dto.User;
 import org.study.board.repository.UserMapper;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -13,20 +17,35 @@ public class UserService {
     @Autowired
     private UserMapper mapper;
 
+    private PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+
+    public List<User> getAllUsers() {
+        return mapper.findAllUsers();
+    }
+
+
+    public void join(JoinForm form) {
+        User user = new User();
+        user.setUserId(form.getLoginId());
+        user.setUsername(form.getUsername());
+        user.setPassword(passwordEncoder.encode(form.getPassword()));  // 비밀번호 암호화
+        mapper.save(user);
+    }
+
+    public boolean checkLoginIdDuplicate(String loginId) {
+        return mapper.existsByLoginId(loginId);
+    }
+
     public User login(String userId, String password) {
         Optional<User> userOptional = Optional.ofNullable(mapper.findByLoginId(userId));
-        // 값이 존재하는지 확인
         if (userOptional.isPresent()) {
             User user = userOptional.get();
-            // 비밀번호 일치 여부 확인
-            if (user.getPassword().equals(password)) {
+            if (passwordEncoder.matches(password, user.getPassword())) {  // 비밀번호 확인
                 return user;
             } else {
-                // 비밀번호가 일치하지 않는 경우
                 throw new RuntimeException("비밀번호가 일치하지 않습니다.");
             }
         } else {
-            // 사용자가 존재하지 않는 경우
             throw new RuntimeException("사용자를 찾을 수 없습니다.");
         }
     }

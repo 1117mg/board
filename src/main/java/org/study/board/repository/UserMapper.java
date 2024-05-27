@@ -1,14 +1,17 @@
 package org.study.board.repository;
 
 import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
 import org.study.board.dto.User;
 
-import java.util.*;
+import java.util.List;
+
 
 @Mapper
 public interface UserMapper {
     User findById(Long idx);
-    User findByLoginId(String userId);
 
+    User findByLoginId(String userId);
+    void save(User user);
+    boolean existsByLoginId(String userId);
+    List<User> findAllUsers();
 }

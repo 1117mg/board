@@ -4,18 +4,19 @@ import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
+import org.study.board.dto.JoinForm;
 import org.study.board.dto.LoginForm;
 import org.study.board.dto.User;
 import org.study.board.service.UserService;
 
 import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.ArrayList;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -26,25 +27,49 @@ public class UserController {
     @Autowired
     private UserService service;
 
-    @RequestMapping("/user/main")
-    public String userMain(Model model, HttpServletRequest request) {
+    @GetMapping("/user/main")
+    public String userList(Model model) {
+        List<User> users = service.getAllUsers();
+        model.addAttribute("users", users);
         return "user/main";
+    }
+
+    @GetMapping("/join")
+    public String join(Model model) {
+
+        model.addAttribute("JoinForm", new JoinForm());
+        return "join";
+    }
+
+    @PostMapping("/join")
+    public String join(@ModelAttribute("JoinForm") JoinForm form, BindingResult bindingResult) {
+        // loginId 중복 체크
+        if(service.checkLoginIdDuplicate(form.getLoginId())) {
+            bindingResult.addError(new FieldError("joinForm", "loginId", "존재하는 아이디입니다."));
+        }
+
+        if (bindingResult.hasErrors()) {
+            return "join";
+        }
+
+        if (!form.getPassword().equals(form.getPasswordCheck())) {
+            bindingResult.rejectValue("passwordCheck", "passwordCheck", "비밀번호가 일치하지 않습니다.");
+            return "join";
+        }
+
+        service.join(form);
+        return "redirect:/login";
     }
 
     @GetMapping("/login")
     public String loginForm(Model model) {
-        model.addAttribute("loginType", "cookie-login");
-        model.addAttribute("pageName", "쿠키 로그인");
 
         model.addAttribute("loginForm", new LoginForm());
         return "login";
     }
 
     @PostMapping("/login")
-    public String login(@ModelAttribute("loginForm") LoginForm form, BindingResult bindingResult, HttpServletResponse response,
-                        Model model) {
-        model.addAttribute("loginType", "cookie-login");
-        model.addAttribute("pageName", "쿠키 로그인");
+    public String login(@ModelAttribute("loginForm") LoginForm form, BindingResult bindingResult, HttpServletResponse response) {
 
         User loginUser = service.login(form.getLoginId(), form.getPassword());
         log.info("login? {}", loginUser);
@@ -66,28 +91,24 @@ public class UserController {
     }
 
     @GetMapping("/logout")
-    public String logout(HttpServletResponse response, Model model) {
-        model.addAttribute("loginType", "cookie-login");
-        model.addAttribute("pageName", "쿠키 로그인");
+    public String logout(HttpServletResponse response) {
 
         Cookie cookie = new Cookie("idx", null);
-        cookie.setMaxAge(0);
+        cookie.setMaxAge(0); //쿠키 종료
         response.addCookie(cookie);
         return "redirect:/main";
     }
 
-    @GetMapping("/info")
-    public String userInfo(@CookieValue(name="userId", required = false) String userId, Model model) {
-        model.addAttribute("loginType", "cookie-login");
-        model.addAttribute("pageName", "쿠키 로그인");
-
-        User loginUser = service.getLoginUser(userId);
-
-        if(loginUser == null) {
+    @GetMapping("/user/info/{userId}")
+    public String userInfo(@PathVariable String userId, Model model) {
+        log.info("Fetching user info for userId: {}", userId);
+        User user = service.getLoginUser(userId);
+        if (user == null) {
+            log.warn("User not found for userId: {}", userId);
             return "redirect:/login";
         }
-
-        model.addAttribute("user", loginUser);
+        log.info("User found: {}", user);
+        model.addAttribute("user", user);
         return "user/info";
     }
 
