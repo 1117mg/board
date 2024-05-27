@@ -4,16 +4,26 @@
 <mapper namespace="org.study.board.repository.UserMapper">
 
     <select id="findById" resultType="org.study.board.dto.User"
-                        parameterType="long">
+            parameterType="long">
         SELECT *
         FROM user
         WHERE idx = #{idx}
     </select>
 
     <select id="findByLoginId" resultType="org.study.board.dto.User"
-                        parameterType="String">
+            parameterType="String">
         SELECT *
         FROM user
         WHERE userId = #{userId}
+    </select>
+
+    <insert id="save" parameterType="org.study.board.dto.User">
+        INSERT INTO user (userId, password, username, regdate)
+        VALUES (#{userId}, #{password}, #{username}, NOW())
+    </insert>
+
+    <select id="findAllUsers" resultType="org.study.board.dto.User">
+        SELECT *
+        FROM user;
     </select>
 </mapper>
