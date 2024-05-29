@@ -47,7 +47,7 @@
         const loginId = loginIdInput.value;
         const resultDiv = document.getElementById('usernameCheckResult');
 
-        fetch(`/check-username?userId=${loginId}`)
+        fetch(`/check-username?loginId=`+loginId)
             .then(response => response.json())
             .then(data => {
                 if (data) {

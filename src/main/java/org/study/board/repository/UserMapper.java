@@ -1,6 +1,7 @@
 package org.study.board.repository;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.study.board.dto.JoinForm;
 import org.study.board.dto.User;
 
 import java.util.List;
@@ -12,6 +13,6 @@ public interface UserMapper {
 
     User findByLoginId(String userId);
     void save(User user);
-    boolean existsByLoginId(String userId);
+    int existsByLoginId(String loginId);
     List<User> findAllUsers();
 }

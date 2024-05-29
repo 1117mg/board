@@ -14,6 +14,7 @@ public class Board {
     private Date regdate;
     private int hit;
     private boolean deleteYn;
+    private boolean noticeYn;
     private Integer userIdx;
 
 }
