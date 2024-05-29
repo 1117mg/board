@@ -24,6 +24,13 @@
 
     <select id="findAllUsers" resultType="org.study.board.dto.User">
         SELECT *
-        FROM user;
+        FROM user
+    </select>
+
+    <select id="existsByLoginId" resultType="_int"
+                                parameterType="String">
+        SELECT count(*)
+        FROM user
+        WHERE userId=#{loginId}
     </select>
 </mapper>

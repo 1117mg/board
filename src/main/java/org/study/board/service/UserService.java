@@ -1,9 +1,12 @@
 package org.study.board.service;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.study.board.controller.UserController;
 import org.study.board.dto.JoinForm;
 import org.study.board.dto.User;
 import org.study.board.repository.UserMapper;
@@ -13,7 +16,7 @@ import java.util.Optional;
 
 @Service
 public class UserService {
-
+    private static final Logger log = LoggerFactory.getLogger(UserService.class);
     @Autowired
     private UserMapper mapper;
 
@@ -33,7 +36,11 @@ public class UserService {
     }
 
     public boolean checkLoginIdDuplicate(String loginId) {
-        return mapper.existsByLoginId(loginId);
+        //return mapper.existsByLoginId(loginId)>0;
+        log.info("Checking loginId in service: {}", loginId);
+        int count = mapper.existsByLoginId(loginId);
+        log.info("Count result: {}", count);
+        return count > 0;
     }
 
     public User login(String userId, String password) {

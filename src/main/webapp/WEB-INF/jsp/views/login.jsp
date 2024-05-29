@@ -40,7 +40,8 @@
                 <button class="w-100 btn btn-primary btn-lg" type="submit">로그인</button>
             </div>
             <div class="col">
-                <button class="w-100 btn btn-secondary btn-lg" onclick="location.href='/login'">취소</button>
+                <a href="/main" class="w-100 btn btn-secondary btn-lg">취소</a>
+                <%--<button class="w-100 btn btn-secondary btn-lg" onclick="window.location.href='/main'">취소</button>--%>
             </div>
         </div>
 
