@@ -1,11 +1,25 @@
 package org.study.board.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.core.io.Resource;
+import org.springframework.http.ContentDisposition;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.study.board.dto.Board;
+import org.study.board.dto.FileDto;
 import org.study.board.repository.BoardMapper;
 
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class BoardService {
@@ -17,19 +31,66 @@ public class BoardService {
         return mapper.getBoardList(board);
     }
 
-    public Board getBoard(int bno){
+    // 첨부파일 리스트
+    public List<FileDto> getFile (Board board) {return mapper.getFile(board);}
+
+    public Board getBoard(Integer bno){
         return mapper.getBoard(bno);
     }
 
-    public void insertBoard(int bno){
-        mapper.insertBoard(bno);
+    public void insertBoard(Board board){
+        if(board.getBno()!=null){
+            mapper.deleteBoard(board.getBno());
+        }
+        if(board.getBno()!=null){
+            mapper.updateBoard(board);
+        }else{
+            mapper.insertBoard(board);
+        }
+        // 파일 이름 유니크하게 생성
+        List<FileDto> list = new ArrayList<>();
+        String[] uuids = board.getUuids();
+        String[] fileNames = board.getFilenames();
+        String[] contentTypes = board.getContentTypes();
+
+        if(uuids!=null){
+            for(int i=0;i<uuids.length;i++){
+                FileDto fileDto = new FileDto();
+                fileDto.setFilename(fileNames[i]);
+                fileDto.setUuid(uuids[i]);
+                fileDto.setContentType(contentTypes[i]);
+                list.add(fileDto);
+            }
+        }
+
+        // 첨부파일 등록 (게시글이 있을경우)
+        if (!list.isEmpty()) {
+            board.setList(list);
+            mapper.insertFile(board);
+        }
     }
 
-    public void updateBoard(int bno){
-        mapper.updateBoard(bno);
+    // 파일 다운로드
+    public ResponseEntity<Resource> downloadFile(FileDto fileDto) throws IOException {
+        // 파일 저장 경로 설정
+        String filePath = "d:\\image";
+        Path path = Paths.get(filePath + "/" + fileDto.getUuid() + "_" + fileDto.getFilename());
+        String contentType = Files.probeContentType(path);
+        // header를 통해서 다운로드 되는 파일의 정보를 설정한다.
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentDisposition(ContentDisposition.builder("attachment")
+                .filename(fileDto.getFilename(), StandardCharsets.UTF_8)
+                .build());
+        headers.add(HttpHeaders.CONTENT_TYPE, contentType);
+
+        Resource resource = new InputStreamResource(Files.newInputStream(path));
+
+        return new ResponseEntity<>(resource, headers, HttpStatus.OK);
     }
+
 
     public boolean deleteBoard(int bno){
         return mapper.deleteBoard(bno);
     }
+
 }

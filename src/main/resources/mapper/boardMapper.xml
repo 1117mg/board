@@ -5,22 +5,58 @@
 
     <select id="getBoardList" parameterType="org.study.board.dto.Board"
     resultType="org.study.board.dto.Board">
-        SELECT bno, title, content, writer, regdate, hit, delete_yn, notice_yn, user_idx
+        SELECT *
         from board
         where delete_yn!=1
     </select>
 
     <select id="getBoard" parameterType="int"
             resultType="org.study.board.dto.Board">
-        select bno, title, content, writer, regdate, hit, delete_yn, notice_yn, user_idx
+        select *
         from board
         where delete_yn!=1 and bno=#{bno}
     </select>
+
+    <!--첨부파일 리스트-->
+    <select id="getFile" resultType="org.study.board.dto.FileDto">
+        SELECT *
+        FROM file
+        WHERE delete_yn!=1 and bno=#{bno}
+    </select>
+
+    <insert id="insertBoard" parameterType="org.study.board.dto.Board">
+        INSERT INTO board (title, content, writer, regdate, hit, delete_yn, user_idx)
+        VALUES (#{title}, #{content}, #{writer}, NOW(), 0, 0, #{userIdx})
+        <selectKey keyProperty="bno" resultType="int" order="AFTER">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+    </insert>
+
+    <update id="updateBoard" parameterType="org.study.board.dto.Board">
+        UPDATE board
+        SET title=#{title}, content=#{content},regdate=NOW(), hit = #{hit}, delete_yn=0, user_idx = #{userIdx}
+        WHERE bno = #{bno}
+    </update>
 
     <update id="deleteBoard" parameterType="int">
         update board
         SET delete_yn=1
         WHERE bno=#{bno}
+    </update>
+
+    <!-- 파일 정보를 삽입하는 쿼리 -->
+    <insert id="insertFile" parameterType="org.study.board.dto.Board">
+        INSERT INTO file (bno, uuid, filename, content_type)
+        VALUES
+        <foreach collection="list" separator="," index="index" item="item">
+            (#{bno}, #{item.uuid}, #{item.filename}, #{item.contentType})
+        </foreach>
+    </insert>
+
+    <update id="deleteFile" parameterType="org.study.board.dto.Board">
+        UPDATE file
+        SET delete_yn=1
+        WHERE idx=#{idx}
     </update>
 
 
