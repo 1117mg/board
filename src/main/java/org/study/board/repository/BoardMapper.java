@@ -12,6 +12,7 @@ public interface BoardMapper {
     List<Board> getBoardList(Board board);
     List<FileDto> getFile(Board board);
     Board getBoard(Integer bno);
+    Integer cntBoard();
     void insertBoard(Board board);
     void updateBoard(Board board);
     boolean deleteBoard(Integer bno);

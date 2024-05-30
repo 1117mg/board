@@ -4,9 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-
 @NoArgsConstructor
 @AllArgsConstructor
 @Data

@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.study.board.dto.Board;
 import org.study.board.dto.FileDto;
+import org.study.board.dto.SearchDto;
 import org.study.board.dto.User;
 import org.study.board.repository.BoardMapper;
 import org.study.board.repository.UserMapper;
@@ -42,7 +43,11 @@ public class BoardController {
 
 
     @RequestMapping("/main")
-    public String main(@CookieValue(name="idx", required = false) Long idx, Board board, Model model){
+    public String main(@CookieValue(name="idx", required = false) Long idx, Board board, Model model,@RequestParam(defaultValue = "1") int page){
+
+        int total = boardService.cntBoard();
+        model.addAttribute("cntBoard", total);
+        // 여기부터 페이지네이션 기능 추가하기
 
         List<Board> boardList = boardService.getBoardlist(board);
         if(idx == null){
@@ -114,5 +119,6 @@ public class BoardController {
     public ResponseEntity<Resource> downloadFile(@ModelAttribute FileDto fileDto) throws IOException {
         return boardService.downloadFile(fileDto);
     }
+
 
 }
