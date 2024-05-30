@@ -60,9 +60,12 @@ public class BoardController {
     }
 
     @GetMapping("/board/{bno}")
-    public String boardDetail(@PathVariable Integer bno, Model model){
-        Board board = boardService.getBoard(bno);
-        model.addAttribute("board", board);
+    public String boardDetail(@PathVariable Integer bno, Model model, Board board){
+        Board boardDetail = boardService.getBoard(bno);
+        List<FileDto> file = boardService.getFile(board);
+
+        model.addAttribute("board", boardDetail);
+        model.addAttribute("getFile", file);
         return "board/write";
     }
 
@@ -87,7 +90,7 @@ public class BoardController {
     }
 
     @DeleteMapping("/delete/{bno}")
-    public ResponseEntity<String> deleteBoard(@PathVariable int bno) {
+    public ResponseEntity<String> deleteBoard(@PathVariable Integer bno) {
         boolean deleted = boardService.deleteBoard(bno);
         if (deleted) {
             return ResponseEntity.ok("게시물이 성공적으로 삭제되었습니다.");
@@ -100,7 +103,7 @@ public class BoardController {
     /*ajax로 첨부파일 처리*/
     @RequestMapping("/ajaxFile")
     @ResponseBody
-    public List<FileDto> ajaxFile(@RequestParam("files") MultipartFile[] uploadFile, @RequestParam("files") List<MultipartFile> files) throws IOException {
+    public List<FileDto> ajaxFile(@RequestParam("files") MultipartFile[] uploadFile) {
         // 파일 등록
         List<FileDto> fileList = FileUtil.uploadFile(uploadFile);
         return fileList;
