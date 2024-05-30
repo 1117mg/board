@@ -39,6 +39,8 @@ public class BoardService {
         return mapper.getBoard(bno);
     }
 
+    public Integer cntBoard() {return mapper.cntBoard();}
+
     public void insertBoard(Board board){
         if (board.getBno() != null) {
             mapper.deleteFile(board);

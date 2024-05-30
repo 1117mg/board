@@ -11,7 +11,7 @@ import java.util.UUID;
 
 public class FileUtil {
     public static List<FileDto> uploadFile(MultipartFile[] uploadFile){
-        List<FileDto> list = new ArrayList<FileDto>();
+        List<FileDto> list = new ArrayList<>();
 
         for (MultipartFile file : uploadFile) {
             if (!file.isEmpty()) {

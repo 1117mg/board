@@ -17,6 +17,11 @@
         where delete_yn!=1 and bno=#{bno}
     </select>
 
+    <select id="cntBoard" resultType="Integer">
+        SELECT count(*)
+        FROM board
+    </select>
+
     <!--첨부파일 리스트-->
     <select id="getFile" resultType="org.study.board.dto.FileDto">
         SELECT *

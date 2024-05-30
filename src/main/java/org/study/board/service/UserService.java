@@ -36,7 +36,6 @@ public class UserService {
     }
 
     public boolean checkLoginIdDuplicate(String loginId) {
-        //return mapper.existsByLoginId(loginId)>0;
         log.info("Checking loginId in service: {}", loginId);
         int count = mapper.existsByLoginId(loginId);
         log.info("Count result: {}", count);
