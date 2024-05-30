@@ -56,7 +56,7 @@
     <update id="deleteFile" parameterType="org.study.board.dto.Board">
         UPDATE file
         SET delete_yn=1
-        WHERE idx=#{idx}
+        WHERE bno=#{bno} AND delete_yn=0
     </update>
 
 

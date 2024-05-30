@@ -1,5 +1,6 @@
 package org.study.board.service;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
@@ -19,8 +20,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
+@Slf4j
 @Service
 public class BoardService {
 
@@ -39,8 +40,8 @@ public class BoardService {
     }
 
     public void insertBoard(Board board){
-        if(board.getBno()!=null){
-            mapper.deleteBoard(board.getBno());
+        if (board.getBno() != null) {
+            mapper.deleteFile(board);
         }
         if(board.getBno()!=null){
             mapper.updateBoard(board);
@@ -89,7 +90,7 @@ public class BoardService {
     }
 
 
-    public boolean deleteBoard(int bno){
+    public boolean deleteBoard(Integer bno){
         return mapper.deleteBoard(bno);
     }
 
