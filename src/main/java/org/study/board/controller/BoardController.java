@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.study.board.dto.Board;
 import org.study.board.dto.FileDto;
-import org.study.board.dto.SearchDto;
+import org.study.board.dto.PaginateDto;
 import org.study.board.dto.User;
 import org.study.board.repository.BoardMapper;
 import org.study.board.repository.UserMapper;
@@ -43,24 +43,22 @@ public class BoardController {
 
 
     @RequestMapping("/main")
-    public String main(@CookieValue(name="idx", required = false) Long idx, Board board, Model model,@RequestParam(defaultValue = "1") int page){
+    public String main(Board board, Model model, @RequestParam(defaultValue = "1") int page){
 
+        // 게시글 총 개수
         int total = boardService.cntBoard();
         model.addAttribute("cntBoard", total);
-        // 여기부터 페이지네이션 기능 추가하기
+        // 페이징
+        PaginateDto paginate = new PaginateDto(5, 3);
+        paginate.setPageNo(page);
+        paginate.setTotalSize(total);
 
-        List<Board> boardList = boardService.getBoardlist(board);
-        if(idx == null){
-            model.addAttribute("board", boardList);
-            return "board/main";
-        }
-        //로그인
-        User loginUser=userMapper.findById(idx);
-        if(loginUser == null){
-            return "login";
-        }
-        model.addAttribute("user", loginUser);
-        model.addAttribute("board", boardList);
+        board.setPageNo(page);
+        board.setPageSize(paginate.getPageSize());
+        board.setPageOffset(paginate.getPageOffset());
+
+        model.addAttribute("paginate", paginate);
+        model.addAttribute("board", boardService.getBoardlist(board));
         return "board/main";
     }
 
@@ -68,6 +66,7 @@ public class BoardController {
     public String boardDetail(@PathVariable Integer bno, Model model, Board board){
         Board boardDetail = boardService.getBoard(bno);
         List<FileDto> file = boardService.getFile(board);
+        board.setHit(boardService.hit(bno));
 
         model.addAttribute("board", boardDetail);
         model.addAttribute("getFile", file);

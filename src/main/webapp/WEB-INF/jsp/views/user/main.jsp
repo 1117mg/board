@@ -25,6 +25,8 @@
     </tr>
   </c:forEach>
   </tbody>
+
+  <button type="button" onclick="history.back()">뒤로가기</button>
 </table>
 </body>
 </html>

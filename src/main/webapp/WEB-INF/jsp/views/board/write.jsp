@@ -48,7 +48,7 @@
             <td colspan="2" align="center">
                 <input type="hidden" name="bno" value="${board.bno}">
                 <button type="submit">등록</button>
-                <button type="button" onclick="gotoMain();">목록</button>
+                <button type="button" onclick="history.back()">뒤로가기</button>
                 <c:if test="${not empty board.bno}">
                     <button type="button" onclick="deleteBoard()">삭제</button>
                 </c:if>
@@ -113,11 +113,6 @@
             }
         });
 
-    }
-
-    // 목록이동
-    function gotoMain() {
-        location.href = "/main";
     }
 
     // 글 삭제

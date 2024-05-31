@@ -20,7 +20,13 @@ public class UserService {
     @Autowired
     private UserMapper mapper;
 
-    private PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+    private final PasswordEncoder passwordEncoder;
+
+    @Autowired
+    public UserService(PasswordEncoder passwordEncoder) {
+        this.passwordEncoder = passwordEncoder;
+    }
+
 
     public List<User> getAllUsers() {
         return mapper.findAllUsers();

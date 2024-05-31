@@ -23,6 +23,8 @@
         <td>가입일:</td>
         <td>${user.regdate}</td>
     </tr>
+
+    <button type="button" onclick="history.back()">뒤로가기</button>
 </table>
 </body>
 </html>
