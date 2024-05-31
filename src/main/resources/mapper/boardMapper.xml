@@ -3,11 +3,21 @@
 
 <mapper namespace="org.study.board.repository.BoardMapper">
 
-    <select id="getBoardList" parameterType="org.study.board.dto.Board"
-    resultType="org.study.board.dto.Board">
-        SELECT *
+    <select id="getBoardList" resultType="org.study.board.dto.Board">
+        /*SELECT *
         from board
-        where delete_yn!=1
+        where delete_yn!=1*/
+        SELECT b.*
+             , CASE WHEN COUNT(*)  <![CDATA[>]]> 1
+                        THEN CONCAT(f.filename, '외 ' , COUNT(*)-1, '건')
+                    ELSE f.filename
+            END file_name
+        FROM board b
+        LEFT JOIN file f ON b.bno = f.bno
+        WHERE b.delete_yn != 1
+        GROUP BY b.bno
+        ORDER BY b.bno DESC
+            LIMIT #{pageSize} OFFSET ${pageOffset}
     </select>
 
     <select id="getBoard" parameterType="int"
@@ -17,9 +27,16 @@
         where delete_yn!=1 and bno=#{bno}
     </select>
 
+    <update id="hit" parameterType="int">
+        update board
+        SET hit= hit+1
+        WHERE bno=#{bno}
+    </update>
+
     <select id="cntBoard" resultType="Integer">
         SELECT count(*)
         FROM board
+        WHERE delete_yn!=1
     </select>
 
     <!--첨부파일 리스트-->
@@ -39,7 +56,7 @@
 
     <update id="updateBoard" parameterType="org.study.board.dto.Board">
         UPDATE board
-        SET title=#{title}, content=#{content},regdate=NOW(), hit = #{hit}, delete_yn=0, user_idx = #{userIdx}
+        SET title=#{title}, content=#{content},regdate=NOW(), delete_yn=0, user_idx = #{userIdx}
         WHERE bno = #{bno}
     </update>
 

@@ -39,6 +39,10 @@ public class BoardService {
         return mapper.getBoard(bno);
     }
 
+    public int hit(Integer bno) {
+        return mapper.hit(bno);
+    }
+
     public Integer cntBoard() {return mapper.cntBoard();}
 
     public void insertBoard(Board board){
