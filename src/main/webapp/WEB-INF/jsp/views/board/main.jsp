@@ -50,6 +50,24 @@
     </c:forEach>
     </tbody>
 </table>
+
+<!-- 로그인 여부에 따라 버튼 표시 -->
+<div class="button-container">
+    <c:choose>
+        <c:when test="${pageContext.request.userPrincipal != null}">
+            <!-- 사용자가 로그인한 경우 -->
+            <input type="button" value="user 목록" onclick="location.href='/user/main'"><br/><br/>
+            <input type="button" value="글 작성" onclick="location.href='/write'"><br/><br/>
+            <input type="button" value="로그아웃" onclick="location.href='/logout'"><br/><br/>
+        </c:when>
+        <c:otherwise>
+            <!-- 사용자가 로그인하지 않은 경우 -->
+            <input type="button" value="로그인" onclick="location.href='/login'"><br/><br/>
+            <input type="button" value="회원가입" onclick="location.href='/join'"><br/><br/>
+        </c:otherwise>
+    </c:choose>
+</div>
+
 <%--페이징 처리 시작--%>
 <div class="col-sm-12 col-md-7" style="margin: auto">
     <div class="dataTables_paginate paging_simple_numbers" id="dataTable_paginate">
@@ -102,7 +120,7 @@
     </div>
 </div>
 <%--페이징 처리 끝--%>
-    <%
+   <%-- <%
     // 쿠키 배열 가져오기
     Cookie[] cookies = request.getCookies();
     boolean isLoggedIn = false;
@@ -118,6 +136,22 @@
         }
     }
 %>
+
+<!-- 쿠키 정보 출력 -->
+<div>
+    <h3>쿠키 정보:</h3>
+    <ul>
+        <%
+            if (cookies != null) {
+                for (Cookie c : cookies) {
+                    out.println("<li>" + c.getName() + " = " + c.getValue() + "</li>");
+                }
+            } else {
+                out.println("<li>쿠키가 없습니다.</li>");
+            }
+        %>
+    </ul>
+</div>
 
 <div class="button-container">
     <%
@@ -135,7 +169,7 @@
     <%
         }
     %>
-</div>
+</div>--%>
 
 </body>
 </html>

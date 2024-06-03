@@ -15,7 +15,8 @@
             <c:if test="${not empty board.writer}">
                 <td width="50%">${board.writer}</td>
             </c:if>
-            <td width="50%">${user.username}</td>
+            <%--<td width="50%">${user.username}</td>--%>
+            <td width="50%">${user}</td>
         </tr>
         <tr>
             <td align="center">제목</td>

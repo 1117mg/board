@@ -17,6 +17,6 @@ public class WebMvcConfig implements WebMvcConfigurer {
         // localhost:8080/hello <-- 동작x
         // localhost:8080/user/info/{userId} <-- 인터셉터 동작
         registry.addInterceptor(sessionInterceptor)
-                .addPathPatterns("/board/**"); // user 아래에 있는것만 가로챔
+                .addPathPatterns("/user/**"); // user 아래에 있는것만 가로챔
     }
 }
