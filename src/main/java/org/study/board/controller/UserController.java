@@ -1,9 +1,12 @@
 package org.study.board.controller;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -18,17 +21,18 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
+@Slf4j
 @RequiredArgsConstructor
 @Controller
 public class UserController {
 
-    private static final Logger log = LoggerFactory.getLogger(UserController.class);
     @Autowired
     private UserService service;
 
     @GetMapping("/user/main")
     public String userList(Model model) {
         List<User> users = service.getAllUsers();
+        log.info("유저메인 유저아이디: {}", users.get(0).getUserId());
         model.addAttribute("users", users);
         return "user/main";
     }
@@ -86,6 +90,7 @@ public class UserController {
         response.addCookie(cookie);
 
         // 로그인 성공 처리
+        log.info("로그인 성공: {}", loginUser);
         return "redirect:/main";
     }
 
@@ -100,10 +105,10 @@ public class UserController {
 
     @GetMapping("/user/info/{userId}")
     public String userInfo(@PathVariable String userId, Model model) {
-        log.info("Fetching user info for userId: {}", userId);
+        log.info("유저인포 유저아이디: {}", userId);
         User user = service.getLoginUser(userId);
         if (user == null) {
-            log.warn("User not found for userId: {}", userId);
+            log.warn("유저확인불가: {}", userId);
             return "redirect:/login";
         }
         log.info("User found: {}", user);

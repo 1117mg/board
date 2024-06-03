@@ -20,12 +20,8 @@ public class UserService {
     @Autowired
     private UserMapper mapper;
 
-    private final PasswordEncoder passwordEncoder;
-
     @Autowired
-    public UserService(PasswordEncoder passwordEncoder) {
-        this.passwordEncoder = passwordEncoder;
-    }
+    private PasswordEncoder passwordEncoder;
 
 
     public List<User> getAllUsers() {

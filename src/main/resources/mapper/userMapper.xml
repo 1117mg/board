@@ -18,8 +18,8 @@
     </select>
 
     <insert id="save" parameterType="org.study.board.dto.User">
-        INSERT INTO user (userId, password, username, regdate)
-        VALUES (#{userId}, #{password}, #{username}, NOW())
+        INSERT INTO user (userId, password, username, regdate, role)
+        VALUES (#{userId}, #{password}, #{username}, NOW(), #{role})
     </insert>
 
     <select id="findAllUsers" resultType="org.study.board.dto.User">
