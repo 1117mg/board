@@ -21,11 +21,10 @@ public class FileUtil {
                 dto.setFilename(file.getOriginalFilename());
                 dto.setContentType(file.getContentType());
 
-                list.add(dto);
-
                 File newFileName = new File(dto.getUuid() + "_" + dto.getFilename());
                 try {
                     file.transferTo(newFileName);
+                    list.add(dto);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

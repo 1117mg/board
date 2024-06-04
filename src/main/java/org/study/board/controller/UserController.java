@@ -19,6 +19,7 @@ import org.study.board.service.UserService;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
+import java.security.Principal;
 import java.util.List;
 
 @Slf4j
@@ -30,9 +31,11 @@ public class UserController {
     private UserService service;
 
     @GetMapping("/user/main")
-    public String userList(Model model) {
+    public String userList(Model model, Principal principal) {
         List<User> users = service.getAllUsers();
-        log.info("유저메인 유저아이디: {}", users.get(0).getUserId());
+        if (principal != null) {
+            model.addAttribute("username", principal.getName());
+        }
         model.addAttribute("users", users);
         return "user/main";
     }
@@ -120,6 +123,16 @@ public class UserController {
     @ResponseBody
     public boolean checkUsername(@RequestParam String loginId) {
         return service.checkLoginIdDuplicate(loginId);
+    }
+
+    @GetMapping("/error/401")
+    public String error401(Model model) {
+        return "error/401";
+    }
+
+    @GetMapping("/error/403")
+    public String error403(Model model) {
+        return "error/403";
     }
 
 }
