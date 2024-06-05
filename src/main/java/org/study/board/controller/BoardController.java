@@ -1,37 +1,25 @@
 package org.study.board.controller;
 
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.io.FileUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.study.board.aop.BoardAop;
 import org.study.board.dto.Board;
 import org.study.board.dto.FileDto;
 import org.study.board.dto.PaginateDto;
-import org.study.board.dto.User;
-import org.study.board.repository.BoardMapper;
-import org.study.board.repository.UserMapper;
 import org.study.board.service.BoardService;
 import org.study.board.util.FileUtil;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletRequestWrapper;
-import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.List;
-import java.util.Map;
-import java.util.UUID;
 
 @Slf4j
 @Controller
@@ -40,10 +28,7 @@ public class BoardController {
     @Autowired
     private BoardService boardService;
     @Autowired
-    private UserMapper userMapper;
-    @Autowired
-    private HttpServletRequest request;
-
+    private BoardAop aop;
 
     @RequestMapping("/main")
     public String main(Board board, Model model, @RequestParam(defaultValue = "1") int page){
@@ -79,34 +64,20 @@ public class BoardController {
 
     @RequestMapping("/write")
     public String write(@CookieValue(name="idx", required = false) Long idx, Model model, Board board){
-        /*User loginUser=userMapper.findById(idx);
-        model.addAttribute("user", loginUser);*/
-
-        // Spring Security 수정
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String username = authentication.getName();
 
         // 모델에 사용자 정보 추가
-        model.addAttribute("user", username);
+        aop.addUserToModel(model);
+
         if(board.getBno()==null){
             model.addAttribute("getBoard", board);
             model.addAttribute("getFile", boardService.getFile(board));
         }
-
-
         return "board/write";
     }
 
     @RequestMapping("/insertBoard")
-    public String insertBoard(@ModelAttribute Board board, @CookieValue(name="idx", required = false) Long idx, Model model) {
-        /*User loginUser=userMapper.findById(idx);
-        board.setWriter(loginUser.getUsername());
-        model.addAttribute("user", loginUser);*/
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String username = authentication.getName();
-        board.setWriter(username);
-        // 모델에 사용자 정보 추가
-        model.addAttribute("user", username);
+    public String insertBoard(@ModelAttribute Board board) {
+
         boardService.insertBoard(board);
         return "redirect:/main";
     }
