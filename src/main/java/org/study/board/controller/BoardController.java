@@ -5,8 +5,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -63,7 +61,7 @@ public class BoardController {
     }
 
     @RequestMapping("/write")
-    public String write(@CookieValue(name="idx", required = false) Long idx, Model model, Board board){
+    public String write(Model model, Board board){
 
         // 모델에 사용자 정보 추가
         aop.addUserToModel(model);
