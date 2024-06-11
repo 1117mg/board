@@ -2,6 +2,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE HTML>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>게시판 메인</title>
     <style>
