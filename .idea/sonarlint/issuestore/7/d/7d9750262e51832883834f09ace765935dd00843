@@ -1,0 +1,11 @@
+
+	java:S1126"FDefine and throw a dedicated exception instead of using a generic one.(÷¶ÓÁÿÿÿÿÿ8§Å¡Áü1J$a418571c-5da4-4445-b6a8-deaecfbb2f62
+	java:S1129"FDefine and throw a dedicated exception instead of using a generic one.(üÔıùÿÿÿÿ8¨Å¡Áü1J$e70df7da-e8a1-4dd3-a9fb-a4e0820ee99f
+…
+java:S6813"BRemove this field injection and use constructor injection instead.(êæÄŞ8²Å¡Áü1J$7527bc37-8fa7-4d09-97ac-a6d5627ebe50
+…
+java:S6813"BRemove this field injection and use constructor injection instead.(êæÄŞ8…«—æı1J$dae6b877-bd3e-470b-9e49-32b0638705d8
+¥
+java:S1128"]Remove this unused import 'org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder'.(åÅÚ…ûÿÿÿÿ8©¼·íü1J$e4460b50-d30c-4091-8e4b-64fa10c1c59a
+
+java:S1128	"FRemove this unused import 'org.study.board.controller.UserController'.(‚ëñ‚üÿÿÿÿ8¿…·íü1J$ae578070-3b15-4412-9a79-4a6ec8a622fe

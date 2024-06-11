@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.study.board.repository.UserMapper">
+
+    <select id="findById" resultType="org.study.board.dto.User"
+            parameterType="long">
+        SELECT *
+        FROM user
+        WHERE idx = #{idx}
+    </select>
+
+    <select id="findByLoginId" resultType="org.study.board.dto.User"
+            parameterType="String">
+        SELECT *
+        FROM user
+        WHERE userId = #{userId}
+    </select>
+
+    <insert id="save" parameterType="org.study.board.dto.User">
+        INSERT INTO user (userId, password, username, regdate, role)
+        VALUES (#{userId}, #{password}, #{username}, NOW(), #{role})
+    </insert>
+
+    <select id="findAllUsers" resultType="org.study.board.dto.User">
+        SELECT *
+        FROM user
+    </select>
+
+    <select id="existsByLoginId" resultType="_int"
+                                parameterType="String">
+        SELECT count(*)
+        FROM user
+        WHERE userId=#{loginId}
+    </select>
+</mapper>
