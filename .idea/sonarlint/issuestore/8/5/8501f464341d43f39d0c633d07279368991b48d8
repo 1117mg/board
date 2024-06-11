@@ -1,0 +1,20 @@
+
+
+java:S1192-"GDefine a constant instead of duplicating this literal "/login" 3 times.(«ÚÄÁøÿÿÿÿ8ñ¤—†ş1J$eaad1823-7868-42c3-8c68-4436e527d2bb
+…
+java:S6813"BRemove this field injection and use constructor injection instead.(êæÄŞ8ÎÒå‡ş1J$63486342-80d4-4ff7-a35b-142524cd12e0
+…
+java:S6813"BRemove this field injection and use constructor injection instead.(êæÄŞ8¿ä÷ˆş1J$fd24c127-f0a4-4394-9d70-0d00038b1343
+…
+java:S6813"BRemove this field injection and use constructor injection instead.(êæÄŞ8¿ä÷ˆş1J$14f159f9-85cc-48c6-8726-9ce629e7a52c
+™
+java:S1128	"VRemove this unused import 'org.springframework.security.core.userdetails.UserDetails'.(ÊÁ¥8ÒË°ş1J$0b1fbf29-4c6e-44d0-8454-6cff1d70bc2d
+ 
+java:S1128
+"]Remove this unused import 'org.springframework.security.core.userdetails.UserDetailsService'.(¶…¥à8—Ú®ş1J$63b5f1fc-df1f-4f82-9a79-d30e194891eb
+©
+java:S1128"aRemove this unused import 'org.springframework.security.provisioning.InMemoryUserDetailsManager'.(îŒúùÿÿÿÿ8ÒË°ş1J$06d0dc28-29c2-40f6-acde-bac9eafeebcb
+œ
+java:S1128"YRemove this unused import 'org.springframework.security.provisioning.UserDetailsManager'.(õº‹…8ÒË°ş1J$385fec27-2640-4d98-8f51-b1df1b086eb6
+x
+java:S1128"5Remove this unused import 'org.study.board.dto.User'.(›ß¿ü8ÒË°ş1J$cb690678-cd57-4eb0-a057-31cbe7480f12

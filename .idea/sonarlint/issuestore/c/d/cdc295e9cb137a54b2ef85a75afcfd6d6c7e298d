@@ -1,0 +1,5 @@
+
+‡
+java:S6833"eReplace the "@Controller" annotation by "@RestController" and remove all "@ResponseBody" annotations.(íœ¡ñùÿÿÿÿ8¢¬™³€2
+_
+java:S6813"BRemove this field injection and use constructor injection instead.(êæÄÞ8¨¬™³€2
