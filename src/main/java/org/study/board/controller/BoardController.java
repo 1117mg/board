@@ -28,6 +28,12 @@ public class BoardController {
     @Autowired
     private BoardAop aop;
 
+    @RequestMapping("/thymetest")
+    public String test(Model model){
+        model.addAttribute("name","thymeleaf");
+        return "thymeleaf/test";
+    }
+
     @RequestMapping("/main")
     public String main(Board board, Model model, @RequestParam(defaultValue = "1") int page){
 

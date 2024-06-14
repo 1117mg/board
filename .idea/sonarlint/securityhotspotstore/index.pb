@@ -61,3 +61,7 @@ S
 #.idea/sonarlint/issuestore/index.pb,9\f\9fe84ebb15faf917b7def6236dba604453cc61e0
 ]
 -.idea/sonarlint/securityhotspotstore/index.pb,8\8\88a9255124c95bdc913197c120a8d560edc59c8e
+c
+3src/main/webapp/WEB-INF/jsp/views/board/main-th.jsp,3\7\37608742835f4ae7841475f5e54e08f154b94de5
+\
+,src/main/webapp/WEB-INF/jsp/views/basic.html,c\7\c7b79296d8ecab415f8829f801841bd836cc1398

@@ -1,3 +1,9 @@
 
-}
-java:S1488c"`Immediately return this expression instead of assigning it to the temporary variable "fileList".(Œà¡ú8™±‡«2
+£
+java:S1488i"`Immediately return this expression instead of assigning it to the temporary variable "fileList".(Œà¡ú8´æÚ«2J$76d7568d-a261-4378-ab98-b1aaaace8672
+­
+java:S6833"eReplace the "@Controller" annotation by "@RestController" and remove all "@ResponseBody" annotations.(íœ¡ñùÿÿÿÿ8ÃæÚ«2J$a5156221-34b1-4060-a102-1d5582f213a9
+…
+java:S6813"BRemove this field injection and use constructor injection instead.(êæÄŞ8ÄæÚ«2J$8977f7c9-9c81-4988-8ef5-22b0ce72743e
+…
+java:S6813"BRemove this field injection and use constructor injection instead.(êæÄŞ8ÄæÚ«2J$6c7200a8-ac80-4ba7-a8d9-b72fd50a0590
