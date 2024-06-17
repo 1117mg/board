@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>게시판 메인 - 타임리프</title>
+    <style>
+        .button-container {
+            margin-top: 20px;
+        }
+        .button-container input {
+            margin-right: 10px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+<h1>게시글 목록</h1>
+게시판 총 <span th:text="${cntBoard}">0</span> 개
+<table>
+    <thead>
+    <tr>
+        <th class="one wide">번호</th>
+        <th class="ten wide">글제목</th>
+        <th class="two wide">작성자</th>
+        <th class="three wide">작성일</th>
+        <th class="four wide">조회수</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    <tr th:each="board : ${board}">
+        <td><span th:text="${board.bno}">1</span></td>
+        <td><a th:href="@{/board/{bno}(bno=${board.bno})}"><span th:text="${board.title}">제목</span></a></td>
+        <td><span th:text="${board.writer}">작성자</span></td>
+        <td><span th:text="${board.regdate}">작성일</span></td>
+        <td><span th:text="${board.hit}">조회수</span></td>
+    </tr>
+    </tbody>
+</table>
+
+<!-- 로그인 여부에 따라 버튼 표시 -->
+<div class="button-container">
+    <div th:if="${#httpServletRequest.remoteUser != null}">
+        <!-- 사용자가 로그인한 경우 -->
+        <input type="button" value="user 목록" onclick="location.href='/user/main'"><br/><br/>
+        <input type="button" value="글 작성" onclick="location.href='/write'"><br/><br/>
+        <input type="button" value="로그아웃" onclick="location.href='/logout'"><br/><br/>
+    </div>
+    <div th:if="${#httpServletRequest.remoteUser == null}">
+        <!-- 사용자가 로그인하지 않은 경우 -->
+        <input type="button" value="로그인" onclick="location.href='/login'"><br/><br/>
+        <input type="button" value="회원가입" onclick="location.href='/join'"><br/><br/>
+    </div>
+</div>
+
+<!-- 페이징 처리 시작 -->
+<div class="col-sm-12 col-md-7" style="margin: auto">
+    <div class="dataTables_paginate paging_simple_numbers" id="dataTable_paginate">
+        <div class="paging">
+            <div th:if="${paginate != null}">
+                <!-- 이전 페이지 링크 -->
+                <div th:if="${paginate.nationBegin > 1}">
+                    <a th:href="@{${paginate.params}(${paginate.pageName}=${paginate.nationBegin - 1})}" page="${paginate.nationBegin - 1}" class="prev">이전</a>
+                </div>
+                <div th:if="${paginate.nationBegin <= 1}">
+                    <a href="#" onclick="return false" class="prev">이전</a>
+                </div>
+
+                <!-- 페이지 번호 링크 -->
+                <span th:each="pageNum : ${#numbers.sequence(paginate.nationBegin, paginate.nationClose)}">
+                    <span th:if="${pageNum == paginate.pageNo}">
+                        <strong class="current" th:text="${pageNum}">1</strong>
+                    </span>
+                    <span th:if="${pageNum != paginate.pageNo}">
+                        <a th:href="@{${paginate.params}(${paginate.pageName}=${pageNum})}" th:text="${pageNum}">1</a>
+                    </span>
+                </span>
+
+                <!-- 다음 페이지 링크 -->
+                <div th:if="${paginate.nationClose < paginate.totalPage}">
+                    <a th:href="@{${paginate.params}(${paginate.pageName}=${paginate.nationClose + 1})}" page="${paginate.nationClose + 1}" class="next">다음</a>
+                </div>
+                <div th:if="${paginate.nationClose >= paginate.totalPage}">
+                    <a href="#" onclick="return false" class="next">다음</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 페이징 처리 끝 -->
+</body>
+</html>

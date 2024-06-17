@@ -28,7 +28,8 @@ public class BoardController {
     @Autowired
     private BoardAop aop;
 
-    @RequestMapping("/thymetest")
+    // 타임리프
+    @RequestMapping("/test")
     public String test(Model model){
         model.addAttribute("name","thymeleaf");
         return "thymeleaf/test";
@@ -51,7 +52,8 @@ public class BoardController {
 
         model.addAttribute("paginate", paginate);
         model.addAttribute("board", boardService.getBoardlist(board));
-        return "board/main";
+        //return "board/main";
+        return "thymeleaf/main";
     }
 
     @GetMapping("/board/{bno}")
@@ -63,7 +65,7 @@ public class BoardController {
         model.addAttribute("board", boardDetail);
         model.addAttribute("getFile", file);
 
-        return "board/write";
+        return "thymeleaf/write";
     }
 
     @RequestMapping("/write")
@@ -76,7 +78,7 @@ public class BoardController {
             model.addAttribute("getBoard", board);
             model.addAttribute("getFile", boardService.getFile(board));
         }
-        return "board/write";
+        return "thymeleaf/write";
     }
 
     @RequestMapping("/insertBoard")
