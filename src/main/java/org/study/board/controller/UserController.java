@@ -37,14 +37,14 @@ public class UserController {
             model.addAttribute("username", principal.getName());
         }
         model.addAttribute("users", users);
-        return "user/main";
+        return "thymeleaf/user_main";
     }
 
     @GetMapping("/join")
     public String join(Model model) {
 
         model.addAttribute("JoinForm", new JoinForm());
-        return "join";
+        return "thymeleaf/join";
     }
 
     @PostMapping("/join")
@@ -55,12 +55,12 @@ public class UserController {
         }
 
         if (bindingResult.hasErrors()) {
-            return "join";
+            return "thymeleaf/join";
         }
 
         if (!form.getPassword().equals(form.getPasswordCheck())) {
             bindingResult.rejectValue("passwordCheck", "passwordCheck", "비밀번호가 일치하지 않습니다.");
-            return "join";
+            return "thymeleaf/join";
         }
 
         service.join(form);
@@ -71,7 +71,7 @@ public class UserController {
     public String loginForm(Model model) {
 
         model.addAttribute("loginForm", new LoginForm());
-        return "login";
+        return "thymeleaf/login";
     }
 
     @PostMapping("/login")
@@ -85,7 +85,7 @@ public class UserController {
         }
 
         if (bindingResult.hasErrors()) {
-            return "login";
+            return "thymeleaf/login";
         }
 
         Cookie cookie = new Cookie("idx", String.valueOf(loginUser.getIdx()));
@@ -116,7 +116,7 @@ public class UserController {
         }
         log.info("User found: {}", user);
         model.addAttribute("user", user);
-        return "user/info";
+        return "thymeleaf/user_info";
     }
 
     @GetMapping("/check-username")

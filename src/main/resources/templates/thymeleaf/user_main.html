@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>사용자 목록</title>
+</head>
+<body>
+<h1>사용자 목록</h1>
+<table border="1">
+    <thead>
+    <tr>
+        <th>유저번호</th>
+        <th>아이디</th>
+        <th>이름</th>
+        <th>가입일</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="user : ${users}">
+        <td th:text="${user.idx}">유저번호</td>
+        <td><a th:href="@{'/user/info/' + ${user.userId}}" th:text="${user.userId}">아이디</a></td>
+        <td th:text="${user.username}">이름</td>
+        <td th:text="${user.regdate}">가입일</td>
+    </tr>
+    </tbody>
+</table>
+
+<button type="button" onclick="history.back()">뒤로가기</button>
+</body>
+</html>
