@@ -26,6 +26,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private AccessDeniedHandler accessDeniedHandler;
     @Autowired
     private AuthenticationEntryPoint authenticationEntryPoint;
+    @Autowired
+    private CustomAuthenticationSuccessHandler authenticationSuccessHandler;
+    @Autowired
+    private CustomAuthenticationFailureHandler authenticationFailureHandler;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -42,7 +46,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("/login", "/join").anonymous()
+                .antMatchers("/login", "/join", "/check-username").anonymous()
                 .antMatchers("/user/main").hasRole("ADMIN")
                 .antMatchers("/user/info/**").hasRole("ADMIN")
                 .anyRequest().authenticated()
@@ -50,9 +54,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .formLogin()
                 .loginPage("/login")
                 .loginProcessingUrl("/login")
+                .successHandler(authenticationSuccessHandler)
+                .failureHandler(authenticationFailureHandler)
                 .usernameParameter("loginId")  // 로그인 ID 필드 이름 설정
                 .passwordParameter("password") // 비밀번호 필드 이름 설정
-                .defaultSuccessUrl("/main", true)  // 로그인 성공 후 리다이렉트 설정
+                //.defaultSuccessUrl("/main", true)  // 로그인 성공 후 리다이렉트 설정
                 .permitAll()
                 .and()
                 .logout()

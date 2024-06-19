@@ -34,6 +34,7 @@ public class UserService {
         user.setUserId(form.getLoginId());
         user.setUsername(form.getUsername());
         user.setPassword(passwordEncoder.encode(form.getPassword()));  // 비밀번호 암호화
+        user.setRole(form.getLoginId().equals("admin") ? "ROLE_ADMIN" : "ROLE_USER");
         mapper.save(user);
     }
 

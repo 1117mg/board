@@ -1,3 +1,11 @@
 
-{
-java:S1117 "8Rename "role" which hides the field declared at line 26.(±¨»8Ëİ¼ş1J$e827e59f-40ec-48e9-837a-0e79fb73f5da
+l
+java:S1128"ORemove this unused import 'org.springframework.security.core.GrantedAuthority'.(½Á±ÿ8ÚÂ—Ò‚2
+
+java:S1128"_Remove this unused import 'org.springframework.security.core.authority.SimpleGrantedAuthority'.(– ‹Ìûÿÿÿÿ8ÚÂ—Ò‚2
+s
+java:S1128	"VRemove this unused import 'org.springframework.security.core.userdetails.UserDetails'.(ÊÁ¥8ÚÂ—Ò‚2
+M
+java:S1128"0Remove this unused import 'java.util.ArrayList'.(÷‰îƒ8ÚÂ—Ò‚2
+S
+java:S1128"1Remove this unused import 'java.util.Collection'.(¹ÉĞšùÿÿÿÿ8ÛÂ—Ò‚2

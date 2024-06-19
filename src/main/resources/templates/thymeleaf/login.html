@@ -6,6 +6,8 @@
     <style>
         .container {
             max-width: 560px;
+            margin: 0 auto;
+            padding-top: 20px;
         }
         .field-error {
             border-color: #dc3545;
@@ -21,18 +23,32 @@
         <h2>로그인</h2>
     </div>
 
-    <form action="/login" method="post">
+    <form action="/login" method="post" th:object="${loginForm}">
+
+        <div id="loginError" style="color: red">
+            <div th:if="${param.error != null and param.error[0] eq 'true'}">
+                비밀번호가 맞지 않습니다. <br>
+                <span th:if="${param.remainingAttempts != null}">
+            (계정 잠금까지 <span th:text="${param.remainingAttempts[0]}"></span>회 남았습니다.)
+            </span>
+            </div>
+
+            <div th:if="${param.error != null and param.error[0] eq 'locked'}">계정이 잠겨 있습니다. 관리자에게 문의하세요.</div>
+            <!--        <div th:if="${param.error != null and param.error[0] eq 'notFound'}">등록되지 않은 계정입니다.</div>-->
+            <div th:if="${session.notFound}" th:text="${session.notFound}"></div>
+        </div>
+        <div id="emptyError" style="color: red"></div>
 
         <div>
             <label for="loginId">로그인 ID</label>
-            <input type="text" id="loginId" name="loginId" value="${loginForm.loginId}" class="form-control"
-                   th:classappend="${#fields.hasErrors('loginId')} ? 'field-error'">
+            <input type="text" id="loginId" name="loginId" th:field="*{loginId}" class="form-control"
+                   th:class="${#fields.hasErrors('loginId')} ? 'form-control field-error' : 'form-control'">
             <div th:if="${#fields.hasErrors('loginId')}" th:errors="*{loginId}">유효하지 않은 ID입니다.</div>
         </div>
         <div>
             <label for="password">비밀번호</label>
-            <input type="password" id="password" name="password" value="${loginForm.password}" class="form-control"
-                   th:classappend="${#fields.hasErrors('password')} ? 'field-error'">
+            <input type="password" id="password" name="password" th:field="*{password}" class="form-control"
+                   th:class="${#fields.hasErrors('password')} ? 'form-control field-error' : 'form-control'">
             <div th:if="${#fields.hasErrors('password')}" th:errors="*{password}">비밀번호를 다시 확인해주세요.</div>
         </div>
 
@@ -44,7 +60,6 @@
             </div>
             <div class="col">
                 <a th:href="@{/main}" class="w-100 btn btn-secondary btn-lg">취소</a>
-                <!-- <button class="w-100 btn btn-secondary btn-lg" onclick="window.location.href='/main'">취소</button> -->
             </div>
         </div>
 
