@@ -32,29 +32,18 @@ public class CustomAuthenticationFailureHandler extends SimpleUrlAuthenticationF
         }
 
         // 사용자가 존재하는 경우
-        // 이미 실패 횟수가 5회 이상인 경우
-        if (user.getFailedAttempts() >= 5) {
-            setDefaultFailureUrl("/login?error=locked");
-            super.onAuthenticationFailure(request, response, exception);
-            return;
-        }
-
         user.incrementFailedAttempts();
-        mapper.save(user);
 
         // 실패 횟수가 5회인 경우
-        if (user.getFailedAttempts() == 5) {
-
+        if (user.getFailedAttempts() >= 5) {
             user.setLocked(true);
-            mapper.save(user);
+            mapper.updateStatus(user);
             setDefaultFailureUrl("/login?error=locked");
-            super.onAuthenticationFailure(request, response, exception);
-            return;
+        } else {
+            mapper.updateStatus(user);
+            int remainingAttempts = 5 - user.getFailedAttempts();
+            setDefaultFailureUrl("/login?error=true&remainingAttempts=" + remainingAttempts);
         }
-
-        // 실패 횟수가 5회 미만인 경우
-        int remainingAttempts = 5 - user.getFailedAttempts();
-        setDefaultFailureUrl("/login?error=true&remainingAttempts=" + remainingAttempts);
         super.onAuthenticationFailure(request, response, exception);
     }
 }

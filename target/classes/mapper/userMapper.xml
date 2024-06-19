@@ -33,4 +33,10 @@
         FROM user
         WHERE userId=#{loginId}
     </select>
+
+    <update id="updateStatus" parameterType="org.study.board.dto.User">
+        update user
+        set failed_attempts = #{failedAttempts}, locked=#{locked}
+        where userId=#{userId}
+    </update>
 </mapper>

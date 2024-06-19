@@ -30,7 +30,7 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
             // 계정이 잠겨있지 않은 경우 로그인 성공 처리
             user.setFailedAttempts(0);
             user.setLocked(false);
-            mapper.save(user);
+            mapper.updateStatus(user);
             response.sendRedirect("/main");
         }
     }

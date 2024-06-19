@@ -14,4 +14,5 @@ public interface UserMapper {
     void save(User user);
     int existsByLoginId(String loginId);
     List<User> findAllUsers();
+    void updateStatus(User user); // 계정잠금 상태
 }
