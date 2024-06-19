@@ -18,13 +18,14 @@
     </select>
 
     <insert id="save" parameterType="org.study.board.dto.User">
-        INSERT INTO user (userId, password, username, regdate, role)
-        VALUES (#{userId}, #{password}, #{username}, NOW(), #{role})
+        INSERT INTO user (userId, password, username, regdate, role, locked)
+        VALUES (#{userId}, #{password}, #{username}, NOW(), #{role}, #{locked})
     </insert>
 
     <select id="findAllUsers" resultType="org.study.board.dto.User">
         SELECT *
         FROM user
+        WHERE locked=false
     </select>
 
     <select id="existsByLoginId" resultType="_int"

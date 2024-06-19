@@ -134,5 +134,4 @@ public class UserController {
     public String error403(Model model) {
         return "error/403";
     }
-
 }

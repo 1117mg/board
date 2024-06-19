@@ -13,10 +13,13 @@ import org.study.board.aop.BoardAop;
 import org.study.board.dto.Board;
 import org.study.board.dto.FileDto;
 import org.study.board.dto.PaginateDto;
+import org.study.board.dto.User;
 import org.study.board.service.BoardService;
+import org.study.board.service.UserService;
 import org.study.board.util.FileUtil;
 
 import java.io.IOException;
+import java.security.Principal;
 import java.util.List;
 
 @Slf4j
@@ -27,6 +30,8 @@ public class BoardController {
     private BoardService boardService;
     @Autowired
     private BoardAop aop;
+    @Autowired
+    private UserService userService;
 
     // 타임리프
     @RequestMapping("/test")
@@ -37,7 +42,6 @@ public class BoardController {
 
     @RequestMapping("/main")
     public String main(Board board, Model model, @RequestParam(defaultValue = "1") int page){
-
         // 게시글 총 개수
         int total = boardService.cntBoard();
         model.addAttribute("cntBoard", total);

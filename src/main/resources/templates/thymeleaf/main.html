@@ -25,7 +25,7 @@
 </head>
 <body>
 <h1>게시글 목록</h1>
-게시판 총 <span th:text="${cntBoard}">0</span> 개
+게시판 총 <span th:text="${cntBoard}">0</span> 개<br>
 <table>
     <thead>
     <tr>
@@ -47,7 +47,8 @@
     </tr>
     </tbody>
 </table>
-
+<br>
+<span th:text="${#httpServletRequest.remoteUser}">ㅇㅇㅇ</span> 님 환영합니다!
 <!-- 로그인 여부에 따라 버튼 표시 -->
 <div class="button-container">
     <div th:if="${#httpServletRequest.remoteUser != null}">

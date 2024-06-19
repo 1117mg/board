@@ -42,11 +42,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .passwordEncoder(passwordEncoder());
     }
 
-
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("/login", "/join", "/check-username").anonymous()
+                .antMatchers("/login", "/join", "/check-username", "/logout").permitAll()
                 .antMatchers("/user/main").hasRole("ADMIN")
                 .antMatchers("/user/info/**").hasRole("ADMIN")
                 .anyRequest().authenticated()
@@ -58,7 +57,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .failureHandler(authenticationFailureHandler)
                 .usernameParameter("loginId")  // 로그인 ID 필드 이름 설정
                 .passwordParameter("password") // 비밀번호 필드 이름 설정
-                //.defaultSuccessUrl("/main", true)  // 로그인 성공 후 리다이렉트 설정
+                .defaultSuccessUrl("/main", true)  // 로그인 성공 후 리다이렉트 설정
                 .permitAll()
                 .and()
                 .logout()
