@@ -1,4 +1,8 @@
 
 }
-java:S1488k"`Immediately return this expression instead of assigning it to the temporary variable "fileList".(Œà¡ú8Â›¢¦‚2
-]	java:S1257"<This block of commented-out lines of code should be removed.(¹¿Ê¬úÿÿÿÿ8¾œ¢¦‚2
+java:S1488o"`Immediately return this expression instead of assigning it to the temporary variable "fileList".(Œà¡ú8þÜû‚2
+]	java:S125;"<This block of commented-out lines of code should be removed.(¹¿Ê¬úÿÿÿÿ8±‚Üû‚2
+R
+java:S1128"5Remove this unused import 'org.study.board.dto.User'.(›ß¿ü8¾‰ùû‚2
+P
+java:S1128"4Remove this unused import 'java.security.Principal'.(’ÛÞ[8ž£ùû‚2

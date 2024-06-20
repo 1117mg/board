@@ -59,6 +59,10 @@ public class UserService {
         }
     }
 
+    public void updateUser(User user){
+        mapper.updateStatus(user);
+    }
+
     public User getLoginUser(String userId) {
         if(userId == null) return null;
 

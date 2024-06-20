@@ -15,4 +15,5 @@ public interface UserMapper {
     int existsByLoginId(String loginId);
     List<User> findAllUsers();
     void updateStatus(User user); // 계정잠금 상태
+    List<User> findLockedUsers(); // 잠긴 계정을 찾는 메서드
 }

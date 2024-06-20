@@ -14,6 +14,7 @@
             color: #dc3545;
         }
     </style>
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 </head>
 <body>
 
@@ -24,23 +25,8 @@
     </div>
 
     <form action="/login" method="post" th:object="${loginForm}">
-
-        <div id="loginError" style="color: red">
-            <div th:if="${param.error != null and param.error[0] eq 'true'}">
-                비밀번호가 맞지 않습니다. <br>
-                <span th:if="${param.remainingAttempts != null}">
-            (계정 잠금까지 <span th:text="${param.remainingAttempts[0]}"></span>회 남았습니다.)
-            </span>
-            </div>
-
-            <div th:if="${param.error != null and param.error[0] eq 'locked'}">계정이 잠겨 있습니다. 관리자에게 문의하세요.</div>
-            <!--        <div th:if="${param.error != null and param.error[0] eq 'notFound'}">등록되지 않은 계정입니다.</div>-->
-            <div th:if="${session.notFound}" th:text="${session.notFound}"></div>
-        </div>
-        <div id="emptyError" style="color: red"></div>
-
         <div>
-            <label for="loginId">로그인 ID</label>
+            <label for="loginId">아이디</label>
             <input type="text" id="loginId" name="loginId" th:field="*{loginId}" class="form-control"
                    th:class="${#fields.hasErrors('loginId')} ? 'form-control field-error' : 'form-control'">
             <div th:if="${#fields.hasErrors('loginId')}" th:errors="*{loginId}">유효하지 않은 ID입니다.</div>
@@ -51,6 +37,21 @@
                    th:class="${#fields.hasErrors('password')} ? 'form-control field-error' : 'form-control'">
             <div th:if="${#fields.hasErrors('password')}" th:errors="*{password}">비밀번호를 다시 확인해주세요.</div>
         </div>
+        <div id="loginError" style="color: red">
+            <div th:if="${param.error != null and param.error[0] eq 'true'}">
+                비밀번호가 일치하지 않습니다. <br>
+                <span th:if="${param.remainingAttempts != null}">
+            (계정 잠금까지 <span th:text="${param.remainingAttempts[0]}"></span>회 남았습니다.)
+            </span>
+            </div>
+
+            <div th:if="${param.error != null and param.error[0] eq 'locked'}">계정이 잠겨 있습니다. 30초 뒤에 다시 시도해주세요.</div>
+            <!--        <div th:if="${param.error != null and param.error[0] eq 'notFound'}">등록되지 않은 계정입니다.</div>-->
+            <div th:if="${session.notFound}" th:text="${session.notFound}"></div>
+        </div>
+        <div id="emptyError" style="color: red"></div>
+        <br>
+        <div class="g-recaptcha" data-sitekey="6LfG_vwpAAAAAJouOd2Gm2uxAspLV0o669XsfEcK"></div>
 
         <hr class="my-4">
 

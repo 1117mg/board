@@ -26,6 +26,8 @@ public class User {
     private String role;
     private int failedAttempts;
     private boolean locked;
+    private Timestamp lockTime; // 계정 잠금 시간
+    private boolean recaptchaRequired; // reCAPTCHA 필요 여부
 
     // 로그인 실패 횟수 증가
     public void incrementFailedAttempts() {

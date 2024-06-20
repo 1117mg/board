@@ -75,3 +75,7 @@ Lsrc/main/java/org/study/board/config/CustomAuthenticationSuccessHandler.java,9
 Lsrc/main/java/org/study/board/config/CustomAuthenticationFailureHandler.java,0\a\0a6dac6bd70f6094fb68ad356e554d72ac64bff1
 k
 ;src/main/java/org/study/board/config/CustomUserDetails.java,5\1\51ba4e7de8fa3a22954743d8e3d6d784530d3ebc
+_
+/src/main/webapp/WEB-INF/jsp/views/error/401.jsp,a\3\a3fa39f722895ec07b9b3cb13777c0650e9bfdf2
+_
+/src/main/webapp/WEB-INF/jsp/views/error/403.jsp,f\9\f995f0f4821dc108821bbe06aea4a1b61922ddf3

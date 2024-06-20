@@ -11,6 +11,9 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.sql.Timestamp;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 
 @Component
 @RequiredArgsConstructor
@@ -18,25 +21,22 @@ public class CustomAuthenticationFailureHandler extends SimpleUrlAuthenticationF
 
     private final UserMapper mapper;
 
-    // 로그인 실패 시
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws ServletException, IOException {
         String userId = request.getParameter("loginId");
         User user = mapper.findByLoginId(userId);
 
-        // 사용자가 존재하지 않는 경우
         if (user == null) {
             request.getSession().setAttribute("notFound", "등록되지 않은 계정입니다.");
             super.onAuthenticationFailure(request, response, exception);
             return;
         }
 
-        // 사용자가 존재하는 경우
         user.incrementFailedAttempts();
 
-        // 실패 횟수가 5회인 경우
         if (user.getFailedAttempts() >= 5) {
             user.setLocked(true);
+            user.setLockTime(new Timestamp(System.currentTimeMillis()));
             mapper.updateStatus(user);
             setDefaultFailureUrl("/login?error=locked");
         } else {

@@ -1,6 +1,6 @@
 
 
-java:S11921"GDefine a constant instead of duplicating this literal "/login" 3 times.(½Ù“¦ùÿÿÿÿ8ñ¤—†ş1J$eaad1823-7868-42c3-8c68-4436e527d2bb
+java:S11920"GDefine a constant instead of duplicating this literal "/login" 3 times.(éş¼³üÿÿÿÿ8ñ¤—†ş1J$eaad1823-7868-42c3-8c68-4436e527d2bb
 s
 java:S1128	"VRemove this unused import 'org.springframework.security.core.userdetails.UserDetails'.(ÊÁ¥8Ş—çÑ‚2
 z

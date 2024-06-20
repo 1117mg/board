@@ -15,9 +15,11 @@ import org.springframework.web.bind.annotation.*;
 import org.study.board.dto.JoinForm;
 import org.study.board.dto.LoginForm;
 import org.study.board.dto.User;
+import org.study.board.service.RecaptchaService;
 import org.study.board.service.UserService;
 
 import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.security.Principal;
 import java.util.List;
@@ -29,6 +31,8 @@ public class UserController {
 
     @Autowired
     private UserService service;
+    @Autowired
+    private RecaptchaService recaptchaService;
 
     @GetMapping("/user/main")
     public String userList(Model model, Principal principal) {
@@ -75,13 +79,24 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public String login(@ModelAttribute("loginForm") LoginForm form, BindingResult bindingResult, HttpServletResponse response) {
-
+    public String login(@ModelAttribute("loginForm") LoginForm form, BindingResult bindingResult, HttpServletRequest request, HttpServletResponse response) {
         User loginUser = service.login(form.getLoginId(), form.getPassword());
-        log.info("login? {}", loginUser);
-
         if (loginUser == null) {
             bindingResult.reject("loginFail", "아이디 또는 비밀번호가 맞지 않습니다.");
+            return "thymeleaf/login";
+        }
+
+        // reCAPTCHA 필요 여부 확인
+        if (loginUser.isRecaptchaRequired()) {
+            String recaptchaResponse = request.getParameter("g-recaptcha-response");
+            // reCAPTCHA 검증
+            if (recaptchaResponse == null || !recaptchaService.verifyRecaptcha(recaptchaResponse)) {
+                bindingResult.reject("recaptchaFail", "reCAPTCHA 검증에 실패했습니다.");
+                return "thymeleaf/login";  // 로그인 페이지로 다시 이동
+            }
+            // reCAPTCHA 검증 통과 후 리셋
+            loginUser.setRecaptchaRequired(false);
+            service.updateUser(loginUser);
         }
 
         if (bindingResult.hasErrors()) {
@@ -92,7 +107,6 @@ public class UserController {
         cookie.setMaxAge(60 * 60);  // 쿠키 유효 시간 : 1시간
         response.addCookie(cookie);
 
-        // 로그인 성공 처리
         log.info("로그인 성공: {}", loginUser);
         return "redirect:/main";
     }
