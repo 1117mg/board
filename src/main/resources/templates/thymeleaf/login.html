@@ -14,7 +14,7 @@
             color: #dc3545;
         }
     </style>
-    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+    <script src="https://www.google.com/recaptcha/api.js"></script>
 </head>
 <body>
 
@@ -44,14 +44,14 @@
             (계정 잠금까지 <span th:text="${param.remainingAttempts[0]}"></span>회 남았습니다.)
             </span>
             </div>
-
-            <div th:if="${param.error != null and param.error[0] eq 'locked'}">계정이 잠겨 있습니다. 30초 뒤에 다시 시도해주세요.</div>
+            <br>
+            <div th:if="${param.error != null and param.error[0] eq 'locked'}">
+                <div class="g-recaptcha" data-sitekey="6Ldk4_0pAAAAAM2zBfNUpWElpaKdKWeVzL0LBHbK"></div>
+            </div>
             <!--        <div th:if="${param.error != null and param.error[0] eq 'notFound'}">등록되지 않은 계정입니다.</div>-->
             <div th:if="${session.notFound}" th:text="${session.notFound}"></div>
         </div>
         <div id="emptyError" style="color: red"></div>
-        <br>
-        <div class="g-recaptcha" data-sitekey="6LfG_vwpAAAAAJouOd2Gm2uxAspLV0o669XsfEcK"></div>
 
         <hr class="my-4">
 

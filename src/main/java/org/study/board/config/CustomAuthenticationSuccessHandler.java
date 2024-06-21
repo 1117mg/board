@@ -23,8 +23,13 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
         String userId = userDetails.getUsername();
         User user = mapper.findByLoginId(userId);
 
+        user.setFailedAttempts(0);
+        user.setLocked(false);
+        mapper.updateStatus(user);
+        response.sendRedirect("/main");
+
         // 계정이 잠겨있는 경우
-        if (user.isLocked() || user.getFailedAttempts() >= 5) {
+        /*if (user.isLocked() || user.getFailedAttempts() >= 5) {
             response.sendRedirect("/login?error=locked");
         } else {
             // 계정이 잠겨있지 않은 경우 로그인 성공 처리
@@ -32,6 +37,6 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
             user.setLocked(false);
             mapper.updateStatus(user);
             response.sendRedirect("/main");
-        }
+        }*/
     }
 }

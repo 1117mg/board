@@ -7,6 +7,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -46,9 +49,11 @@ public class UserController {
 
     @GetMapping("/join")
     public String join(Model model) {
-
-        model.addAttribute("JoinForm", new JoinForm());
-        return "thymeleaf/join";
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication instanceof AnonymousAuthenticationToken){
+            model.addAttribute("JoinForm", new JoinForm());
+            return "thymeleaf/join";}
+        return "redirect:/main";
     }
 
     @PostMapping("/join")
@@ -73,9 +78,11 @@ public class UserController {
 
     @GetMapping("/login")
     public String loginForm(Model model) {
-
-        model.addAttribute("loginForm", new LoginForm());
-        return "thymeleaf/login";
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication instanceof AnonymousAuthenticationToken){
+            model.addAttribute("loginForm", new LoginForm());
+            return "thymeleaf/login";}
+        return "redirect:/main";
     }
 
     @PostMapping("/login")
@@ -87,7 +94,7 @@ public class UserController {
         }
 
         // reCAPTCHA 필요 여부 확인
-        if (loginUser.isRecaptchaRequired()) {
+        if (loginUser.isLocked()) {
             String recaptchaResponse = request.getParameter("g-recaptcha-response");
             // reCAPTCHA 검증
             if (recaptchaResponse == null || !recaptchaService.verifyRecaptcha(recaptchaResponse)) {
@@ -95,7 +102,8 @@ public class UserController {
                 return "thymeleaf/login";  // 로그인 페이지로 다시 이동
             }
             // reCAPTCHA 검증 통과 후 리셋
-            loginUser.setRecaptchaRequired(false);
+            //loginUser.setRecaptchaRequired(false);
+            loginUser.setLocked(false);
             service.updateUser(loginUser);
         }
 

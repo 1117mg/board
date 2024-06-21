@@ -36,7 +36,7 @@
 
     <update id="updateStatus" parameterType="org.study.board.dto.User">
         update user
-        set failed_attempts = #{failedAttempts}, locked = #{locked}, lock_time = #{lockTime}, recaptcha_required = #{recaptchaRequired}
+        set failed_attempts = #{failedAttempts}, locked = #{locked}, lock_time = #{lockTime}
         where userId = #{userId}
     </update>
 

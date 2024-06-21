@@ -29,9 +29,9 @@ public class CustomUserDetailsService implements UserDetailsService {
             throw new UsernameNotFoundException("User not found with username: " + username);
         }
 
-        if (user.isLocked()) {
+        /*if (user.isLocked()) {
             throw new LockedException("User account is locked");
-        }
+        }*/
 
         // 권한 설정
         String rolePrefix = "ROLE_"; // Spring Security 규칙에 따라 권한 이름은 "ROLE_"로 시작해야 함
@@ -41,7 +41,7 @@ public class CustomUserDetailsService implements UserDetailsService {
                 .username(user.getUserId())
                 .password(user.getPassword())
                 .authorities(Collections.singletonList(authority))
-                .accountLocked(user.isLocked())  // locked 상태를 UserDetails에 반영
+                //.accountLocked(user.isLocked())  // locked 상태를 UserDetails에 반영
                 .build();
     }
 }

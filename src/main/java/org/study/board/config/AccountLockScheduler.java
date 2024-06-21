@@ -26,7 +26,7 @@ public class AccountLockScheduler {
                     user.setFailedAttempts(0);
                     user.setLocked(false);
                     user.setLockTime(null);
-                    user.setRecaptchaRequired(true); // reCAPTCHA 필요 설정
+                    //user.setRecaptchaRequired(true); // reCAPTCHA 필요 설정
                     mapper.updateStatus(user);
                 }
             }

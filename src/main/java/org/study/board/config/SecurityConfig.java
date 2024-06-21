@@ -45,7 +45,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("/login", "/join", "/check-username", "/logout").permitAll()
+                .antMatchers("/login", "/join").anonymous() // 로그인과 회원가입 페이지는 인증되지 않은 사용자만 접근 가능
+                .antMatchers("/check-username").permitAll()
                 .antMatchers("/user/main").hasRole("ADMIN")
                 .antMatchers("/user/info/**").hasRole("ADMIN")
                 .anyRequest().authenticated()
