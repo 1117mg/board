@@ -24,11 +24,34 @@
     </style>
 </head>
 <body>
-<h1>메인페이지</h1>
-<a th:href="@{/notice/main}">공지사항 게시판</a>
-<br>
-<a th:href="@{/qna/main}">QnA 게시판</a>
-<br>
+<div th:if="${boardType==0}">
+    <h1>공지사항 게시판</h1>
+</div>
+<div th:if="${boardType==1}">
+    <h1>QnA 게시판</h1>
+</div>
+게시판 총 <span th:text="${cntBoard}">0</span> 개<br>
+<table>
+    <thead>
+    <tr>
+        <th class="one wide">번호</th>
+        <th class="ten wide">글제목</th>
+        <th class="two wide">작성자</th>
+        <th class="three wide">작성일</th>
+        <th class="four wide">조회수</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    <tr th:each="board : ${board}">
+        <td><span th:text="${board.bno}">1</span></td>
+        <td><a th:href="@{board/{bno}(bno=${board.bno})}"><span th:text="${board.title}">제목</span></a></td>
+        <td><span th:text="${board.writer}">작성자</span></td>
+        <td><span th:text="${board.regdate}">작성일</span></td>
+        <td><span th:text="${board.hit}">조회수</span></td>
+    </tr>
+    </tbody>
+</table>
 <br>
 <span th:text="${#httpServletRequest.remoteUser}">ㅇㅇㅇ</span> 님 환영합니다!
 <!-- 로그인 여부에 따라 버튼 표시 -->

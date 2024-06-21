@@ -15,8 +15,8 @@ public class Board {
     private Date regdate;
     private Integer hit;
     private boolean deleteYn;
-    private boolean noticeYn;
     private Integer userIdx;
+    private Integer boardType; // 0: 공지사항 게시판, 1: QnA 게시판
 
     /*페이징 기능*/
     private Integer pageNo;	    // 현재 페이지 번호

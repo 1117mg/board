@@ -4,9 +4,6 @@
 <mapper namespace="org.study.board.repository.BoardMapper">
 
     <select id="getBoardList" resultType="org.study.board.dto.Board">
-        /*SELECT *
-        from board
-        where delete_yn!=1*/
         SELECT b.*
              , CASE WHEN COUNT(*)  <![CDATA[>]]> 1
                         THEN CONCAT(f.filename, '외 ' , COUNT(*)-1, '건')
@@ -14,10 +11,10 @@
             END file_name
         FROM board b
         LEFT JOIN file f ON b.bno = f.bno
-        WHERE b.delete_yn != 1
+        WHERE b.delete_yn != 1 AND b.board_type=#{boardType}
         GROUP BY b.bno
         ORDER BY b.bno DESC
-            LIMIT #{pageSize} OFFSET ${pageOffset}
+            LIMIT #{pageSize} OFFSET #{pageOffset}
     </select>
 
     <select id="getBoard" parameterType="int"
@@ -33,10 +30,10 @@
         WHERE bno=#{bno}
     </update>
 
-    <select id="cntBoard" resultType="Integer">
+    <select id="cntBoard" resultType="Integer" parameterType="Integer">
         SELECT count(*)
         FROM board
-        WHERE delete_yn!=1
+        WHERE delete_yn!=1 AND board_type=#{boardType}
     </select>
 
     <!--첨부파일 리스트-->
@@ -47,8 +44,8 @@
     </select>
 
     <insert id="insertBoard" parameterType="org.study.board.dto.Board">
-        INSERT INTO board (title, content, writer, regdate, hit, delete_yn, user_idx)
-        VALUES (#{title}, #{content}, #{writer}, NOW(), 0, 0, #{userIdx})
+        INSERT INTO board (title, content, writer, regdate, hit, delete_yn, user_idx, board_type)
+        VALUES (#{title}, #{content}, #{writer}, NOW(), 0, 0, #{userIdx}, #{boardType})
         <selectKey keyProperty="bno" resultType="int" order="AFTER">
             SELECT LAST_INSERT_ID()
         </selectKey>
@@ -56,7 +53,7 @@
 
     <update id="updateBoard" parameterType="org.study.board.dto.Board">
         UPDATE board
-        SET title=#{title}, content=#{content},regdate=NOW(), delete_yn=0, user_idx = #{userIdx}
+        SET title=#{title}, content=#{content},regdate=NOW(), delete_yn=0, user_idx = #{userIdx}, board_type=#{boardType}
         WHERE bno = #{bno}
     </update>
 

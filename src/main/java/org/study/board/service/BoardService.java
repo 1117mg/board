@@ -43,7 +43,7 @@ public class BoardService {
         return mapper.hit(bno);
     }
 
-    public Integer cntBoard() {return mapper.cntBoard();}
+    public Integer cntBoard(Integer boardType) {return mapper.cntBoard(boardType);}
 
     public void insertBoard(Board board){
         if (board.getBno() != null) {

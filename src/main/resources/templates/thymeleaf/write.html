@@ -7,7 +7,7 @@
 <body>
 <h1>글 상세보기</h1>
 
-<form id="boardForm" method="post" action="/insertBoard">
+<form id="boardForm" method="post" action="insertBoard">
     <table width="90%">
         <tr width="90%">
             <td width="10%" align="center">작성자</td>
@@ -30,7 +30,7 @@
                 <div id="uploadDiv">
                     <div th:each="file, status : ${getFile}" class="uploadResult">
                         <span th:text="${status.index + 1} + '. '">1. </span>
-                        <a th:href="@{/downloadFile(uuid=${file.uuid}, fileName=${file.filename})}" th:text="${file.filename}" download>파일명</a>
+                        <a th:href="@{downloadFile(uuid=${file.uuid}, fileName=${file.filename})}" th:text="${file.filename}" download>파일명</a>
                         <input type="hidden" name="uuids" th:value="${file.uuid}">
                         <input type="hidden" name="filenames" th:value="${file.filename}">
                         <input type="hidden" name="contentTypes" th:value="${file.contentType}">

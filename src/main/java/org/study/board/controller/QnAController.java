@@ -19,10 +19,10 @@ import org.study.board.util.FileUtil;
 import java.io.IOException;
 import java.util.List;
 
-@RequestMapping("/notice")
+@RequestMapping("/qna")
 @Slf4j
 @Controller
-public class BoardController {
+public class QnAController {
 
     @Autowired
     private BoardService boardService;
@@ -38,7 +38,7 @@ public class BoardController {
 
     @RequestMapping("/main")
     public String main(Board board, Model model, @RequestParam(defaultValue = "1") int page){
-        board.setBoardType(0);
+        board.setBoardType(1);
         // 게시글 총 개수
         int total = boardService.cntBoard(board.getBoardType());
         model.addAttribute("cntBoard", total);
@@ -54,6 +54,7 @@ public class BoardController {
         model.addAttribute("paginate", paginate);
         model.addAttribute("board", boardService.getBoardlist(board));
         model.addAttribute("boardType", board.getBoardType());
+        //return "board/main";
         return "thymeleaf/board";
     }
 

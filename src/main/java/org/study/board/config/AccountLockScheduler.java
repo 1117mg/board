@@ -14,7 +14,7 @@ public class AccountLockScheduler {
 
     private final UserMapper mapper;
 
-    @Scheduled(fixedRate = 30000)
+    //@Scheduled(fixedRate = 30000)
     public void unlockAccounts() {
         List<User> lockedUsers = mapper.findLockedUsers();
         long now = System.currentTimeMillis();
