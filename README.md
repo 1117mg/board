@@ -1,5 +1,5 @@
 <h1>Spring boot Mybatis 게시판</h1>
----
+--
 <ul>
   <li>언어: java</li>
   <li>Spring Boot ver : 2.3.1.RELEASE</li>
