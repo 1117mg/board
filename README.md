@@ -10,4 +10,4 @@
   <li>DB: MySQL 8.0.12</li>
 </ul>
 <br>
-[프로젝트 진행 과정 및 회고](https://1117mg.tistory.com/category/Project)
+<h3>[프로젝트 진행 과정 및 회고](https://1117mg.tistory.com/category/Project)</h3>
