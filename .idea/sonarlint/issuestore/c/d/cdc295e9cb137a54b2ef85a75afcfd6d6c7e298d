@@ -1,5 +1,8 @@
 
-r
-java:S1192N"PDefine a constant instead of duplicating this literal "thymeleaf/login" 4 times.(şÁ”ùÿÿÿÿ8§áŞ¥ƒ2
 l
-java:S11923"ODefine a constant instead of duplicating this literal "thymeleaf/join" 3 times.(Ğáò†8à†Äû‚2
+java:S11928"ODefine a constant instead of duplicating this literal "redirect:/main" 4 times.(Ò™°í8£ÈØÄƒ2
+m
+java:S1192T"PDefine a constant instead of duplicating this literal "thymeleaf/login" 4 times.(Â¤ÜŠ8¶³×Äƒ2
+l
+java:S11927"ODefine a constant instead of duplicating this literal "thymeleaf/join" 3 times.(®­Êÿ8’ÃßÄƒ2
+W	java:S125i"<This block of commented-out lines of code should be removed.(¨¢ò8á³×Äƒ2

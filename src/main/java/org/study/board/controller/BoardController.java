@@ -19,7 +19,7 @@ import org.study.board.util.FileUtil;
 import java.io.IOException;
 import java.util.List;
 
-@RequestMapping("/notice")
+@RequestMapping("/0")
 @Slf4j
 @Controller
 public class BoardController {
@@ -37,8 +37,8 @@ public class BoardController {
     }
 
     @RequestMapping("/main")
-    public String main(Board board, Model model, @RequestParam(defaultValue = "1") int page){
-        board.setBoardType(0);
+    public String main(Board board, Model model, @RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "0") int boardType){
+        board.setBoardType(boardType);
         // 게시글 총 개수
         int total = boardService.cntBoard(board.getBoardType());
         model.addAttribute("cntBoard", total);
@@ -58,10 +58,10 @@ public class BoardController {
     }
 
     @GetMapping("/board/{bno}")
-    public String boardDetail(@PathVariable Integer bno, Model model, Board board){
+    public String boardDetail(@PathVariable Integer bno, Model model){
         Board boardDetail = boardService.getBoard(bno);
-        List<FileDto> file = boardService.getFile(board);
-        board.setHit(boardService.hit(bno));
+        List<FileDto> file = boardService.getFile(boardDetail);
+        boardDetail.setHit(boardService.hit(bno));
 
         model.addAttribute("board", boardDetail);
         model.addAttribute("getFile", file);
@@ -69,7 +69,7 @@ public class BoardController {
         return "thymeleaf/write";
     }
 
-    @RequestMapping("/write")
+    @GetMapping("/write")
     public String write(Model model, Board board){
         // 모델에 사용자 정보 추가
         aop.addUserToModel(model);
@@ -81,11 +81,11 @@ public class BoardController {
         return "thymeleaf/write";
     }
 
-    @RequestMapping("/insertBoard")
-    public String insertBoard(@ModelAttribute Board board) {
-
+    @PostMapping("/insertBoard")
+    public String insertBoard(@ModelAttribute Board board, @RequestParam(defaultValue = "0") int boardType) {
+        board.setBoardType(boardType);
         boardService.insertBoard(board);
-        return "thymeleaf/board";
+        return "redirect:/0/main";
     }
 
     @DeleteMapping("/delete/{bno}")

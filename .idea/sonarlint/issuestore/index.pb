@@ -83,3 +83,9 @@ k
 ;src/main/java/org/study/board/service/RecaptchaService.java,d\7\d751dee0a329dc6be100259c2596067039e9e9cc
 n
 >src/main/java/org/study/board/config/AccountLockScheduler.java,4\7\47eeb6f59d9d5c21b2332cd5ce0f8ea69ba5f065
+^
+.src/main/java/org/study/board/dto/FileDto.java,2\1\218b06db0551b3fd2ca74451098e5f7188491a0f
+l
+<src/main/java/org/study/board/controller/TestController.java,d\3\d3d15d534f71d2dba62d2756d27092edda7f9f13
+k
+;src/main/java/org/study/board/controller/QnAController.java,c\e\ce4c54b7af7b7894289df1a07feb7e73a68b1d83

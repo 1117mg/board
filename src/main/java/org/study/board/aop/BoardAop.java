@@ -27,14 +27,14 @@ public class BoardAop {
         return result;
     }
 
-    @Before("execution(* org.study.board.controller.BoardController.*(..)) && args(model, ..)")
+    @Before("execution(* org.study.board.controller.*.*(..)) && args(model, ..)")
     public void addUserToModel(Model model) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
         model.addAttribute("user", username);
     }
 
-    @Before("execution(* org.study.board.controller.BoardController.insertBoard(..))")
+    @Before("execution(* org.study.board.controller.*.insertBoard(..))")
     public void checkUserAndInsertBoard(JoinPoint joinPoint) {
         Object[] args = joinPoint.getArgs();
         for (Object arg : args) {
