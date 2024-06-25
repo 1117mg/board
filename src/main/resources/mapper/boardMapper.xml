@@ -66,6 +66,7 @@
         SELECT *
         FROM child_board
         WHERE parent_bno = (SELECT bno FROM board WHERE bno=#{bno})
+        WHERE bno != #{bno}
         ORDER BY gno DESC, sorts ASC;
     </select>
 

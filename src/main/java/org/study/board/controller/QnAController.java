@@ -131,6 +131,10 @@ public class QnAController {
             model.addAttribute("getFile", boardService.getFile(board));
         }
 
+        if (parentBno != null) {
+            Board parentBoard = boardService.getBoard(parentBno);
+            model.addAttribute("parentBoard", parentBoard);
+        }
         return "thymeleaf/write";
     }
 

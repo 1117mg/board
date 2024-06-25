@@ -49,6 +49,7 @@
                      JOIN parent_board pb ON b.gno = pb.gno AND b.depth = pb.depth - 1 AND b.sorts <![CDATA[<]]> pb.sorts
         )
         SELECT * FROM parent_board
+<<<<<<< HEAD
         WHERE bno = (SELECT parent_bno FROM board WHERE bno=#{bno})
         ORDER BY gno DESC, sorts ASC;
     </select>
@@ -66,6 +67,9 @@
         SELECT *
         FROM child_board
         WHERE parent_bno = (SELECT bno FROM board WHERE bno=#{bno})
+=======
+        WHERE bno != #{bno}
+>>>>>>> b172fd1 (feat : 답변형 게시판 1차)
         ORDER BY gno DESC, sorts ASC;
     </select>
 
