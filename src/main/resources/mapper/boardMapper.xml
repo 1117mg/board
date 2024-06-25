@@ -14,6 +14,20 @@
         WHERE b.delete_yn != 1 AND b.board_type=#{boardType}
         GROUP BY b.bno
         ORDER BY b.bno DESC
+        LIMIT #{pageSize} OFFSET #{pageOffset}
+    </select>
+
+    <select id="getQnaList" resultType="org.study.board.dto.Board">
+        SELECT b.*
+             , CASE WHEN COUNT(*)  <![CDATA[>]]> 1
+                        THEN CONCAT(f.filename, '외 ' , COUNT(*)-1, '건')
+                    ELSE f.filename
+            END file_name
+        FROM board b
+                 LEFT JOIN file f ON b.bno = f.bno
+        WHERE b.delete_yn != 1 AND b.board_type=#{boardType}
+        GROUP BY b.bno
+        ORDER BY b.gno DESC, b.sorts ASC
             LIMIT #{pageSize} OFFSET #{pageOffset}
     </select>
 
@@ -23,6 +37,26 @@
         from board
         where delete_yn!=1 and bno=#{bno}
     </select>
+
+    <select id="getParentBoards" parameterType="int" resultType="org.study.board.dto.Board">
+        WITH RECURSIVE parent_board AS (
+            SELECT b.*
+            FROM board b
+            WHERE b.bno = #{bno}
+            UNION ALL
+            SELECT b.*
+            FROM board b
+                     JOIN parent_board pb ON b.gno = pb.gno AND b.depth = pb.depth - 1 AND b.sorts <![CDATA[<]]> pb.sorts
+        )
+        SELECT * FROM parent_board
+        WHERE bno != #{bno}
+        ORDER BY gno DESC, sorts ASC;
+    </select>
+
+    <update id="updateSorts" parameterType="int">
+        update board
+        set sorts=sorts+1 WHERE gno=#{gno} and sorts>#{sorts}
+    </update>
 
     <update id="hit" parameterType="int">
         update board
@@ -44,8 +78,8 @@
     </select>
 
     <insert id="insertBoard" parameterType="org.study.board.dto.Board">
-        INSERT INTO board (title, content, writer, regdate, hit, delete_yn, board_type)
-        VALUES (#{title}, #{content}, #{writer}, NOW(), 0, 0, #{boardType})
+        INSERT INTO board (title, content, writer, regdate, hit, delete_yn, board_type, gno, sorts, depth, parent_bno)
+        VALUES (#{title}, #{content}, #{writer}, NOW(), 0, 0, #{boardType}, #{gno}, #{sorts}, #{depth}, #{parentBno})
         <selectKey keyProperty="bno" resultType="int" order="AFTER">
             SELECT LAST_INSERT_ID()
         </selectKey>
