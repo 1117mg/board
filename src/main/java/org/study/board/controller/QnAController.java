@@ -65,10 +65,13 @@ public class QnAController {
 
         // 상위 글
         List<Board> parentBoards = boardService.getParentBoards(bno);
+        // 하위 글
+        List<Board> childBoards = boardService.getChildBoards(bno);
 
         model.addAttribute("board", boardDetail);
         model.addAttribute("getFile", file);
         model.addAttribute("parentBoards", parentBoards);
+        model.addAttribute("childBoards", childBoards);
 
         return "thymeleaf/write";
     }
