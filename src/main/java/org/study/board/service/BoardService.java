@@ -48,6 +48,10 @@ public class BoardService {
         return mapper.getParentBoards(bno);
     }
 
+    public List<Board> getChildBoards(Integer bno) {
+        return mapper.getChildBoards(bno);
+    }
+
     public int hit(Integer bno) {
         return mapper.hit(bno);
     }

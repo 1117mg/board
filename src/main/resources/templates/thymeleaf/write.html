@@ -7,7 +7,7 @@
 <body>
 <h1>글 상세보기</h1>
 
-<form id="boardForm" method="post" action="insertBoard">
+<form id="boardForm" method="post" th:action="@{'/' + ${board.boardType} + '/insertBoard'}">
     <table width="90%">
         <tr width="90%">
             <td width="10%" align="center">작성자</td>
@@ -45,9 +45,9 @@
                 <input type="hidden" name="bno" th:value="${board.bno}">
                 <input type="hidden" name="boardType" th:value="${board.boardType}">
                 <button type="submit">등록</button>
-                <button type="button" onclick="history.back()">뒤로가기</button>
+                <button type="button" th:onclick="'location.href=\'/' + ${board.boardType} + '/main\''">목록</button>
                 <button type="button" th:if="${board.bno}" onclick="deleteBoard()">삭제</button>
-                <button type="button" th:if="${board.bno != null and board.boardType == 1}" th:onclick="'location.href=\'/write?parentBno=' + ${board.bno} + '\''">답변글쓰기</button>
+                <button type="button" th:if="${board.bno != null and board.boardType == 1}" th:onclick="'location.href=\'/1/write?parentBno=' + ${board.bno} + '\''">답변글쓰기</button>
             </td>
         </tr>
     </table>
@@ -64,15 +64,13 @@
 </div>
 
 <!-- 하위 글들을 출력하는 부분 -->
-<div style="margin-left: 20px;">
-    <div th:each="child : ${childBoards}">
-        <div style="border: 1px solid #ddd; padding: 10px; margin: 10px 0;">
-            <input type="hidden" name="bno" th:value="${child.bno}">
-            <a th:href="@{/1/board/{bno}(bno=${child.bno})}">다음 글</a>
-            <h3 style="font-size: small;" th:text="${child.title}"></h3>
-            <p style="font-size: small;" th:text="'작성자: ' + ${child.writer}"></p>
-            <p style="font-size: small;" th:text="${child.content}"></p>
-        </div>
+<div th:each="child : ${childBoards}">
+    <div style="border: 1px solid #ddd; padding: 10px; margin: 10px 0;">
+        <input type="hidden" name="bno" th:value="${child.bno}">
+        <a th:href="@{/1/board/{bno}(bno=${child.bno})}">다음 글</a>
+        <h3 style="font-size: small;" th:text="${child.title}"></h3>
+        <p style="font-size: small;" th:text="'작성자: ' + ${child.writer}"></p>
+        <p style="font-size: small;" th:text="${child.content}"></p>
     </div>
 </div>
 

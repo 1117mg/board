@@ -47,9 +47,29 @@
             SELECT b.*
             FROM board b
                      JOIN parent_board pb ON b.gno = pb.gno AND b.depth = pb.depth - 1 AND b.sorts <![CDATA[<]]> pb.sorts
+            WHERE b.depth = (SELECT depth - 1 FROM board WHERE bno = #{bno})
         )
         SELECT * FROM parent_board
         WHERE bno != #{bno}
+        ORDER BY gno DESC, sorts ASC;
+    </select>
+
+    <select id="getChildBoards" parameterType="int" resultType="org.study.board.dto.Board">
+        WITH RECURSIVE child_board AS (
+            SELECT b.*
+            FROM board b
+            WHERE b.bno = #{bno}
+            UNION ALL
+            SELECT b.*
+            FROM board b
+                     JOIN child_board cb ON b.gno = cb.gno AND b.depth = cb.depth + 1 AND b.sorts > cb.sorts
+            WHERE b.depth = (SELECT depth + 1 FROM board WHERE bno = #{bno}) AND b.sorts = cb.sorts + 1
+        )
+        SELECT *
+        FROM child_board
+        WHERE bno != #{bno}
+          AND gno = (SELECT gno FROM board WHERE bno = #{bno}) -- 원본 게시글과 같은 그룹 번호
+          AND depth = (SELECT depth + 1 FROM board WHERE bno = #{bno})  -- 원본 게시글의 depth + 1
         ORDER BY gno DESC, sorts ASC;
     </select>
 

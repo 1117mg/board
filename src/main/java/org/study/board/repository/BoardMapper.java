@@ -16,6 +16,7 @@ public interface BoardMapper {
     Board getBoard(Integer bno);
     void updateSorts(@Param("gno") int gno, @Param("sorts") int sorts);
     List<Board> getParentBoards(Integer bno);
+    List<Board> getChildBoards(Integer bno);
     int hit(Integer bno);
     Integer cntBoard(Integer boardType);
     void insertBoard(Board board);
