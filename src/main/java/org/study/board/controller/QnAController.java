@@ -52,7 +52,7 @@ public class QnAController {
         board.setPageOffset(paginate.getPageOffset());
 
         model.addAttribute("paginate", paginate);
-        model.addAttribute("board", boardService.getBoardlist(board));
+        model.addAttribute("board", boardService.getQnaList(board));
         model.addAttribute("boardType", board.getBoardType());
         return "thymeleaf/board";
     }
@@ -63,20 +63,29 @@ public class QnAController {
         List<FileDto> file = boardService.getFile(boardDetail);
         boardDetail.setHit(boardService.hit(bno));
 
+        // 상위 글
+        List<Board> parentBoards = boardService.getParentBoards(bno);
+
         model.addAttribute("board", boardDetail);
         model.addAttribute("getFile", file);
+        model.addAttribute("parentBoards", parentBoards);
 
         return "thymeleaf/write";
     }
 
     @GetMapping("/write")
-    public String write(Model model, Board board){
+    public String write(Model model, Board board, @RequestParam(required = false) Integer parentBno){
         // 모델에 사용자 정보 추가
         aop.addUserToModel(model);
 
         if(board.getBno()==null){
             model.addAttribute("getBoard", board);
             model.addAttribute("getFile", boardService.getFile(board));
+        }
+
+        if (parentBno != null) {
+            Board parentBoard = boardService.getBoard(parentBno);
+            model.addAttribute("parentBoard", parentBoard);
         }
         return "thymeleaf/write";
     }

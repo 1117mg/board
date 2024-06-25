@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.study.board.aop.BoardAop;
@@ -16,6 +17,7 @@ import org.study.board.dto.PaginateDto;
 import org.study.board.service.BoardService;
 import org.study.board.util.FileUtil;
 
+import javax.validation.Valid;
 import java.io.IOException;
 import java.util.List;
 

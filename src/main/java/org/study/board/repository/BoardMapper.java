@@ -1,6 +1,7 @@
 package org.study.board.repository;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.study.board.dto.Board;
 import org.study.board.dto.FileDto;
 
@@ -10,8 +11,11 @@ import java.util.List;
 public interface BoardMapper {
 
     List<Board> getBoardList(Board board);
+    List<Board> getQnaList(Board board);
     List<FileDto> getFile(Board board);
     Board getBoard(Integer bno);
+    void updateSorts(@Param("gno") int gno, @Param("sorts") int sorts);
+    List<Board> getParentBoards(Integer bno);
     int hit(Integer bno);
     Integer cntBoard(Integer boardType);
     void insertBoard(Board board);

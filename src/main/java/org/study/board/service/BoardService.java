@@ -9,6 +9,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.BindingResult;
 import org.study.board.dto.Board;
 import org.study.board.dto.FileDto;
 import org.study.board.repository.BoardMapper;
@@ -32,11 +33,19 @@ public class BoardService {
         return mapper.getBoardList(board);
     }
 
+    public List<Board> getQnaList(Board board) {
+        return mapper.getQnaList(board);
+    }
+
     // 첨부파일 리스트
     public List<FileDto> getFile (Board board) {return mapper.getFile(board);}
 
     public Board getBoard(Integer bno){
         return mapper.getBoard(bno);
+    }
+
+    public List<Board> getParentBoards(Integer bno) {
+        return mapper.getParentBoards(bno);
     }
 
     public int hit(Integer bno) {
@@ -52,6 +61,13 @@ public class BoardService {
         if(board.getBno()!=null){
             mapper.updateBoard(board);
         }else{
+            if (board.getParentBno() != null) {
+                Board parentBoard = mapper.getBoard(board.getParentBno());
+                board.setGno(parentBoard.getGno());
+                board.setSorts(parentBoard.getSorts() + 1);
+                board.setDepth(parentBoard.getDepth() + 1);
+                mapper.updateSorts(parentBoard.getGno(), parentBoard.getSorts());
+            }
             mapper.insertBoard(board);
         }
         // 파일 이름 유니크하게 생성

@@ -46,40 +46,5 @@
     </div>
 </div>
 
-<!-- 페이징 처리 시작 -->
-<div class="col-sm-12 col-md-7" style="margin: auto">
-    <div class="dataTables_paginate paging_simple_numbers" id="dataTable_paginate">
-        <div class="paging">
-            <div th:if="${paginate != null}">
-                <!-- 이전 페이지 링크 -->
-                <div th:if="${paginate.nationBegin > 1}">
-                    <a th:href="@{${paginate.params}(${paginate.pageName}=${paginate.nationBegin - 1})}" page="${paginate.nationBegin - 1}" class="prev">이전</a>
-                </div>
-                <div th:if="${paginate.nationBegin <= 1}">
-                    <a href="#" onclick="return false" class="prev">이전</a>
-                </div>
-
-                <!-- 페이지 번호 링크 -->
-                <span th:each="pageNum : ${#numbers.sequence(paginate.nationBegin, paginate.nationClose)}">
-                    <span th:if="${pageNum == paginate.pageNo}">
-                        <strong class="current" th:text="${pageNum}">1</strong>
-                    </span>
-                    <span th:if="${pageNum != paginate.pageNo}">
-                        <a th:href="@{${paginate.params}(${paginate.pageName}=${pageNum})}" th:text="${pageNum}">1</a>
-                    </span>
-                </span>
-
-                <!-- 다음 페이지 링크 -->
-                <div th:if="${paginate.nationClose < paginate.totalPage}">
-                    <a th:href="@{${paginate.params}(${paginate.pageName}=${paginate.nationClose + 1})}" page="${paginate.nationClose + 1}" class="next">다음</a>
-                </div>
-                <div th:if="${paginate.nationClose >= paginate.totalPage}">
-                    <a href="#" onclick="return false" class="next">다음</a>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- 페이징 처리 끝 -->
 </body>
 </html>
