@@ -77,19 +77,16 @@ public class QnAController {
     }
 
     @GetMapping("/write")
-    public String write(Model model, Board board, @RequestParam(required = false) Integer parentBno){
+    public String write(Model model, Board board, @RequestParam(required = false) Integer parentBno, @RequestParam(defaultValue = "1") int boardType){
         // 모델에 사용자 정보 추가
         aop.addUserToModel(model);
+        board.setBoardType(boardType);
 
         if(board.getBno()==null){
             model.addAttribute("getBoard", board);
             model.addAttribute("getFile", boardService.getFile(board));
         }
 
-        if (parentBno != null) {
-            Board parentBoard = boardService.getBoard(parentBno);
-            model.addAttribute("parentBoard", parentBoard);
-        }
         return "thymeleaf/write";
     }
 

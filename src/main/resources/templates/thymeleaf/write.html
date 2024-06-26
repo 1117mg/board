@@ -44,6 +44,10 @@
             <td colspan="2" align="center">
                 <input type="hidden" name="bno" th:value="${board.bno}">
                 <input type="hidden" name="boardType" th:value="${board.boardType}">
+                <input type="hidden" name="gno" th:value="${board.gno}">
+                <input type="hidden" name="sorts" th:value="${board.sorts}">
+                <input type="hidden" name="depth" th:value="${board.depth}">
+                <input type="hidden" name="parentBno" th:value="${board.parentBno}">
                 <button type="submit">등록</button>
                 <button type="button" th:onclick="'location.href=\'/' + ${board.boardType} + '/main\''">목록</button>
                 <button type="button" th:if="${board.bno}" onclick="deleteBoard()">삭제</button>
