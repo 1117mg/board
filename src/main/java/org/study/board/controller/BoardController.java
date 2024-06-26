@@ -19,6 +19,8 @@ import org.study.board.util.FileUtil;
 
 import javax.validation.Valid;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.List;
 
 @RequestMapping("/0")
@@ -49,6 +51,8 @@ public class BoardController {
         paginate.setPageNo(page);
         paginate.setTotalSize(total);
 
+        board.setDepth(0);
+
         board.setPageNo(page);
         board.setPageSize(paginate.getPageSize());
         board.setPageOffset(paginate.getPageOffset());
@@ -72,9 +76,10 @@ public class BoardController {
     }
 
     @GetMapping("/write")
-    public String write(Model model, Board board){
+    public String write(Model model, Board board, @RequestParam(defaultValue = "0") int boardType){
         // 모델에 사용자 정보 추가
         aop.addUserToModel(model);
+        board.setBoardType(boardType);
 
         if(board.getBno()==null){
             model.addAttribute("getBoard", board);
