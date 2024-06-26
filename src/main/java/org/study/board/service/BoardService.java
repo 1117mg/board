@@ -9,6 +9,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
 import org.study.board.dto.Board;
 import org.study.board.dto.FileDto;
@@ -115,8 +116,11 @@ public class BoardService {
         return new ResponseEntity<>(resource, headers, HttpStatus.OK);
     }
 
-
+    //Transactional : 모든 업데이트가 원자적으로 수행되도록 한다.
+    @Transactional
     public boolean deleteBoard(Integer bno){
+        // 하위 게시글 삭제
+        mapper.deleteChildBoards(bno);
         return mapper.deleteBoard(bno);
     }
 
