@@ -21,6 +21,17 @@
         th {
             background-color: #f2f2f2;
         }
+        a.board-title {
+            text-decoration: none;
+            color:dimgrey;
+        }
+        a.board-title:hover {
+            color: black;
+        }
+        .reply {
+            color: yellowgreen;
+            font-size: smaller;
+        }
     </style>
 </head>
 <body>
@@ -45,7 +56,12 @@
     <tbody>
     <tr th:each="board : ${board}">
         <td><span th:text="${board.bno}">1</span></td>
-        <td><a th:href="@{board/{bno}(bno=${board.bno})}"><span th:text="${board.title}">제목</span></a></td>
+        <td>
+            <a th:href="@{board/{bno}(bno=${board.bno})}"  class="board-title">
+                <span th:if="${board.depth > 0}" th:each="i : ${#numbers.sequence(1, board.depth)}" class="reply">&nbsp;↪RE:</span>
+                <span th:text="${board.title}">제목</span>
+            </a>
+        </td>
         <td><span th:text="${board.writer}">작성자</span></td>
         <td><span th:text="${board.regdate}">작성일</span></td>
         <td><span th:text="${board.hit}">조회수</span></td>

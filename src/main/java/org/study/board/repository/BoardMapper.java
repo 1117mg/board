@@ -22,6 +22,7 @@ public interface BoardMapper {
     void insertBoard(Board board);
     void updateBoard(Board board);
     boolean deleteBoard(Integer bno);
+    void deleteChildBoards(Integer bno);
     void insertFile(Board board);
     void deleteFile(Board board);
 }

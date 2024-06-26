@@ -47,10 +47,9 @@
             SELECT b.*
             FROM board b
                      JOIN parent_board pb ON b.gno = pb.gno AND b.depth = pb.depth - 1 AND b.sorts <![CDATA[<]]> pb.sorts
-            WHERE b.depth = (SELECT depth - 1 FROM board WHERE bno = #{bno})
         )
         SELECT * FROM parent_board
-        WHERE bno != #{bno}
+        WHERE bno = (SELECT parent_bno FROM board WHERE bno=#{bno})
         ORDER BY gno DESC, sorts ASC;
     </select>
 
@@ -63,13 +62,10 @@
             SELECT b.*
             FROM board b
                      JOIN child_board cb ON b.gno = cb.gno AND b.depth = cb.depth + 1 AND b.sorts > cb.sorts
-            WHERE b.depth = (SELECT depth + 1 FROM board WHERE bno = #{bno}) AND b.sorts = cb.sorts + 1
         )
         SELECT *
         FROM child_board
-        WHERE bno != #{bno}
-          AND gno = (SELECT gno FROM board WHERE bno = #{bno}) -- 원본 게시글과 같은 그룹 번호
-          AND depth = (SELECT depth + 1 FROM board WHERE bno = #{bno})  -- 원본 게시글의 depth + 1
+        WHERE parent_bno = (SELECT bno FROM board WHERE bno=#{bno})
         ORDER BY gno DESC, sorts ASC;
     </select>
 
@@ -115,6 +111,21 @@
         update board
         SET delete_yn=1
         WHERE bno=#{bno}
+    </update>
+
+    <update id="deleteChildBoards" parameterType="int">
+        WITH RECURSIVE child_board AS (
+            SELECT b.*
+            FROM board b
+            WHERE b.bno = #{bno}
+            UNION ALL
+            SELECT b.*
+            FROM board b
+                     JOIN child_board cb ON b.gno = cb.gno AND b.depth = cb.depth + 1 AND b.sorts > cb.sorts
+        )
+        UPDATE board
+        SET delete_yn = 1
+        WHERE bno IN (SELECT bno FROM child_board);
     </update>
 
     <!-- 파일 정보를 삽입하는 쿼리 -->

@@ -72,6 +72,7 @@ public class QnAController {
         model.addAttribute("getFile", file);
         model.addAttribute("parentBoards", parentBoards);
         model.addAttribute("childBoards", childBoards);
+        model.addAttribute("hasChildBoards", !childBoards.isEmpty());
 
         return "thymeleaf/write";
     }
