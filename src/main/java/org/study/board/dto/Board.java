@@ -3,6 +3,9 @@ package org.study.board.dto;
 import lombok.Builder;
 import lombok.Data;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.List;
 
@@ -38,4 +41,12 @@ public class Board {
     private String[] filenames;
     private String[] contentTypes;
 
+    // 현재 시간과 비교하여 1일 이내인지 확인하는 메소드
+    public boolean isNew() {
+        if (regdate == null) {
+            return false;
+        }
+        LocalDateTime regDateTime = LocalDateTime.ofInstant(regdate.toInstant(), ZoneId.systemDefault());
+        return regDateTime.isAfter(LocalDateTime.now().minus(1, ChronoUnit.DAYS));
+    }
 }

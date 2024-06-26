@@ -17,6 +17,8 @@ import org.study.board.service.BoardService;
 import org.study.board.util.FileUtil;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.List;
 
 @RequestMapping("/1")

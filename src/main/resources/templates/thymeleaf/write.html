@@ -3,9 +3,36 @@
 <head>
     <title>글 상세</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <style>
+        .related-posts {
+            border: 1px solid #ddd;
+            padding: 10px;
+            margin: 10px 0;
+            font-size: small;
+        }
+        .related-posts h3 {
+            margin: 0;
+            font-size: medium;
+        }
+        .related-posts p {
+            margin: 5px 0;
+        }
+        .reply {
+            text-decoration: none;
+            color: yellowgreen;
+        }
+    </style>
 </head>
 <body>
 <h1>글 상세보기</h1>
+
+<!-- 상위 글들을 출력하는 부분 -->
+<div th:each="parent : ${parentBoards}" class="related-posts">
+    <a th:href="@{/1/board/{bno}(bno=${parent.bno})}">이전 글</a>
+    <h3 th:text="${parent.title}"></h3>
+    <p th:text="'작성자: ' + ${parent.writer}"></p>
+    <p th:text="${parent.content}"></p>
+</div>
 
 <form id="boardForm" method="post" th:action="@{'/' + ${board.boardType} + '/insertBoard'}">
     <table width="90%">
@@ -48,7 +75,7 @@
                 <input type="hidden" name="sorts" th:value="${board.sorts}">
                 <input type="hidden" name="depth" th:value="${board.depth}">
                 <input type="hidden" name="parentBno" th:value="${board.parentBno}">
-                <button type="submit" th:if="${!hasChildBoards}">등록</button>
+                <button type="submit" th:if="${board.boardType==0 or hasChildBoards != null and !hasChildBoards}">등록</button>
                 <button type="button" th:onclick="'location.href=\'/' + ${board.boardType} + '/main\''">목록</button>
                 <button type="button" th:if="${board.bno}" onclick="deleteBoard()">삭제</button>
                 <button type="button" th:if="${board.bno != null and board.boardType == 1}" th:onclick="'location.href=\'/1/write?parentBno=' + ${board.bno} + '\''">답변글쓰기</button>
@@ -57,25 +84,13 @@
     </table>
 </form>
 
-<!-- 상위 글들을 출력하는 부분 -->
-<div th:each="parent : ${parentBoards}">
-    <div style="border: 1px solid #ddd; padding: 10px; margin: 10px 0;">
-        <a th:href="@{/1/board/{bno}(bno=${parent.bno})}">이전 글</a>
-        <h3 style="font-size: small;" th:text="${parent.title}"></h3>
-        <p style="font-size: small;" th:text="'작성자: ' + ${parent.writer}"></p>
-        <p style="font-size: small;" th:text="${parent.content}"></p>
-    </div>
-</div>
-
 <!-- 하위 글들을 출력하는 부분 -->
-<div th:each="child : ${childBoards}">
-    <div style="border: 1px solid #ddd; padding: 10px; margin: 10px 0;">
-        <input type="hidden" name="bno" th:value="${child.bno}">
-        <a th:href="@{/1/board/{bno}(bno=${child.bno})}">다음 글</a>
-        <h3 style="font-size: small;" th:text="${child.title}"></h3>
-        <p style="font-size: small;" th:text="'작성자: ' + ${child.writer}"></p>
-        <p style="font-size: small;" th:text="${child.content}"></p>
-    </div>
+<div th:each="child : ${childBoards}" class="related-posts">
+    <input type="hidden" name="bno" th:value="${child.bno}">
+    <a th:href="@{/1/board/{bno}(bno=${child.bno})}" class="reply">↪RE:</a>
+    <h3 th:text="${child.title}"></h3>
+    <p th:text="'작성자: ' + ${child.writer}"></p>
+    <p th:text="${child.content}"></p>
 </div>
 
 <script>
