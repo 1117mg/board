@@ -23,6 +23,7 @@ public class UserService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    public User findById(long idx){return mapper.findById(idx);}
 
     public List<User> getAllUsers() {
         return mapper.findAllUsers();
@@ -59,7 +60,7 @@ public class UserService {
         }
     }
 
-    public void updateUser(User user){
+    public void updateStatus(User user){
         mapper.updateStatus(user);
     }
 
@@ -69,4 +70,7 @@ public class UserService {
         Optional<User> optionalUser = Optional.ofNullable(mapper.findByLoginId(userId));
         return optionalUser.orElse(null);
     }
+
+    public void updateUser(User user){
+        mapper.updateUser(user);}
 }

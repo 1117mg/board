@@ -10,27 +10,31 @@
     <div class="py-5 text-center">
         <h1>사용자 상세 정보</h1>
     </div>
+    <form id="userForm" method="post" th:action="@{/updateUser}">
+        <input type="hidden" th:field="*{userId}" />
     <table>
         <tr>
-            <td>아이디:</td>
-            <td th:text="${user.userId}">아이디</td>
+            <td>아이디</td>
+            <td><input type="text" name="userId" style="width: 95%;" th:value="*{user.userId}" readonly></td>
         </tr>
         <tr>
-            <td>비밀번호:</td>
+            <td>비밀번호</td>
             <td th:text="${user.password}">비밀번호</td>
         </tr>
         <tr>
-            <td>이름:</td>
-            <td th:text="${user.username}">이름</td>
+            <td align="center">이름</td>
+            <td><input type="text" name="username" style="width: 95%;" th:value="*{user.username}"></td>
         </tr>
         <tr>
-            <td>가입일:</td>
-            <td th:text="${user.regdate}">가입일</td>
+            <td>가입 날짜</td>
+            <td th:text="${user.regdate}">비밀번호</td>
         </tr>
     </table>
     <div class="button-container">
+        <button type="submit" onclick="history.back()" class="btn btn-info">수정</button>
         <button type="button" onclick="history.back()" class="btn btn-secondary">뒤로가기</button>
     </div>
+    </form>
 </div>
 </body>
 </html>
