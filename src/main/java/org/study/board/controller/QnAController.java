@@ -49,6 +49,12 @@ public class QnAController {
         paginate.setPageNo(page);
         paginate.setTotalSize(total);
 
+        // 현재 요청의 쿼리 파라미터를 포함한 URL을 생성
+        String params = "boardType=" + boardType; // 필요한 다른 파라미터를 추가
+        paginate.setParams(params);
+
+        paginate._calc(); // 페이지 네비게이션 계산
+
         board.setPageNo(page);
         board.setPageSize(paginate.getPageSize());
         board.setPageOffset(paginate.getPageOffset());

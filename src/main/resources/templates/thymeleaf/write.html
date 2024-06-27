@@ -5,10 +5,17 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <style>
         .related-posts {
-            border: 1px solid #ddd;
-            padding: 10px;
-            margin: 10px 0;
-            font-size: small;
+            width: 50%;
+            display: inline-block;
+            box-sizing: border-box;
+            margin: 20px 0 20px 50px;
+            padding: 30px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+        }
+        .related-posts:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         }
         .related-posts h3 {
             margin: 0;
@@ -17,18 +24,23 @@
         .related-posts p {
             margin: 5px 0;
         }
-        .reply {
+        .link {
             text-decoration: none;
             color: yellowgreen;
         }
     </style>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/aside.css">
+</head>
 </head>
 <body>
-<h1>글 상세보기</h1>
+<div class="py-5 text-center">
+    <h2>글 상세보기</h2>
+</div>
 
 <!-- 상위 글들을 출력하는 부분 -->
-<div th:each="parent : ${parentBoards}" class="related-posts">
-    <a th:href="@{/1/board/{bno}(bno=${parent.bno})}">이전 글</a>
+<div th:each="parent : ${parentBoards}" class="related-posts" onclick="navigateToLink(this)">
+    <a th:href="@{/1/board/{bno}(bno=${parent.bno})}" class="link">이전 글</a>
     <h3 th:text="${parent.title}"></h3>
     <p th:text="'작성자: ' + ${parent.writer}"></p>
     <p th:text="${parent.content}"></p>
@@ -85,15 +97,23 @@
 </form>
 
 <!-- 하위 글들을 출력하는 부분 -->
-<div th:each="child : ${childBoards}" class="related-posts">
+<div th:each="child : ${childBoards}" class="related-posts" onclick="navigateToLink(this)">
     <input type="hidden" name="bno" th:value="${child.bno}">
-    <a th:href="@{/1/board/{bno}(bno=${child.bno})}" class="reply">↪RE:</a>
+    <a th:href="@{/1/board/{bno}(bno=${child.bno})}" class="link">↪RE:</a>
     <h3 th:text="${child.title}"></h3>
     <p th:text="'작성자: ' + ${child.writer}"></p>
     <p th:text="${child.content}"></p>
 </div>
 
 <script>
+    /*상하위 링크 연결*/
+    function navigateToLink(element) {
+        const link = element.querySelector('a.link');
+        if (link) {
+            window.location.href = link.href;
+        }
+    }
+
     // delBtn 개별 삭제 버튼
     $(function () {
         delBtnFile();

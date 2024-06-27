@@ -60,7 +60,7 @@ public class PaginateDto implements Serializable {
         this.params = params;
     }
 
-    private void _calc() {
+    public void _calc() {
         if (pageSize <= 0) return;
 
         // 전체 페이지 수 계산
@@ -86,20 +86,25 @@ public class PaginateDto implements Serializable {
 
         // 페이지 네비게이션 계산
         if (nationSize > 0) {
-            int share = (int) Math.floor(pageNo / (double) nationSize);
+            int currentPageNation = (int) Math.ceil(pageNo / (double) nationSize); // 현재 페이지 네이션 번호
 
-            nationBegin = (share * nationSize) + 1;
-            nationClose = (share + 1) * nationSize;
+            nationBegin = (currentPageNation - 1) * nationSize + 1;
+            nationClose = currentPageNation * nationSize;
 
             if (nationClose > totalPage) {
                 nationClose = totalPage;
             }
-            if (pageNo % nationSize == 0) {
-                nationBegin -= nationSize;
-                nationClose = nationBegin + nationSize - 1;
+
+            // 이전 버튼이나 다음 버튼이 비활성화 되어야 하는지 확인
+            if (pageNo <= 1) {
+                nationBegin = 1;
+            }
+            if (pageNo >= totalPage) {
+                nationClose = totalPage;
             }
         }
     }
+
 
     @Override
     public String toString() {
