@@ -30,8 +30,14 @@ public class BoardAop {
     @Before("execution(* org.study.board.controller.*.*(..)) && args(model, ..)")
     public void addUserToModel(Model model) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String username = authentication.getName();
-        model.addAttribute("user", username);
+        if (authentication != null) {
+            String username = authentication.getName();
+            model.addAttribute("user", username);
+        } else {
+            // 보안 컨텍스트가 없는 경우에 대한 처리를 여기에 추가합니다.
+            // 예를 들어, 로깅 또는 디폴트 사용자를 설정하는 등의 방법으로 처리할 수 있습니다.
+            model.addAttribute("user", "anonymousUser");
+        }
     }
 
     @Before("execution(* org.study.board.controller.*.insertBoard(..))")

@@ -93,6 +93,10 @@
         WHERE delete_yn!=1 and bno=#{bno}
     </select>
 
+    <select id="getMaxGno" resultType="int">
+        SELECT IFNULL(MAX(gno), 0) FROM board
+    </select>
+
     <insert id="insertBoard" parameterType="org.study.board.dto.Board">
         INSERT INTO board (title, content, writer, regdate, hit, delete_yn, board_type, gno, sorts, depth, parent_bno)
         VALUES (#{title}, #{content}, #{writer}, NOW(), 0, 0, #{boardType}, #{gno}, #{sorts}, #{depth}, #{parentBno})

@@ -25,23 +25,27 @@ public class CustomAuthenticationFailureHandler extends SimpleUrlAuthenticationF
         User user = mapper.findByLoginId(userId);
 
         if (user == null) {
-            request.getSession().setAttribute("notFound", "등록되지 않은 계정입니다.");
-            super.onAuthenticationFailure(request, response, exception);
-            return;
-        }
-
-        user.incrementFailedAttempts();
-
-        if (user.getFailedAttempts() >= 5) {
-            user.setLocked(true);
-            user.setLockTime(new Timestamp(System.currentTimeMillis()));
-            mapper.updateStatus(user);
-            setDefaultFailureUrl("/login?error=locked");
+            // 등록되지 않은 계정일 경우
+            request.getSession().setAttribute("notFoundMessage", "등록되지 않은 계정입니다.");
+            super.setDefaultFailureUrl("/login?error=notFound");
         } else {
+            // 등록된 계정이지만 비밀번호가 틀린 경우
+            user.incrementFailedAttempts();
             mapper.updateStatus(user);
-            int remainingAttempts = 5 - user.getFailedAttempts();
-            setDefaultFailureUrl("/login?error=true&remainingAttempts=" + remainingAttempts);
+
+            if (user.getFailedAttempts() >= 5) {
+                // 계정 잠금 처리
+                user.setLocked(true);
+                user.setLockTime(new Timestamp(System.currentTimeMillis()));
+                mapper.updateStatus(user);
+                super.setDefaultFailureUrl("/login?error=locked");
+            } else {
+                // 남은 시도 횟수 계산
+                int remainingAttempts = 5 - user.getFailedAttempts();
+                super.setDefaultFailureUrl("/login?error=incorrectPassword&remainingAttempts=" + remainingAttempts);
+            }
         }
+
         super.onAuthenticationFailure(request, response, exception);
     }
 }

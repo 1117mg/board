@@ -10,17 +10,6 @@
         .button-container input {
             margin-right: 10px;
         }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-        th, td {
-            border: 1px solid #ddd;
-            padding: 8px;
-        }
-        th {
-            background-color: #f2f2f2;
-        }
         a.board-title {
             text-decoration: none;
             color:dimgrey;
@@ -29,18 +18,73 @@
             color: black;
         }
         .reply {
-            color: yellowgreen;
+            color: blue;
             font-size: smaller;
+            font-weight: bolder;
         }
     </style>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/aside.css">
+</head>
 </head>
 <body>
+<aside class="side-bar">
+    <section class="side-bar__icon-box">
+        <section class="side-bar__icon-1">
+            <div></div>
+            <div></div>
+            <div></div>
+        </section>
+    </section>
+    <ul>
+        <li>
+            <a th:href="@{/user/main}">
+                <span><i class="fa-solid fa-cat"></i></span>
+                <span>회원 관리</span>
+            </a>
+            <ul>
+                <li><a th:href="@{/user/main}">회원 목록</a></li>
+            </ul>
+        </li>
+        <li>
+            <a th:href="@{/main}">
+                <span><i class="fa-solid fa-dragon"></i></span>
+                <span>게시판 관리</span>
+            </a>
+            <ul>
+                <li><a th:href="@{/0/main}">공지사항 게시판</a></li>
+                <li><a th:href="@{/1/main}">QnA 게시판</a></li>
+            </ul>
+        </li>
+    </ul>
+    <!-- 로그인/로그아웃 버튼 추가 -->
+    <div class="side-bar__login">
+        <div th:if="${#httpServletRequest.remoteUser != null}" class="text-center">
+            <span th:text="${#httpServletRequest.remoteUser}">ㅇㅇㅇ</span> 님 환영합니다!<br><br>
+        </div>
+        <div th:if="${#httpServletRequest.remoteUser != null}" class="text-center">
+            <!-- 사용자가 로그인한 경우 -->
+            <input type="button" value="로그아웃" onclick="location.href='/logout'" class="btn btn-danger">
+        </div>
+        <div th:if="${#httpServletRequest.remoteUser == null}" class="text-center">
+            <!-- 사용자가 로그인하지 않은 경우 -->
+            <input type="button" value="로그인" onclick="location.href='/login'" class="btn btn-primary">
+            <input type="button" value="회원가입" onclick="location.href='/join'" class="btn btn-success">
+        </div>
+    </div>
+</aside>
+<div class="content-area">
 <div th:if="${boardType==0}">
-    <h1>공지사항 게시판</h1>
+    <div class="py-5 text-center">
+        <h1>공지사항 게시판</h1>
+    </div>
 </div>
 <div th:if="${boardType==1}">
-    <h1>QnA 게시판</h1>
+    <div class="py-5 text-center">
+        <h1>QnA 게시판</h1>
+    </div>
 </div>
+
 게시판 총 <span th:text="${cntBoard}">0</span> 개<br>
 <table>
     <thead>
@@ -70,56 +114,41 @@
     </tbody>
 </table>
 <br>
-<span th:text="${#httpServletRequest.remoteUser}">ㅇㅇㅇ</span> 님 환영합니다!
-<!-- 로그인 여부에 따라 버튼 표시 -->
-<div class="button-container">
-    <div th:if="${#httpServletRequest.remoteUser != null}">
-        <!-- 사용자가 로그인한 경우 -->
-        <input type="button" value="user 목록" onclick="location.href='/user/main'"><br/><br/>
-        <input type="button" value="글 작성" onclick="location.href='write'"><br/><br/>
-        <input type="button" value="로그아웃" onclick="location.href='/logout'"><br/><br/>
-    </div>
-    <div th:if="${#httpServletRequest.remoteUser == null}">
-        <!-- 사용자가 로그인하지 않은 경우 -->
-        <input type="button" value="로그인" onclick="location.href='/login'"><br/><br/>
-        <input type="button" value="회원가입" onclick="location.href='/join'"><br/><br/>
-    </div>
-</div>
+
 
 <!-- 페이징 처리 시작 -->
 <div class="col-sm-12 col-md-7" style="margin: auto">
-    <div class="dataTables_paginate paging_simple_numbers" id="dataTable_paginate">
-        <div class="paging">
-            <div th:if="${paginate != null}">
+    <nav aria-label="Page navigation example">
+        <ul class="pagination justify-content-center">
+            <li th:if="${paginate != null}">
                 <!-- 이전 페이지 링크 -->
-                <div th:if="${paginate.nationBegin > 1}">
-                    <a th:href="@{${paginate.params}(${paginate.pageName}=${paginate.nationBegin - 1})}" page="${paginate.nationBegin - 1}" class="prev">이전</a>
-                </div>
-                <div th:if="${paginate.nationBegin <= 1}">
-                    <a href="#" onclick="return false" class="prev">이전</a>
-                </div>
+            <li class="page-item" th:classappend="${paginate.nationBegin <= 1} ? 'disabled'">
+                <a class="page-link" th:if="${paginate.nationBegin > 1}" th:href="@{'/1/main' + '?' + ${paginate.params} + '&' + ${paginate.pageName} + '=' + (${paginate.nationBegin - 1})}" aria-label="Previous">
+                    <span aria-hidden="true">&laquo; 이전</span>
+                </a>
+                <a class="page-link disabled" th:if="${paginate.nationBegin <= 1}">
+                    <span aria-hidden="true">&laquo; 이전</span>
+                </a>
+            </li>
 
-                <!-- 페이지 번호 링크 -->
-                <span th:each="pageNum : ${#numbers.sequence(paginate.nationBegin, paginate.nationClose)}">
-                    <span th:if="${pageNum == paginate.pageNo}">
-                        <strong class="current" th:text="${pageNum}">1</strong>
-                    </span>
-                    <span th:if="${pageNum != paginate.pageNo}">
-                        <a th:href="@{${paginate.params}(${paginate.pageName}=${pageNum})}" th:text="${pageNum}">1</a>
-                    </span>
-                </span>
+            <!-- 페이지 번호 링크 -->
+            <li th:each="pageNum : ${#numbers.sequence(paginate.nationBegin, paginate.nationClose)}" class="page-item" th:classappend="${pageNum == paginate.pageNo} ? 'active'">
+                <a class="page-link" th:href="@{'/1/main' + '?' + ${paginate.params} + '&' + ${paginate.pageName} + '=' + ${pageNum}}" th:text="${pageNum}">1</a>
+            </li>
 
-                <!-- 다음 페이지 링크 -->
-                <div th:if="${paginate.nationClose < paginate.totalPage}">
-                    <a th:href="@{${paginate.params}(${paginate.pageName}=${paginate.nationClose + 1})}" page="${paginate.nationClose + 1}" class="next">다음</a>
-                </div>
-                <div th:if="${paginate.nationClose >= paginate.totalPage}">
-                    <a href="#" onclick="return false" class="next">다음</a>
-                </div>
-            </div>
-        </div>
-    </div>
+            <!-- 다음 페이지 링크 -->
+            <li class="page-item" th:classappend="${paginate.nationClose >= paginate.totalPage} ? 'disabled'">
+                <a class="page-link" th:if="${paginate.nationClose < paginate.totalPage}" th:href="@{'/1/main' + '?' + ${paginate.params} + '&' + ${paginate.pageName} + '=' + (${paginate.nationClose + 1})}" aria-label="Next">
+                    <span aria-hidden="true">다음 &raquo;</span>
+                </a>
+                <a class="page-link disabled" th:if="${paginate.nationClose >= paginate.totalPage}">
+                    <span aria-hidden="true">다음 &raquo;</span>
+                </a>
+            </li>
+            </li>
+        </ul>
+    </nav>
 </div>
-<!-- 페이징 처리 끝 -->
+</div>
 </body>
 </html>

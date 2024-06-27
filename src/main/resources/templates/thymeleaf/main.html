@@ -4,6 +4,10 @@
     <meta charset="UTF-8">
     <title>게시판 메인 - 타임리프</title>
     <style>
+        body {
+            margin: 30px !important;
+            padding: 0;
+        }
         .button-container {
             margin-top: 20px;
         }
@@ -22,6 +26,8 @@
             background-color: #f2f2f2;
         }
     </style>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
 </head>
 <body>
 <h1>메인페이지</h1>
@@ -35,14 +41,13 @@
 <div class="button-container">
     <div th:if="${#httpServletRequest.remoteUser != null}">
         <!-- 사용자가 로그인한 경우 -->
-        <input type="button" value="user 목록" onclick="location.href='/user/main'"><br/><br/>
-        <input type="button" value="글 작성" onclick="location.href='write'"><br/><br/>
-        <input type="button" value="로그아웃" onclick="location.href='/logout'"><br/><br/>
+        <input type="button" value="user 목록" onclick="location.href='/user/main'" class="btn btn-primary">
+        <input type="button" value="로그아웃" onclick="location.href='/logout'" class="btn btn-danger">
     </div>
     <div th:if="${#httpServletRequest.remoteUser == null}">
         <!-- 사용자가 로그인하지 않은 경우 -->
-        <input type="button" value="로그인" onclick="location.href='/login'"><br/><br/>
-        <input type="button" value="회원가입" onclick="location.href='/join'"><br/><br/>
+        <input type="button" value="로그인" onclick="location.href='/login'" class="btn btn-primary">
+        <input type="button" value="회원가입" onclick="location.href='/join'" class="btn btn-success">
     </div>
 </div>
 
