@@ -85,7 +85,7 @@
     </div>
 </div>
 
-게시판 총 <span th:text="${cntBoard}">0</span> 개<br>
+<!--게시판 총 <span th:text="${cntBoard}">0</span> 개<br>-->
 <table>
     <thead>
     <tr>
@@ -113,6 +113,12 @@
     </tr>
     </tbody>
 </table>
+    <div class="button-container">
+        <div th:if="${#httpServletRequest.remoteUser != null}">
+            <!-- 사용자가 로그인한 경우 -->
+            <input type="button" value="글 작성" onclick="location.href='write'" class="btn btn-primary">
+        </div>
+    </div>
 <br>
 <!-- 페이징 처리 시작 -->
 <div class="col-sm-12 col-md-7" style="margin: auto">
