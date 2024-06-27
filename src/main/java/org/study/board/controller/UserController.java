@@ -15,6 +15,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
+import org.study.board.dto.Board;
 import org.study.board.dto.JoinForm;
 import org.study.board.dto.LoginForm;
 import org.study.board.dto.User;
@@ -104,7 +105,7 @@ public class UserController {
             // reCAPTCHA 검증 통과 후 리셋
             //loginUser.setRecaptchaRequired(false);
             loginUser.setLocked(false);
-            service.updateUser(loginUser);
+            service.updateStatus(loginUser);
         }
 
         if (bindingResult.hasErrors()) {
@@ -139,6 +140,12 @@ public class UserController {
         log.info("User found: {}", user);
         model.addAttribute("user", user);
         return "thymeleaf/user_info";
+    }
+
+    @PostMapping("/updateUser")
+    public String updateUser(@ModelAttribute User user) {
+        service.updateUser(user);
+        return "redirect:/user/main";
     }
 
     @GetMapping("/check-username")
