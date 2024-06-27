@@ -75,7 +75,7 @@
                 <input type="hidden" name="sorts" th:value="${board.sorts}">
                 <input type="hidden" name="depth" th:value="${board.depth}">
                 <input type="hidden" name="parentBno" th:value="${board.parentBno}">
-                <button type="submit" th:if="${board.boardType==0 or hasChildBoards != null and !hasChildBoards}">등록</button>
+                <button type="submit" th:if="${board.boardType==0 or board.bno==null or hasChildBoards != null and !hasChildBoards}">등록</button>
                 <button type="button" th:onclick="'location.href=\'/' + ${board.boardType} + '/main\''">목록</button>
                 <button type="button" th:if="${board.bno}" onclick="deleteBoard()">삭제</button>
                 <button type="button" th:if="${board.bno != null and board.boardType == 1}" th:onclick="'location.href=\'/1/write?parentBno=' + ${board.bno} + '\''">답변글쓰기</button>
