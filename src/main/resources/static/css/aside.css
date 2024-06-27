@@ -95,11 +95,6 @@ a {
     background-color: #666;
 }
 
-body {
-    background-color: lightgrey;
-    height: 3333px;
-}
-
 .content-area {
     margin-left: var(--side-bar-width); /* 사이드바 너비만큼 왼쪽 여백 */
     padding-left: 20px; /* 내부 콘텐츠에 추가적인 왼쪽 여백 */

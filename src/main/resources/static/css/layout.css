@@ -1,3 +1,6 @@
+body {
+    background-color: lightgrey;
+}
 .content-area {
     display: flex;
     flex-direction: column;
