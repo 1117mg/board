@@ -2,28 +2,35 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>사용자 정보</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/layout.css">
 </head>
 <body>
-<h1>사용자 정보</h1>
-<table>
-    <tr>
-        <td>아이디:</td>
-        <td th:text="${user.userId}">아이디</td>
-    </tr>
-    <tr>
-        <td>비밀번호:</td>
-        <td th:text="${user.password}">비밀번호</td>
-    </tr>
-    <tr>
-        <td>이름:</td>
-        <td th:text="${user.username}">이름</td>
-    </tr>
-    <tr>
-        <td>가입일:</td>
-        <td th:text="${user.regdate}">가입일</td>
-    </tr>
-</table>
-
-<button type="button" onclick="history.back()">뒤로가기</button>
+<div class="content-area">
+    <div class="py-5 text-center">
+        <h1>사용자 상세 정보</h1>
+    </div>
+    <table>
+        <tr>
+            <td>아이디:</td>
+            <td th:text="${user.userId}">아이디</td>
+        </tr>
+        <tr>
+            <td>비밀번호:</td>
+            <td th:text="${user.password}">비밀번호</td>
+        </tr>
+        <tr>
+            <td>이름:</td>
+            <td th:text="${user.username}">이름</td>
+        </tr>
+        <tr>
+            <td>가입일:</td>
+            <td th:text="${user.regdate}">가입일</td>
+        </tr>
+    </table>
+    <div class="button-container">
+        <button type="button" onclick="history.back()" class="btn btn-secondary">뒤로가기</button>
+    </div>
+</div>
 </body>
 </html>

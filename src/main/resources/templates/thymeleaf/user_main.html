@@ -2,10 +2,61 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>사용자 목록</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/aside.css">
+    <link rel="stylesheet" href="/css/layout.css">
 </head>
 <body>
-<h1>사용자 목록</h1>
-<table border="1">
+<aside class="side-bar">
+    <section class="side-bar__icon-box">
+        <section class="side-bar__icon-1">
+            <div></div>
+            <div></div>
+            <div></div>
+        </section>
+    </section>
+    <ul>
+        <li>
+            <a th:href="@{/user/main}">
+                <span><i class="fa-solid fa-cat"></i></span>
+                <span>회원 관리</span>
+            </a>
+            <ul>
+                <li><a th:href="@{/user/main}">회원 목록</a></li>
+            </ul>
+        </li>
+        <li>
+            <a th:href="@{/main}">
+                <span><i class="fa-solid fa-dragon"></i></span>
+                <span>게시판 관리</span>
+            </a>
+            <ul>
+                <li><a th:href="@{/0/main}">공지사항 게시판</a></li>
+                <li><a th:href="@{/1/main}">QnA 게시판</a></li>
+            </ul>
+        </li>
+    </ul>
+    <!-- 로그인/로그아웃 버튼 추가 -->
+    <div class="side-bar__login">
+        <div th:if="${#httpServletRequest.remoteUser != null}" class="text-center">
+            <span th:text="${#httpServletRequest.remoteUser}">ㅇㅇㅇ</span> 님 환영합니다!<br><br>
+        </div>
+        <div th:if="${#httpServletRequest.remoteUser != null}" class="text-center">
+            <!-- 사용자가 로그인한 경우 -->
+            <input type="button" value="로그아웃" onclick="location.href='/logout'" class="btn btn-danger">
+        </div>
+        <div th:if="${#httpServletRequest.remoteUser == null}" class="text-center">
+            <!-- 사용자가 로그인하지 않은 경우 -->
+            <input type="button" value="로그인" onclick="location.href='/login'" class="btn btn-primary">
+            <input type="button" value="회원가입" onclick="location.href='/join'" class="btn btn-success">
+        </div>
+    </div>
+</aside>
+<div class="content-area">
+    <div class="py-5 text-center">
+        <h1>사용자 목록</h1>
+    </div>
+<table>
     <thead>
     <tr>
         <th>유저번호</th>
@@ -23,7 +74,6 @@
     </tr>
     </tbody>
 </table>
-
-<button type="button" onclick="history.back()">뒤로가기</button>
+</div>
 </body>
 </html>
