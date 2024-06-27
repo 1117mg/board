@@ -37,6 +37,8 @@ public class CustomUserDetailsService implements UserDetailsService {
         String rolePrefix = "ROLE_"; // Spring Security 규칙에 따라 권한 이름은 "ROLE_"로 시작해야 함
         SimpleGrantedAuthority authority = new SimpleGrantedAuthority(rolePrefix + user.getRole());
 
+        log.info("User: " + username + ", Role: " + authority.getAuthority());
+
         return org.springframework.security.core.userdetails.User.builder()
                 .username(user.getUserId())
                 .password(user.getPassword())
