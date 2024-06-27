@@ -3,41 +3,22 @@
 <head>
     <title>글 상세</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <style>
-        .related-posts {
-            width: 50%;
-            display: inline-block;
-            box-sizing: border-box;
-            margin: 20px 0 20px 50px;
-            padding: 30px;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            cursor: pointer;
-        }
-        .related-posts:hover {
-            transform: scale(1.05);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-        }
-        .related-posts h3 {
-            margin: 0;
-            font-size: medium;
-        }
-        .related-posts p {
-            margin: 5px 0;
-        }
-        .link {
-            text-decoration: none;
-            color: yellowgreen;
-        }
-    </style>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="/css/aside.css">
+    <link rel="stylesheet" href="/css/layout.css">
 </head>
 </head>
 <body>
-<div class="py-5 text-center">
-    <h2>글 상세보기</h2>
+<div th:if="${board.bno}">
+    <div class="py-5 text-center">
+        <h2>글 상세</h2>
+    </div>
 </div>
-
+<div th:if="${board.bno==null}">
+    <div class="py-5 text-center">
+        <h2>글 작성</h2>
+    </div>
+</div>
 <!-- 상위 글들을 출력하는 부분 -->
 <div th:each="parent : ${parentBoards}" class="related-posts" onclick="navigateToLink(this)">
     <a th:href="@{/1/board/{bno}(bno=${parent.bno})}" class="link">이전 글</a>
@@ -49,10 +30,10 @@
 <form id="boardForm" method="post" th:action="@{'/' + ${board.boardType} + '/insertBoard'}">
     <table width="90%">
         <tr width="90%">
-            <td width="10%" align="center">작성자</td>
-            <td width="50%" th:if="${board.writer}" th:text="${board.writer}">작성자</td>
+            <td align="center">작성자</td>
+            <td th:if="${board.writer}" th:text="${board.writer}">작성자</td>
             <!-- <td width="50%">${user.username}</td> -->
-            <td width="50%" th:text="${user}">사용자</td>
+            <td th:text="${user}">사용자</td>
         </tr>
         <tr>
             <td align="center">제목</td>
@@ -87,10 +68,10 @@
                 <input type="hidden" name="sorts" th:value="${board.sorts}">
                 <input type="hidden" name="depth" th:value="${board.depth}">
                 <input type="hidden" name="parentBno" th:value="${board.parentBno}">
-                <button type="submit" th:if="${board.boardType==0 or board.bno==null or hasChildBoards != null and !hasChildBoards}">등록</button>
-                <button type="button" th:onclick="'location.href=\'/' + ${board.boardType} + '/main\''">목록</button>
-                <button type="button" th:if="${board.bno}" onclick="deleteBoard()">삭제</button>
-                <button type="button" th:if="${board.bno != null and board.boardType == 1}" th:onclick="'location.href=\'/1/write?parentBno=' + ${board.bno} + '\''">답변글쓰기</button>
+                <button type="submit" th:if="${board.boardType==0 or board.bno==null or hasChildBoards != null and !hasChildBoards}" class="btn btn-primary">등록</button>
+                <button type="button" th:onclick="'location.href=\'/' + ${board.boardType} + '/main\''" class="btn btn-success">목록</button>
+                <button type="button" th:if="${board.bno}" onclick="deleteBoard()" class="btn btn-danger">삭제</button>
+                <button type="button" th:if="${board.bno != null and board.boardType == 1}" th:onclick="'location.href=\'/1/write?parentBno=' + ${board.bno} + '\''" class="btn btn-primary">답변글쓰기</button>
             </td>
         </tr>
     </table>

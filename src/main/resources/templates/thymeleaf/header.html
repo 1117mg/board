@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Header</title>
+    <style>
+        .header-container {
+            background-color: white;
+            text-align: center; /* 중앙 정렬 */
+            width: 100%; /* 화면 전체 폭 */
+        }
+        .header-container img {
+            width: auto;
+            height: 100px; /* 이미지 높이를 고정, 필요시 조정 가능 */
+        }
+    </style>
+</head>
+<body>
+<div th:fragment="header" class="header-container">
+    <a th:href="@{/main}"><img src="/img/logo.png" alt="logo"></a>
+</div>
+
+</body>
+</html>

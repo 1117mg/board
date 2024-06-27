@@ -1,0 +1,81 @@
+.content-area {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    padding: 20px;
+}
+table {
+    width: 100%;
+    border-collapse: collapse;
+
+}
+th, td {
+    padding: 10px;
+    text-align: center;
+    border: 1px solid #ddd;
+}
+.pagination {
+    margin-top: 20px;
+}
+.pagination li {
+    display: inline-block;
+    margin-right: 5px;
+}
+.pagination li a, .pagination li span {
+    padding: 10px;
+    text-decoration: none;
+    border: 1px solid #ddd;
+}
+.pagination li.active a {
+    background-color: dodgerblue;
+    color: white;
+}
+.pagination li.disabled span {
+    color: #ddd;
+}
+
+.button-container {
+    margin-top: 20px;
+}
+.button-container input {
+    margin-right: 10px;
+}
+a.board-title {
+    text-decoration: none;
+    color:dimgrey;
+}
+a.board-title:hover {
+    color: black;
+}
+.reply {
+    color: blue;
+    font-size: smaller;
+    font-weight: bolder;
+}
+.related-posts {
+    width: 90%;
+    display: inline-block;
+    box-sizing: border-box;
+    margin: 30px 0 0 70px;
+    padding: 30px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+}
+.related-posts:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+.related-posts h3 {
+    margin: 0;
+    font-size: medium;
+}
+.related-posts p {
+    margin: 5px 0;
+}
+.link {
+    font-weight: bolder;
+    text-decoration: none;
+    color: blue;
+}
