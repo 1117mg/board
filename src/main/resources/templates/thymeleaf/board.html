@@ -114,8 +114,6 @@
     </tbody>
 </table>
 <br>
-
-
 <!-- 페이징 처리 시작 -->
 <div class="col-sm-12 col-md-7" style="margin: auto">
     <nav aria-label="Page navigation example">
@@ -123,7 +121,7 @@
             <li th:if="${paginate != null}">
                 <!-- 이전 페이지 링크 -->
             <li class="page-item" th:classappend="${paginate.nationBegin <= 1} ? 'disabled'">
-                <a class="page-link" th:if="${paginate.nationBegin > 1}" th:href="@{'/1/main' + '?' + ${paginate.params} + '&' + ${paginate.pageName} + '=' + (${paginate.nationBegin - 1})}" aria-label="Previous">
+                <a class="page-link" th:if="${paginate.nationBegin > 1}" th:href="@{'/' + ${boardType} + '/main' + '?' + ${paginate.params} + '&' + ${paginate.pageName} + '=' + (${paginate.nationBegin - 1})}" aria-label="Previous">
                     <span aria-hidden="true">&laquo; 이전</span>
                 </a>
                 <a class="page-link disabled" th:if="${paginate.nationBegin <= 1}">
@@ -133,12 +131,12 @@
 
             <!-- 페이지 번호 링크 -->
             <li th:each="pageNum : ${#numbers.sequence(paginate.nationBegin, paginate.nationClose)}" class="page-item" th:classappend="${pageNum == paginate.pageNo} ? 'active'">
-                <a class="page-link" th:href="@{'/1/main' + '?' + ${paginate.params} + '&' + ${paginate.pageName} + '=' + ${pageNum}}" th:text="${pageNum}">1</a>
+                <a class="page-link" th:href="@{'/' + ${boardType} + '/main' + '?' + ${paginate.params} + '&' + ${paginate.pageName} + '=' + ${pageNum}}" th:text="${pageNum}">1</a>
             </li>
 
             <!-- 다음 페이지 링크 -->
             <li class="page-item" th:classappend="${paginate.nationClose >= paginate.totalPage} ? 'disabled'">
-                <a class="page-link" th:if="${paginate.nationClose < paginate.totalPage}" th:href="@{'/1/main' + '?' + ${paginate.params} + '&' + ${paginate.pageName} + '=' + (${paginate.nationClose + 1})}" aria-label="Next">
+                <a class="page-link" th:if="${paginate.nationClose < paginate.totalPage}" th:href="@{'/' + ${boardType} + '/main' + '?' + ${paginate.params} + '&' + ${paginate.pageName} + '=' + (${paginate.nationClose + 1})}" aria-label="Next">
                     <span aria-hidden="true">다음 &raquo;</span>
                 </a>
                 <a class="page-link disabled" th:if="${paginate.nationClose >= paginate.totalPage}">
