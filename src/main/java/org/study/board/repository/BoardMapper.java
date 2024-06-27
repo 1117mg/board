@@ -19,6 +19,7 @@ public interface BoardMapper {
     List<Board> getChildBoards(Integer bno);
     int hit(Integer bno);
     Integer cntBoard(Integer boardType);
+    Integer getMaxGno();
     void insertBoard(Board board);
     void updateBoard(Board board);
     boolean deleteBoard(Integer bno);

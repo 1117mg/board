@@ -72,6 +72,15 @@ public class BoardService {
                 board.setSorts(parentBoard.getSorts() + 1);
                 board.setDepth(parentBoard.getDepth() + 1);
                 mapper.updateSorts(parentBoard.getGno(), parentBoard.getSorts());
+            } else if (board.getBoardType() == 1) {
+                Integer maxGno = mapper.getMaxGno();
+                board.setGno(maxGno + 1);
+                board.setSorts(0);
+                board.setDepth(0);
+            } else{
+                board.setGno(0);
+                board.setSorts(0);
+                board.setDepth(0);
             }
             mapper.insertBoard(board);
         }
