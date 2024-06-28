@@ -1,4 +1,4 @@
-package org.study.board.config;
+package org.study.board.interceptor;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;

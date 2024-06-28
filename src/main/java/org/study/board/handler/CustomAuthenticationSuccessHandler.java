@@ -1,4 +1,4 @@
-package org.study.board.config;
+package org.study.board.handler;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
