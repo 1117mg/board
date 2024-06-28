@@ -127,5 +127,4 @@ public class BoardController {
         return boardService.downloadFile(fileDto);
     }
 
-
 }

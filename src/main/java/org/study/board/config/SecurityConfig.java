@@ -23,16 +23,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private CustomUserDetailsService userDetailsService;
     @Autowired
-    private AccessDeniedHandler accessDeniedHandler;
+    private CustomAccessDeniedHandler accessDeniedHandler;
     @Autowired
-    private AuthenticationEntryPoint authenticationEntryPoint;
+    private CustomAuthenticationEntryPoint authenticationEntryPoint;
     @Autowired
     private CustomAuthenticationSuccessHandler authenticationSuccessHandler;
     @Autowired
     private CustomAuthenticationFailureHandler authenticationFailureHandler;
 
     @Bean
-    public PasswordEncoder passwordEncoder() {
+    public BCryptPasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 

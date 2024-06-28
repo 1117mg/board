@@ -45,4 +45,10 @@
         FROM user
         WHERE locked = true
     </select>
+
+    <update id="updateUser" parameterType="org.study.board.dto.User">
+        UPDATE user
+        SET userId=#{userId}, username=#{username}
+        WHERE userId = #{userId}
+    </update>
 </mapper>
