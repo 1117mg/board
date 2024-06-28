@@ -7,6 +7,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.study.board.controller.UserController;
+import org.study.board.dto.Category;
 import org.study.board.dto.JoinForm;
 import org.study.board.dto.User;
 import org.study.board.repository.UserMapper;
@@ -73,4 +74,8 @@ public class UserService {
 
     public void updateUser(User user){
         mapper.updateUser(user);}
+
+    public List<Category> getAllCategories() {
+        return mapper.findAllCategories();
+    }
 }
