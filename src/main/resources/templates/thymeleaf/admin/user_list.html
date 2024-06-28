@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>User List</title>
+</head>
+<body>
+<h1>User List</h1>
+<table>
+    <thead>
+    <tr>
+        <th>아이디</th>
+        <th>이름</th>
+        <th>권한</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="user : ${users}">
+        <td th:text="${user.idx}"></td>
+        <td th:text="${user.username}"></td>
+        <td>
+            <a th:href="@{/admin/user/{userId}/auths(userId=${user.idx})}">사용자별 카테고리 권한 수정</a>
+        </td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>User Permissions</title>
+</head>
+<body>
+<h1>Permissions for <span th:text="${user.username}"></span></h1>
+
+<form th:action="@{/admin/user/{idx}/auths(idx=${user.idx})}" method="post">
+    <table>
+        <thead>
+        <tr>
+            <th>카테고리</th>
+            <th>읽기</th>
+            <th>쓰기</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="category : ${categories}">
+            <td th:text="${category.ctgNm}"></td>
+            <td>
+                <input type="checkbox" th:field="*{auths[__${category.ctgNo}__].canRead}" />
+            </td>
+            <td>
+                <input type="checkbox" th:field="*{auths[__${category.ctgNo}__].canWrite}" />
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <button type="submit">저장</button>
+</form>
+</body>
+</html>
