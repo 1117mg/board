@@ -16,7 +16,7 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-        RequestDispatcher dispatcher = request.getRequestDispatcher("/error/401");
+        RequestDispatcher dispatcher = request.getRequestDispatcher("/thymeleaf/error/401");
         dispatcher.forward(request, response);
     }
 }
