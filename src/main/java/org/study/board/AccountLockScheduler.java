@@ -1,4 +1,4 @@
-package org.study.board.config;
+package org.study.board;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Scheduled;
