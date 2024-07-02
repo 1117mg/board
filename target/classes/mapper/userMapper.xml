@@ -22,11 +22,6 @@
         VALUES (#{userId}, #{password}, #{username}, NOW(), #{role}, #{locked}, #{lockTime}, #{recaptchaRequired})
     </insert>
 
-    <select id="findAllUsers" resultType="org.study.board.dto.User">
-        SELECT *
-        FROM user
-    </select>
-
     <select id="existsByLoginId" resultType="_int"
                                 parameterType="String">
         SELECT count(*)
@@ -44,16 +39,5 @@
         SELECT *
         FROM user
         WHERE locked = true
-    </select>
-
-    <update id="updateUser" parameterType="org.study.board.dto.User">
-        UPDATE user
-        SET userId=#{userId}, username=#{username}
-        WHERE userId = #{userId}
-    </update>
-
-    <select id="findAllCategories" resultType="org.study.board.dto.Category">
-        SELECT ctg_no AS ctgNo, ctg_nm AS ctgNm, ctg_sort AS ctgSort, ctg_use_yn AS ctgUseYn, ctg_pno AS ctgPno
-        FROM ctg
     </select>
 </mapper>

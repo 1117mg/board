@@ -11,6 +11,7 @@ import org.study.board.dto.UserCtgAuth;
 import org.study.board.service.AdminService;
 import org.study.board.service.UserService;
 
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -26,9 +27,13 @@ public class AdminController {
     private final UserService userService;
 
     @GetMapping("/user-list")
-    public String userList(Model model) {
-        List<User> users = userService.getAllUsers();
+    public String userList(Model model, Principal principal) {
+        List<User> users = adminService.getAllUsers();
         List<Category> categories = adminService.getAllCategories();
+
+        if (principal != null) {
+            model.addAttribute("username", principal.getName());
+        }
 
         // 각 사용자별 카테고리별 권한 맵 생성
         Map<Long, Map<Integer, UserCtgAuth>> authMap = new HashMap<>();
@@ -54,7 +59,26 @@ public class AdminController {
         model.addAttribute("users", users);
         model.addAttribute("authMap", authMap);
         model.addAttribute("categories", categories);
-        return "thymeleaf/admin/user_list";
+        return "thymeleaf/admin/user_main";
+    }
+
+    @GetMapping("/user-info/{userId}")
+    public String userInfo(@PathVariable String userId, Model model) {
+        log.info("유저인포 유저아이디: {}", userId);
+        User user = userService.getLoginUser(userId);
+        if (user == null) {
+            log.warn("유저확인불가: {}", userId);
+            return "redirect:/login";
+        }
+        log.info("User found: {}", user);
+        model.addAttribute("user", user);
+        return "thymeleaf/admin/user_info";
+    }
+
+    @PostMapping("/updateUser")
+    public String updateUser(@ModelAttribute User user) {
+        adminService.updateUser(user);
+        return "redirect:/admin/user-list";
     }
 
     @PostMapping("/user-auth")
@@ -88,6 +112,5 @@ public class AdminController {
         adminService.updateUserAuth(auths);
         return "redirect:/admin/user-list";
     }
-
 
 }

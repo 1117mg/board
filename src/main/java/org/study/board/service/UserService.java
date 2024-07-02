@@ -26,10 +26,6 @@ public class UserService {
 
     public User findById(long idx){return mapper.findById(idx);}
 
-    public List<User> getAllUsers() {
-        return mapper.findAllUsers();
-    }
-
 
     public void join(JoinForm form) {
         User user = new User();
@@ -72,6 +68,4 @@ public class UserService {
         return optionalUser.orElse(null);
     }
 
-    public void updateUser(User user){
-        mapper.updateUser(user);}
 }

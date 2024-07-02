@@ -3,6 +3,7 @@ package org.study.board.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.study.board.dto.Category;
+import org.study.board.dto.User;
 import org.study.board.dto.UserCtgAuth;
 import org.study.board.repository.AdminMapper;
 
@@ -26,4 +27,11 @@ public class AdminService {
     public List<Category> getAllCategories() {
         return mapper.findAllCategories();
     }
+
+    public List<User> getAllUsers() {
+        return mapper.findAllUsers();
+    }
+
+    public void updateUser(User user){
+        mapper.updateUser(user);}
 }
