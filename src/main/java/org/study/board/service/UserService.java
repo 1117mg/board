@@ -74,8 +74,4 @@ public class UserService {
 
     public void updateUser(User user){
         mapper.updateUser(user);}
-
-    public List<Category> getAllCategories() {
-        return mapper.findAllCategories();
-    }
 }
