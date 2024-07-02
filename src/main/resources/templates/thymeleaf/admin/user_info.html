@@ -4,6 +4,17 @@
     <title>사용자 정보</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="/css/layout.css">
+    <script>
+        function confirmSubmit(event) {
+            if (!confirm("변경사항을 저장하시겠습니까?")) {
+                event.preventDefault();
+            }
+        }
+        window.onload = function() {
+            var form = document.getElementById("userForm");
+            form.addEventListener("submit", confirmSubmit);
+        }
+    </script>
 </head>
 <body>
 <div class="content-area">
@@ -31,7 +42,7 @@
         </tr>
     </table>
     <div class="button-container">
-        <button type="submit" onclick="history.back()" class="btn btn-info">수정</button>
+        <button type="submit" class="btn btn-info">수정</button>
         <button type="button" onclick="history.back()" class="btn btn-secondary">뒤로가기</button>
     </div>
     </form>
