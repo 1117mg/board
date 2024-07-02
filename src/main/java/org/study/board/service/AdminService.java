@@ -19,10 +19,10 @@ public class AdminService {
     }
 
     @Transactional
-    public void updateUserAuth(long idx, List<UserCtgAuth> auths) {
-        mapper.deleteAuthByUserId(idx);
+    public void updateUserAuth(long userIdx, List<UserCtgAuth> auths) {
+        mapper.deleteAuthByUserId(userIdx);
         for (UserCtgAuth auth : auths) {
-            mapper.saveAuth(idx, auth);
+            mapper.saveAuth(userIdx, auth);
         }
     }
 }

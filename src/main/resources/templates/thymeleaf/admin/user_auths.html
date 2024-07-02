@@ -19,10 +19,14 @@
         <tr th:each="category : ${categories}">
             <td th:text="${category.ctgNm}"></td>
             <td>
-                <input type="checkbox" th:field="*{auths[__${category.ctgNo}__].canRead}" />
+                <input type="checkbox"
+                       th:name="'read_' + ${category.ctgNo}"
+                       th:checked="${authMap.get(category.ctgNo).canRead}" />
             </td>
             <td>
-                <input type="checkbox" th:field="*{auths[__${category.ctgNo}__].canWrite}" />
+                <input type="checkbox"
+                       th:name="'write_' + ${category.ctgNo}"
+                       th:checked="${authMap.get(category.ctgNo).canWrite}" />
             </td>
         </tr>
         </tbody>

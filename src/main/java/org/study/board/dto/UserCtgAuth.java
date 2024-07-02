@@ -4,7 +4,7 @@ import lombok.Data;
 
 @Data
 public class UserCtgAuth {
-    private long userId;
+    private long userIdx;
     private int ctgNo;
     private boolean canRead;
     private boolean canWrite;
