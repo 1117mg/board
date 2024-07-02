@@ -9,6 +9,6 @@ import java.util.List;
 @Mapper
 public interface AdminMapper {
     List<UserCtgAuth> findAuthByUserId(@Param("idx") long idx);
-    void deleteAuthByUserId(@Param("idx") long idx);
-    void saveAuth(@Param("idx") long idx, @Param("auth") UserCtgAuth auth);
+    void deleteAuthByUserId(@Param("userIdx") long userIdx);
+    void saveAuth(@Param("userIdx") long userIdx, @Param("auth") UserCtgAuth auth);
 }
