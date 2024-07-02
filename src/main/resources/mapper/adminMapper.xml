@@ -26,4 +26,15 @@
         SELECT ctg_no AS ctgNo, ctg_nm AS ctgNm, ctg_sort AS ctgSort, ctg_use_yn AS ctgUseYn, ctg_pno AS ctgPno
         FROM ctg
     </select>
+
+    <update id="updateUser" parameterType="org.study.board.dto.User">
+        UPDATE user
+        SET userId=#{userId}, username=#{username}
+        WHERE userId = #{userId}
+    </update>
+
+    <select id="findAllUsers" resultType="org.study.board.dto.User">
+        SELECT *
+        FROM user
+    </select>
 </mapper>

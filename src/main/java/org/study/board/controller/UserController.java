@@ -38,16 +38,6 @@ public class UserController {
     @Autowired
     private RecaptchaService recaptchaService;
 
-    @GetMapping("/user/main")
-    public String userList(Model model, Principal principal) {
-        List<User> users = service.getAllUsers();
-        if (principal != null) {
-            model.addAttribute("username", principal.getName());
-        }
-        model.addAttribute("users", users);
-        return "thymeleaf/user_main";
-    }
-
     @GetMapping("/join")
     public String join(Model model) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -127,25 +117,6 @@ public class UserController {
         cookie.setMaxAge(0); //쿠키 종료
         response.addCookie(cookie);
         return "redirect:/main";
-    }
-
-    @GetMapping("/user/info/{userId}")
-    public String userInfo(@PathVariable String userId, Model model) {
-        log.info("유저인포 유저아이디: {}", userId);
-        User user = service.getLoginUser(userId);
-        if (user == null) {
-            log.warn("유저확인불가: {}", userId);
-            return "redirect:/login";
-        }
-        log.info("User found: {}", user);
-        model.addAttribute("user", user);
-        return "thymeleaf/user_info";
-    }
-
-    @PostMapping("/updateUser")
-    public String updateUser(@ModelAttribute User user) {
-        service.updateUser(user);
-        return "redirect:/user/main";
     }
 
     @GetMapping("/check-username")
