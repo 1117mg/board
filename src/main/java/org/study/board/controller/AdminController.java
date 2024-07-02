@@ -28,7 +28,7 @@ public class AdminController {
     @GetMapping("/user-list")
     public String userList(Model model) {
         List<User> users = userService.getAllUsers();
-        List<Category> categories = userService.getAllCategories();
+        List<Category> categories = adminService.getAllCategories();
 
         // 각 사용자별 카테고리별 권한 맵 생성
         Map<Long, Map<Integer, UserCtgAuth>> authMap = new HashMap<>();
