@@ -2,7 +2,6 @@ package org.study.board.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.study.board.dto.UserCtgAuth;
 import org.study.board.repository.AdminMapper;
 
@@ -18,11 +17,8 @@ public class AdminService {
         return mapper.findAuthByUserId(idx);
     }
 
-    @Transactional
-    public void updateUserAuth(long userIdx, List<UserCtgAuth> auths) {
-        mapper.deleteAuthByUserId(userIdx);
-        for (UserCtgAuth auth : auths) {
-            mapper.saveAuth(userIdx, auth);
-        }
+    public void updateUserAuth(List<UserCtgAuth> auths) {
+        mapper.deleteAuth(); // 모든 권한을 일괄 삭제
+        mapper.saveAuth(auths); // 모든 사용자의 모든 카테고리 권한을 일괄 삽입
     }
 }

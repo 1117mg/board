@@ -2,18 +2,24 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="org.study.board.repository.AdminMapper">
+
     <select id="findAuthByUserId" resultType="org.study.board.dto.UserCtgAuth" parameterType="long">
         SELECT user_idx AS userIdx, ctg_no AS ctgNo, can_read AS canRead, can_write AS canWrite
         FROM user_ctg_auth
         WHERE user_idx = #{idx}
     </select>
 
-    <delete id="deleteAuthByUserId" parameterType="long">
-        DELETE FROM user_ctg_auth WHERE user_idx = #{userIdx}
+    <delete id="deleteAuth">
+        DELETE FROM user_ctg_auth
     </delete>
 
-    <insert id="saveAuth" parameterType="map">
+    <insert id="saveAuth" parameterType="java.util.List">
         INSERT INTO user_ctg_auth (user_idx, ctg_no, can_read, can_write)
-        VALUES (#{userIdx}, #{auth.ctgNo}, #{auth.canRead}, #{auth.canWrite})
+        VALUES
+        <foreach collection="auths" item="auth" separator=",">
+            (#{auth.userIdx}, #{auth.ctgNo}, #{auth.canRead}, #{auth.canWrite})
+        </foreach>
+        ON DUPLICATE KEY UPDATE can_read = VALUES(can_read), can_write = VALUES(can_write);
     </insert>
+
 </mapper>

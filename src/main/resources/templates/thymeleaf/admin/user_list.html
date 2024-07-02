@@ -1,27 +1,57 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>User List</title>
+    <title>관리자 페이지</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: center;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        td {
+            vertical-align: middle;
+        }
+    </style>
 </head>
 <body>
-<h1>User List</h1>
-<table>
-    <thead>
-    <tr>
-        <th>아이디</th>
-        <th>이름</th>
-        <th>권한</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="user : ${users}">
-        <td th:text="${user.idx}"></td>
-        <td th:text="${user.username}"></td>
-        <td>
-            <a th:href="@{/admin/user/{userId}/auths(userId=${user.idx})}">사용자별 카테고리 권한 수정</a>
-        </td>
-    </tr>
-    </tbody>
-</table>
+<h1>관리자 페이지</h1>
+<form action="#" th:action="@{/admin/user-auth}" th:object="${users}" method="post">
+    <table>
+        <thead>
+        <tr>
+            <th rowspan="2">사용자 이름</th>
+            <th th:each="category : ${categories}">
+                <span th:text="${category.ctgNm}"></span>
+            </th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="user : ${users}">
+            <td th:text="${user.username}"></td>
+            <th:block th:each="category : ${categories}">
+                <!-- 수정: 읽기/쓰기 체크박스를 한 열에 표시 -->
+                <td>
+                    <input type="checkbox"
+                           th:name="'read_' + ${user.idx} + '_' + ${category.ctgNo}"
+                           th:checked="${authMap.get(user.idx).get(category.ctgNo).canRead}" />
+                    <label>읽기</label>
+                    <input type="checkbox"
+                           th:name="'write_' + ${user.idx} + '_' + ${category.ctgNo}"
+                           th:checked="${authMap.get(user.idx).get(category.ctgNo).canWrite}" />
+                    <label>쓰기</label>
+                </td>
+            </th:block>
+        </tr>
+        </tbody>
+    </table>
+    <button type="submit">저장하기</button>
+</form>
 </body>
 </html>
