@@ -4,7 +4,7 @@
 <mapper namespace="org.study.board.repository.AdminMapper">
 
     <select id="findAuthByUserId" resultType="org.study.board.dto.UserCtgAuth" parameterType="long">
-        SELECT user_idx AS userIdx, ctg_no AS ctgNo, can_read AS canRead, can_write AS canWrite
+        SELECT *
         FROM user_ctg_auth
         WHERE user_idx = #{idx}
     </select>
@@ -23,8 +23,9 @@
     </insert>
 
     <select id="findAllCategories" resultType="org.study.board.dto.Category">
-        SELECT ctg_no AS ctgNo, ctg_nm AS ctgNm, ctg_sort AS ctgSort, ctg_use_yn AS ctgUseYn, ctg_pno AS ctgPno
+        SELECT *
         FROM ctg
+        WHERE ctg_use_yn=1 ORDER BY ctg_sort
     </select>
 
     <update id="updateUser" parameterType="org.study.board.dto.User">

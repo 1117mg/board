@@ -34,7 +34,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         }*/
 
         // 권한 설정
-        String rolePrefix = "ROLE_"; // Spring Security 규칙에 따라 권한 이름은 "ROLE_"로 시작해야 함
+        /*String rolePrefix = "ROLE_"; // Spring Security 규칙에 따라 권한 이름은 "ROLE_"로 시작해야 함
         SimpleGrantedAuthority authority = new SimpleGrantedAuthority(rolePrefix + user.getRole());
 
         log.info("User: " + username + ", Role: " + authority.getAuthority());
@@ -44,6 +44,10 @@ public class CustomUserDetailsService implements UserDetailsService {
                 .password(user.getPassword())
                 .authorities(Collections.singletonList(authority))
                 //.accountLocked(user.isLocked())  // locked 상태를 UserDetails에 반영
-                .build();
+                .build();*/
+
+        log.info("User: " + username + ", Role: " + user.getRole());
+
+        return user;
     }
 }

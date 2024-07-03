@@ -42,11 +42,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("/join").anonymous() // 회원가입 페이지는 인증되지 않은 사용자만 접근 가능
+                /*.antMatchers("/join").anonymous() // 회원가입 페이지는 인증되지 않은 사용자만 접근 가능
                 .antMatchers("/check-username", "/main", "/0/main", "/1/main","/css/**", "/img/**").permitAll()
                 .antMatchers("/user/main").hasRole("ADMIN")
                 .antMatchers("/user/info/**").hasRole("ADMIN")
-                .antMatchers("/admin/**").hasRole("ADMIN")
+                .antMatchers("/admin/**").hasRole("ADMIN")*/
+                .antMatchers("/admin/user-list","/admin/user-info/**").access("@customPermissionEvaluator.hasPermission(authentication, 'USER_LIST', 'READ')")
+                .antMatchers("/admin/user-list","/admin/updateUser","/admin/user-auth").access("@customPermissionEvaluator.hasPermission(authentication, 'USER_LIST', 'WRITE')")
+                .antMatchers("/0/board/**").access("@customPermissionEvaluator.hasPermission(authentication, 'NOTICE_BOARD', 'READ')")
+                .antMatchers("/0/write").access("@customPermissionEvaluator.hasPermission(authentication, 'NOTICE_BOARD', 'WRITE')")
+                .antMatchers("/1/board/**").access("@customPermissionEvaluator.hasPermission(authentication, 'QNA_BOARD', 'READ')")
+                .antMatchers("/1/write").access("@customPermissionEvaluator.hasPermission(authentication, 'QNA_BOARD', 'WRITE')")
+                .antMatchers("/check-username","/main","/0/main","/1/main","/css/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()

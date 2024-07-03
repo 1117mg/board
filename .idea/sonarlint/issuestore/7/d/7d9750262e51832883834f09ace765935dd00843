@@ -1,7 +1,12 @@
 
-g	java:S1129"FDefine and throw a dedicated exception instead of using a generic one.(÷¶ÓÁÿÿÿÿÿ8õÈöÄ…2
-g	java:S112<"FDefine and throw a dedicated exception instead of using a generic one.(üÔıùÿÿÿÿ8õÈöÄ…2
+g	java:S1125"FDefine and throw a dedicated exception instead of using a generic one.(÷¶ÓÁÿÿÿÿÿ8õÈöÄ…2
+g	java:S1128"FDefine and throw a dedicated exception instead of using a generic one.(üÔıùÿÿÿÿ8õÈöÄ…2
 
-java:S1128"]Remove this unused import 'org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder'.(åÅÚ…ûÿÿÿÿ8ÁûŸï…2
+java:S1128"]Remove this unused import 'org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder'.(åÅÚ…ûÿÿÿÿ8ïŒ²“‡2
 h
-java:S1128	"FRemove this unused import 'org.study.board.controller.UserController'.(‚ëñ‚üÿÿÿÿ8ÂûŸï…2
+java:S1128	"FRemove this unused import 'org.study.board.controller.UserController'.(‚ëñ‚üÿÿÿÿ8ğŒ²“‡2
+[
+java:S1128
+"9Remove this unused import 'org.study.board.dto.Category'.(¨³ùåıÿÿÿÿ8ğŒ²“‡2
+M
+java:S1128"+Remove this unused import 'java.util.List'.(Õë±Äøÿÿÿÿ8ğŒ²“‡2

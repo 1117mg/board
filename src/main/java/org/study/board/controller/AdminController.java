@@ -2,6 +2,7 @@ package org.study.board.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -16,6 +17,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -30,6 +32,14 @@ public class AdminController {
     public String userList(Model model, Principal principal) {
         List<User> users = adminService.getAllUsers();
         List<Category> categories = adminService.getAllCategories();
+
+        // 부모-자식 관계로 카테고리 매핑
+        Map<Integer, List<Category>> subCategoriesMap = categories.stream()
+                .filter(category -> category.getCtgPno() != null)
+                .collect(Collectors.groupingBy(category -> Integer.parseInt(category.getCtgPno())));
+
+        model.addAttribute("categories", categories);
+        model.addAttribute("subCategoriesMap", subCategoriesMap);
 
         if (principal != null) {
             model.addAttribute("username", principal.getName());

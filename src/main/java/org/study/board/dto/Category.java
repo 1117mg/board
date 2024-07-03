@@ -9,4 +9,5 @@ public class Category {
     private int ctgSort; // 카테고리 정렬 순서
     private boolean ctgUseYn; // 카테고리 사용 여부
     private String ctgPno; // 부모 카테고리 고유 번호
+    private String url; // 카테고리 URL
 }
