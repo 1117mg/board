@@ -24,7 +24,9 @@ import javax.validation.Valid;
 import java.io.IOException;
 import java.security.Principal;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.Calendar;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @RequestMapping("/0")
@@ -72,22 +74,10 @@ public class BoardController {
         // 카테고리
         List<Category> categories = adminService.getAllCategories();
 
-        // 부모-자식 관계 매핑을 위한 맵 초기화
-        Map<Integer, List<Category>> subCategoriesMap = new HashMap<>();
-
-        // 부모 카테고리와 그에 해당하는 자식 카테고리 구분
-        for (Category category : categories) {
-            int parentCtgNo = Integer.parseInt(category.getCtgPno());
-
-            if (parentCtgNo == 0) {
-                // 부모 카테고리인 경우
-                subCategoriesMap.put(category.getCtgNo(), new ArrayList<>());
-            } else {
-                // 자식 카테고리인 경우
-                List<Category> children = subCategoriesMap.computeIfAbsent(parentCtgNo, k -> new ArrayList<>());
-                children.add(category);
-            }
-        }
+        // 부모-자식 관계로 카테고리 매핑
+        Map<String, List<Category>> subCategoriesMap = categories.stream()
+                .filter(category -> !category.getCtgPno().equals("0"))
+                .collect(Collectors.groupingBy(Category::getCtgPno));
 
         model.addAttribute("categories", categories);
         model.addAttribute("subCategoriesMap", subCategoriesMap);
