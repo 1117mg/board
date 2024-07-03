@@ -41,12 +41,12 @@
     </ul>-->
     <ul>
         <li th:each="category : ${categories}">
-            <a th:href="@{${category.url}}">
+            <a th:if="${category.ctgPno == '0'}" th:href="@{${category.url}}">
                 <span><i class="fa-solid fa-cat"></i></span>
                 <span th:text="${category.ctgNm}">카테고리 이름</span>
             </a>
-            <ul th:if="${subCategoriesMap[#strings.toString(category.ctgNo)] ne null}">
-                <li th:each="subCategory : ${subCategoriesMap[#strings.toString(category.ctgNo)]}">
+            <ul th:if="${subCategoriesMap[category.ctgNo] != null}">
+                <li th:each="subCategory : ${subCategoriesMap[category.ctgNo]}">
                     <a th:href="@{${subCategory.url}}" th:text="${subCategory.ctgNm}">서브카테고리 이름</a>
                 </li>
             </ul>
