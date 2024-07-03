@@ -11,12 +11,13 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class User {
+public class User implements UserDetails{
 
     private Long idx;
     private String userId;
@@ -32,6 +33,46 @@ public class User {
     // 로그인 실패 횟수 증가
     public void incrementFailedAttempts() {
         this.failedAttempts++;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        // 계정 만료 여부 로직 (예: 만료되지 않았다고 가정)
+        return true;
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        List<GrantedAuthority> authorities = new ArrayList<>();
+        authorities.add(new SimpleGrantedAuthority(role));
+        return authorities;
+    }
+
+    @Override
+    public String getUsername() {
+        return userId;
+    }
+
+    @Override
+    public String getPassword() {
+        return password;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return !locked;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        // 자격 증명 만료 여부 로직 (예: 만료되지 않았다고 가정)
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        // 계정 활성화 여부 로직 (예: 활성화되었다고 가정)
+        return true;
     }
 
 }

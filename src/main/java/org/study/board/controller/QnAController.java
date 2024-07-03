@@ -5,28 +5,36 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.study.board.aop.BoardAop;
 import org.study.board.dto.Board;
+import org.study.board.dto.Category;
 import org.study.board.dto.FileDto;
 import org.study.board.dto.PaginateDto;
+import org.study.board.service.AdminService;
 import org.study.board.service.BoardService;
 import org.study.board.util.FileUtil;
 
 import java.io.IOException;
+import java.security.Principal;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @RequestMapping("/1")
 @Slf4j
 @Controller
 public class QnAController {
 
+    @Autowired
+    private AdminService adminService;
     @Autowired
     private BoardService boardService;
     @Autowired
@@ -40,7 +48,8 @@ public class QnAController {
     }
 
     @RequestMapping("/main")
-    public String main(Board board, Model model, @RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "1") int boardType){
+    public String main(Board board, Model model, @RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "1") int boardType
+            , Principal principal){
         board.setBoardType(boardType);
         // 게시글 총 개수
         int total = boardService.cntBoard(board.getBoardType());
@@ -59,6 +68,21 @@ public class QnAController {
         board.setPageNo(page);
         board.setPageSize(paginate.getPageSize());
         board.setPageOffset(paginate.getPageOffset());
+
+        // 카테고리
+        List<Category> categories = adminService.getAllCategories();
+
+        // 부모-자식 관계로 카테고리 매핑
+        Map<Integer, List<Category>> subCategoriesMap = categories.stream()
+                .filter(category -> category.getCtgPno() != null)
+                .collect(Collectors.groupingBy(category -> Integer.parseInt(category.getCtgPno())));
+
+        model.addAttribute("categories", categories);
+        model.addAttribute("subCategoriesMap", subCategoriesMap);
+
+        if (principal != null) {
+            model.addAttribute("username", principal.getName());
+        }
 
         model.addAttribute("paginate", paginate);
         model.addAttribute("board", boardService.getQnaList(board));

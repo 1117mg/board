@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -12,22 +13,27 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.study.board.aop.BoardAop;
 import org.study.board.dto.Board;
+import org.study.board.dto.Category;
 import org.study.board.dto.FileDto;
 import org.study.board.dto.PaginateDto;
+import org.study.board.service.AdminService;
 import org.study.board.service.BoardService;
 import org.study.board.util.FileUtil;
 
 import javax.validation.Valid;
 import java.io.IOException;
+import java.security.Principal;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @RequestMapping("/0")
 @Slf4j
 @Controller
 public class BoardController {
 
+    @Autowired
+    private AdminService adminService;
     @Autowired
     private BoardService boardService;
     @Autowired
@@ -41,11 +47,13 @@ public class BoardController {
     }
 
     @RequestMapping("/main")
-    public String main(Board board, Model model, @RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "0") int boardType){
+    public String main(Board board, Model model, @RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "0") int boardType, Principal principal) {
         board.setBoardType(boardType);
+
         // 게시글 총 개수
         int total = boardService.cntBoard(board.getBoardType());
         model.addAttribute("cntBoard", total);
+
         // 페이징
         PaginateDto paginate = new PaginateDto(5, 3);
         paginate.setPageNo(page);
@@ -54,20 +62,47 @@ public class BoardController {
         // 현재 요청의 쿼리 파라미터를 포함한 URL을 생성
         String params = "boardType=" + boardType; // 필요한 다른 파라미터를 추가
         paginate.setParams(params);
-
         paginate._calc(); // 페이지 네비게이션 계산
 
         board.setDepth(0);
-
         board.setPageNo(page);
         board.setPageSize(paginate.getPageSize());
         board.setPageOffset(paginate.getPageOffset());
 
+        // 카테고리
+        List<Category> categories = adminService.getAllCategories();
+
+        // 부모-자식 관계 매핑을 위한 맵 초기화
+        Map<Integer, List<Category>> subCategoriesMap = new HashMap<>();
+
+        // 부모 카테고리와 그에 해당하는 자식 카테고리 구분
+        for (Category category : categories) {
+            int parentCtgNo = Integer.parseInt(category.getCtgPno());
+
+            if (parentCtgNo == 0) {
+                // 부모 카테고리인 경우
+                subCategoriesMap.put(category.getCtgNo(), new ArrayList<>());
+            } else {
+                // 자식 카테고리인 경우
+                List<Category> children = subCategoriesMap.computeIfAbsent(parentCtgNo, k -> new ArrayList<>());
+                children.add(category);
+            }
+        }
+
+        model.addAttribute("categories", categories);
+        model.addAttribute("subCategoriesMap", subCategoriesMap);
+
+        if (principal != null) {
+            model.addAttribute("username", principal.getName());
+        }
+
         model.addAttribute("paginate", paginate);
         model.addAttribute("board", boardService.getBoardlist(board));
         model.addAttribute("boardType", board.getBoardType());
+
         return "thymeleaf/board";
     }
+
 
     @GetMapping("/board/{bno}")
     public String boardDetail(@PathVariable Integer bno, Model model){

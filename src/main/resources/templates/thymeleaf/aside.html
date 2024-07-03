@@ -1,0 +1,25 @@
+<!--
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>사이드 바</title>
+    <link rel="stylesheet" th:href="@{/css/aside.css}">
+    <link rel="stylesheet" th:href="@{/css/layout.css}">
+</head>
+<body>
+<ul>
+    <li th:each="category : ${categories}">
+        <a th:href="@{${category.url}}">
+            <span><i class="fa-solid fa-cat"></i></span>
+            <span th:text="${category.ctgNm}">카테고리 이름</span>
+        </a>
+        <ul th:if="${subCategoriesMap[#strings.toString(category.ctgNo)] ne null}">
+            <li th:each="subCategory : ${subCategoriesMap[#strings.toString(category.ctgNo)]}">
+                <a th:href="@{${subCategory.url}}" th:text="${subCategory.ctgNm}">서브카테고리 이름</a>
+            </li>
+        </ul>
+    </li>
+</ul>
+</body>
+</html>
+-->

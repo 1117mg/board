@@ -26,7 +26,7 @@
             <div></div>
         </section>
     </section>
-    <ul>
+    <!--<ul>
         <li>
             <a th:href="@{/admin/user-list}">
                 <span><i class="fa-solid fa-cat"></i></span>
@@ -44,6 +44,19 @@
             <ul>
                 <li><a th:href="@{/0/main}">공지사항 게시판</a></li>
                 <li><a th:href="@{/1/main}">QnA 게시판</a></li>
+            </ul>
+        </li>
+    </ul>-->
+    <ul>
+        <li th:each="category : ${categories}">
+            <a th:href="@{${category.url}}">
+                <span><i class="fa-solid fa-cat"></i></span>
+                <span th:text="${category.ctgNm}">카테고리 이름</span>
+            </a>
+            <ul th:if="${subCategoriesMap[#strings.toString(category.ctgNo)] ne null}">
+                <li th:each="subCategory : ${subCategoriesMap[#strings.toString(category.ctgNo)]}">
+                    <a th:href="@{${subCategory.url}}" th:text="${subCategory.ctgNm}">서브카테고리 이름</a>
+                </li>
             </ul>
         </li>
     </ul>
