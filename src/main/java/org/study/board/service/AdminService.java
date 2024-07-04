@@ -19,8 +19,8 @@ public class AdminService {
         return mapper.findAuthByUserId(idx);
     }
 
-    public void updateUserAuth(List<UserCtgAuth> auths) {
-        mapper.deleteAuth(); // 모든 권한을 일괄 삭제
+    public void updateUserAuth(List<UserCtgAuth> auths,long idx) {
+        mapper.deleteAuth(idx); // 모든 권한을 일괄 삭제
         mapper.saveAuth(auths); // 모든 사용자의 모든 카테고리 권한을 일괄 삽입
     }
 

@@ -46,7 +46,7 @@ public class AdminController {
         }
 
         // 각 사용자별 카테고리별 권한 맵 생성
-        Map<Long, Map<Integer, UserCtgAuth>> authMap = new HashMap<>();
+        /*Map<Long, Map<Integer, UserCtgAuth>> authMap = new HashMap<>();
         for (User user : users) {
             Map<Integer, UserCtgAuth> userAuthMap = new HashMap<>();
             List<UserCtgAuth> auths = adminService.getUserAuth(user.getIdx());
@@ -64,10 +64,10 @@ public class AdminController {
                 userAuthMap.put(category.getCtgNo(), userCtgAuth);
             }
             authMap.put(user.getIdx(), userAuthMap);
-        }
+        }*/
 
         model.addAttribute("users", users);
-        model.addAttribute("authMap", authMap);
+        //model.addAttribute("authMap", authMap);
         model.addAttribute("categories", categories);
         return "thymeleaf/admin/user_main";
     }
@@ -80,18 +80,90 @@ public class AdminController {
             log.warn("유저확인불가: {}", userId);
             return "redirect:/login";
         }
-        log.info("User found: {}", user);
+        List<Category> categories = adminService.getAllCategories();
+        Map<Integer, UserCtgAuth> authMap = new HashMap<>();
+        List<UserCtgAuth> auths = adminService.getUserAuth(user.getIdx());
+
+        // 카테고리를 부모-자식 구조로 분류하여 처리
+        List<Category> parentCategories = categories.stream()
+                .filter(category -> "0".equals(category.getCtgPno()))
+                .collect(Collectors.toList());
+
+        for (Category parent : parentCategories) {
+            UserCtgAuth parentAuth = auths.stream()
+                    .filter(auth -> auth.getCtgNo() == parent.getCtgNo())
+                    .findFirst()
+                    .orElseGet(() -> {
+                        UserCtgAuth newAuth = new UserCtgAuth();
+                        newAuth.setCtgNo(parent.getCtgNo());
+                        newAuth.setCanRead(false);
+                        newAuth.setCanWrite(false);
+                        newAuth.setCanDownload(false);
+                        return newAuth;
+                    });
+            authMap.put(parent.getCtgNo(), parentAuth);
+
+            // 자식 카테고리 처리
+            List<Category> childCategories = categories.stream()
+                    .filter(category -> category.getCtgPno().equals(String.valueOf(parent.getCtgNo())))
+                    .collect(Collectors.toList());
+
+            for (Category child : childCategories) {
+                UserCtgAuth childAuth = auths.stream()
+                        .filter(auth -> auth.getCtgNo() == child.getCtgNo())
+                        .findFirst()
+                        .orElseGet(() -> {
+                            UserCtgAuth newAuth = new UserCtgAuth();
+                            newAuth.setCtgNo(child.getCtgNo());
+                            newAuth.setCanRead(false);
+                            newAuth.setCanWrite(false);
+                            newAuth.setCanDownload(false);
+                            return newAuth;
+                        });
+                authMap.put(child.getCtgNo(), childAuth);
+            }
+        }
+
         model.addAttribute("user", user);
+        model.addAttribute("categories", categories);
+        model.addAttribute("authMap", authMap);
         return "thymeleaf/admin/user_info";
     }
 
     @PostMapping("/updateUser")
-    public String updateUser(@ModelAttribute User user) {
+    public String updateUser(@ModelAttribute User user, @RequestParam Map<String, String> params) {
+        long userIdx = user.getIdx();
+
         adminService.updateUser(user);
+
+        Map<Integer, UserCtgAuth> authMap = new HashMap<>();
+
+        for (Map.Entry<String, String> entry : params.entrySet()) {
+            if (entry.getKey().startsWith("read_") || entry.getKey().startsWith("write_") || entry.getKey().startsWith("download_")) {
+                String[] parts = entry.getKey().split("_");
+                int ctgNo = Integer.parseInt(parts[1]);
+
+                UserCtgAuth auth = authMap.getOrDefault(ctgNo, new UserCtgAuth());
+                auth.setUserIdx(userIdx);
+                auth.setCtgNo(ctgNo);
+
+                if (entry.getKey().startsWith("read_")) {
+                    auth.setCanRead("on".equals(entry.getValue()));
+                } else if (entry.getKey().startsWith("write_")) {
+                    auth.setCanWrite("on".equals(entry.getValue()));
+                } else if (entry.getKey().startsWith("download_")) {
+                    auth.setCanDownload("on".equals(entry.getValue()));
+                }
+
+                authMap.put(ctgNo, auth);
+            }
+        }
+
+        adminService.updateUserAuth(new ArrayList<>(authMap.values()), userIdx);
         return "redirect:/admin/user-list";
     }
 
-    @PostMapping("/user-auth")
+    /*@PostMapping("/user-auth")
     public String updateUserAuth(@RequestParam Map<String, String> params) {
         Map<String, UserCtgAuth> authMap = new HashMap<>();
 
@@ -121,6 +193,6 @@ public class AdminController {
         List<UserCtgAuth> auths = new ArrayList<>(authMap.values());
         adminService.updateUserAuth(auths);
         return "redirect:/admin/user-list";
-    }
+    }*/
 
 }

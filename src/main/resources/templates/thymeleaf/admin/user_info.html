@@ -1,9 +1,15 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>사용자 정보</title>
+    <title>회원 관리</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="/css/layout.css">
+    <style>
+        .parent-category {
+            font-size: 90%;
+            background-color: #f2f2f2;
+        }
+    </style>
     <script>
         function confirmSubmit(event) {
             if (!confirm("변경사항을 저장하시겠습니까?")) {
@@ -13,39 +19,157 @@
         window.onload = function() {
             var form = document.getElementById("userForm");
             form.addEventListener("submit", confirmSubmit);
+
+            // 체크박스의 상태가 변경될 때
+            document.querySelectorAll('input[id^="read_"], input[id^="write_"], input[id^="download_"]').forEach(function(checkbox) {
+                checkbox.addEventListener('change', function() {
+                    var parts = this.id.split('_');
+                    var action = parts[0]; // read, write, download
+                    var categoryId = parseInt(parts[1]); // 카테고리 ID
+
+                    // 부모 카테고리 체크박스가 변경될 때
+                    if (this.dataset.parent === "true") {
+                        var childCheckboxes = document.querySelectorAll('input[id^="' + action + '_"][data-parent-id="' + categoryId + '"]');
+                        childCheckboxes.forEach(function(childCheckbox) {
+                            childCheckbox.checked = checkbox.checked;
+                        });
+                    } else {
+                        // 자식 카테고리 체크박스가 변경될 때
+                        var parentCheckbox = document.querySelector('input[id="' + action + '_' + checkbox.dataset.parentId + '"]');
+                        if (parentCheckbox) {
+                            if (!checkbox.checked) {
+                                parentCheckbox.checked = false; // 자식 체크박스가 하나라도 해제되면 부모 체크박스 해제
+                            } else {
+                                var allChecked = true;
+                                document.querySelectorAll('input[id^="' + action + '_"][data-parent-id="' + checkbox.dataset.parentId + '"]').forEach(function(cb) {
+                                    if (!cb.checked) {
+                                        allChecked = false;
+                                    }
+                                });
+                                parentCheckbox.checked = allChecked;
+                            }
+                        }
+                    }
+                });
+            });
         }
+        function checkAll(masterCheckbox, type) {
+            var checkboxes = document.querySelectorAll('input[name^="' + type + '_"]');
+            checkboxes.forEach(function (checkbox) {
+                checkbox.checked = masterCheckbox.checked;
+            });
+        }
+        document.querySelectorAll('label').forEach(function(label) {
+            label.addEventListener('click', function() {
+                checkAll(this);
+            });
+        });
     </script>
 </head>
 <body>
 <div class="content-area">
     <div class="py-5 text-center">
-        <h1>사용자 상세 정보</h1>
+        <h1>회원 관리</h1>
     </div>
     <form id="userForm" method="post" th:action="@{/admin/updateUser}">
-        <input type="hidden" th:field="*{userId}" />
-    <table>
-        <tr>
-            <td>아이디</td>
-            <td><input type="text" name="userId" style="width: 95%;" th:value="*{user.userId}" readonly></td>
-        </tr>
-        <tr>
-            <td>비밀번호</td>
-            <td th:text="${user.password}">비밀번호</td>
-        </tr>
-        <tr>
-            <td align="center">이름</td>
-            <td><input type="text" name="username" style="width: 95%;" th:value="*{user.username}"></td>
-        </tr>
-        <tr>
-            <td>가입 날짜</td>
-            <td th:text="${user.regdate}">비밀번호</td>
-        </tr>
-    </table>
-    <div class="button-container">
-        <button type="submit" class="btn btn-info">수정</button>
-        <button type="button" onclick="history.back()" class="btn btn-secondary">뒤로가기</button>
-    </div>
+        <input type="hidden" th:field="*{user.userId}" />
+        <input type="hidden" th:field="*{user.idx}" />
+        <div class="py-5 text-center">
+            <h4>회원 상세 정보</h4>
+        </div>
+        <table>
+            <tr>
+                <td>아이디</td>
+                <td><input type="text" name="userId" style="width: 95%;" th:value="*{user.userId}" readonly></td>
+            </tr>
+            <tr>
+                <td>비밀번호</td>
+                <td th:text="${user.password}">비밀번호</td>
+            </tr>
+            <tr>
+                <td align="center">이름</td>
+                <td><input type="text" name="username" style="width: 95%;" th:value="*{user.username}"></td>
+            </tr>
+            <tr>
+                <td>가입 날짜</td>
+                <td th:text="${user.regdate}">가입 날짜</td>
+            </tr>
+        </table>
+        <div class="py-5 text-center">
+            <h4>권한 설정</h4>
+        </div>
+        <table class="table table-bordered">
+            <thead>
+            <tr class="highlighted-row">
+                <th>카테고리</th>
+                <th>
+                    <label>
+                        <input type="checkbox" id="selectAllRead" onchange="checkAll(this, 'read')"> 읽기 전체선택
+                    </label>
+                </th>
+                <th>
+                    <label>
+                        <input type="checkbox" id="selectAllWrite" onchange="checkAll(this, 'write')"> 쓰기 전체선택
+                    </label>
+                </th>
+                <th>
+                    <label>
+                        <input type="checkbox" id="selectAllDownload" onchange="checkAll(this, 'download')"> 파일 다운로드 전체선택
+                    </label>
+                </th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="category : ${categories}">
+                <td>
+                    <span th:class="${category.ctgPno == '0'} ? '' : 'parent-category'">
+                        <span th:if="${category.ctgPno != '0'}" th:text="'🇱 '"></span>
+                        <span th:text="${category.ctgNm}"></span>
+                    </span>
+                </td>
+                <td>
+                    <label>
+                        <input type="checkbox" th:id="'read_' + ${category.ctgNo}"
+                               th:name="'read_' + ${category.ctgNo}"
+                               th:checked="${authMap[category.ctgNo]?.canRead}"
+                               th:data-parent="${category.ctgPno == '0'}"
+                               th:data-parent-id="${category.ctgPno}" />
+                        읽기
+                    </label>
+                </td>
+                <td>
+                    <label>
+                        <input type="checkbox" th:id="'write_' + ${category.ctgNo}"
+                               th:name="'write_' + ${category.ctgNo}"
+                               th:checked="${authMap[category.ctgNo]?.canWrite}"
+                               th:data-parent="${category.ctgPno == '0'}"
+                               th:data-parent-id="${category.ctgPno}" />
+                        쓰기
+                    </label>
+                </td>
+                <td>
+                    <label>
+                        <input type="checkbox" th:id="'download_' + ${category.ctgNo}"
+                               th:name="'download_' + ${category.ctgNo}"
+                               th:checked="${authMap[category.ctgNo]?.canDownload}"
+                               th:data-parent="${category.ctgPno == '0'}"
+                               th:data-parent-id="${category.ctgPno}" />
+                        파일 다운로드
+                    </label>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <div class="button-container row justify-content-center">
+            <div class="col-md-4">
+                <button type="submit" class="btn btn-info btn-block">수정</button>
+            </div>
+            <div class="col-md-4">
+                <button type="button" onclick="history.back()" class="btn btn-secondary btn-block">뒤로가기</button>
+            </div>
+        </div>
     </form>
+    <br>
 </div>
 </body>
 </html>

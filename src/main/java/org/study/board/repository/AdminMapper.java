@@ -11,7 +11,7 @@ import java.util.List;
 @Mapper
 public interface AdminMapper {
     List<UserCtgAuth> findAuthByUserId(@Param("idx") long idx);
-    void deleteAuth();
+    void deleteAuth(long idx);
     void saveAuth(@Param("auths") List<UserCtgAuth> auths);
     List<Category> findAllCategories();
     void updateUser(User user); // 사용자 정보 수정

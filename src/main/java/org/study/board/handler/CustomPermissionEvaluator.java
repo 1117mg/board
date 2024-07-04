@@ -41,6 +41,8 @@ public class CustomPermissionEvaluator {
                     return true;
                 } else if ("WRITE".equals(permissionType) && userCtgAuth.isCanWrite()) {
                     return true;
+                } else if ("DOWNLOAD".equals(permissionType) && userCtgAuth.isCanDownload()) {
+                    return true;
                 }
             }
         }

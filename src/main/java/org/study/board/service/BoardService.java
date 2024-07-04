@@ -72,12 +72,12 @@ public class BoardService {
                 board.setSorts(parentBoard.getSorts() + 1);
                 board.setDepth(parentBoard.getDepth() + 1);
                 mapper.updateSorts(parentBoard.getGno(), parentBoard.getSorts());
-            } else if (board.getBoardType() == 1) {
+            } else if (board.getBoardType() == 1) { //QnA(계층형) 게시판
                 Integer maxGno = mapper.getMaxGno();
                 board.setGno(maxGno + 1);
                 board.setSorts(0);
                 board.setDepth(0);
-            } else{
+            } else{ //공지사항(일반) 게시판
                 board.setGno(0);
                 board.setSorts(0);
                 board.setDepth(0);
