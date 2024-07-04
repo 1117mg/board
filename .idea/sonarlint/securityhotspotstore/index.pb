@@ -97,3 +97,7 @@ _
 /src/main/java/org/study/board/dto/Category.java,2\f\2fe787010adc807108757f03e9508031dcb4257e
 m
 =src/main/java/org/study/board/controller/AdminController.java,4\d\4dd02fa859e334bbf47d94186733b49b8b22a768
+w
+G.idea/sonarlint/issuestore/8/5/8501f464341d43f39d0c633d07279368991b48d8,5\5\5513c7f2a41bbc319cc1c2eb18a50c117658ce15
+t
+Dsrc/main/java/org/study/board/handler/CustomPermissionEvaluator.java,c\a\cac2bfec9aac0629e6b9ddb0c1662033e4270e8f
