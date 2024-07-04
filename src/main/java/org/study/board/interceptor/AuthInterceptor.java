@@ -1,9 +1,11 @@
 package org.study.board.interceptor;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
+import org.study.board.handler.CustomPermissionEvaluator;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -14,6 +16,10 @@ import java.util.Optional;
 
 @Component
 public class AuthInterceptor implements HandlerInterceptor {
+
+    @Autowired
+    private CustomPermissionEvaluator customPermissionEvaluator;
+
     @Override
     public boolean preHandle(final HttpServletRequest request, final HttpServletResponse response,Object handler) throws Exception {
 
@@ -46,7 +52,7 @@ public class AuthInterceptor implements HandlerInterceptor {
         return true;*/
 
         // 3. Spring Security를 이용한 사용자 인증 상태 확인
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        /*Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         // 사용자가 인증되어 있지 않은 경우 로그인 페이지로 리다이렉트
         if (authentication == null || !authentication.isAuthenticated()) {
@@ -55,6 +61,46 @@ public class AuthInterceptor implements HandlerInterceptor {
         }
 
         // 사용자가 인증되어 있으면 요청을 허용
+        return true;*/
+
+        // 4. DB에 저장된 접근 권한 확인
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        // URL 경로와 권한 타입 매핑
+        String requestURI = request.getRequestURI();
+        String permissionKey = null;
+        String permissionType = null;
+
+        if (requestURI.startsWith("/admin/user-list") || requestURI.startsWith("/admin/user-info")) {
+            permissionKey = "USER_LIST";
+            permissionType = requestURI.contains("updateUser") || requestURI.contains("user-auth") ? "WRITE" : "READ";
+        } else if (requestURI.startsWith("/0/board") || requestURI.startsWith("/0/write") || requestURI.startsWith("/0/downloadFile")) {
+            permissionKey = "NOTICE_BOARD";
+            if (requestURI.contains("write")) {
+                permissionType = "WRITE";
+            } else if (requestURI.contains("downloadFile")) {
+                permissionType = "DOWNLOAD";
+            } else {
+                permissionType = "READ";
+            }
+        } else if (requestURI.startsWith("/1/board") || requestURI.startsWith("/1/write") || requestURI.startsWith("/1/downloadFile")) {
+            permissionKey = "QNA_BOARD";
+            if (requestURI.contains("write")) {
+                permissionType = "WRITE";
+            } else if (requestURI.contains("downloadFile")) {
+                permissionType = "DOWNLOAD";
+            } else {
+                permissionType = "READ";
+            }
+        }
+
+        if (permissionKey != null && permissionType != null) {
+            if (!customPermissionEvaluator.hasPermission(authentication, permissionKey, permissionType)) {
+                response.sendError(HttpServletResponse.SC_FORBIDDEN, "Access Denied");
+                return false;
+            }
+        }
+
         return true;
     }
 }
