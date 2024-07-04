@@ -8,4 +8,5 @@ public class UserCtgAuth {
     private int ctgNo;
     private boolean canRead;
     private boolean canWrite;
+    private boolean canDownload;
 }

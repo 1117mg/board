@@ -9,23 +9,24 @@
         WHERE user_idx = #{idx}
     </select>
 
-    <delete id="deleteAuth">
+    <delete id="deleteAuth" parameterType="long">
         DELETE FROM user_ctg_auth
+        WHERE user_idx = #{idx}
     </delete>
 
     <insert id="saveAuth" parameterType="java.util.List">
-        INSERT INTO user_ctg_auth (user_idx, ctg_no, can_read, can_write)
+        INSERT INTO user_ctg_auth (user_idx, ctg_no, can_read, can_write, can_download)
         VALUES
         <foreach collection="auths" item="auth" separator=",">
-            (#{auth.userIdx}, #{auth.ctgNo}, #{auth.canRead}, #{auth.canWrite})
+            (#{auth.userIdx}, #{auth.ctgNo}, #{auth.canRead}, #{auth.canWrite}, #{auth.canDownload})
         </foreach>
-        ON DUPLICATE KEY UPDATE can_read = VALUES(can_read), can_write = VALUES(can_write);
     </insert>
 
     <select id="findAllCategories" resultType="org.study.board.dto.Category">
         SELECT *
         FROM ctg
-        WHERE ctg_use_yn=1 ORDER BY ctg_sort
+        WHERE ctg_use_yn = 1
+        ORDER BY ctg_sort
     </select>
 
     <update id="updateUser" parameterType="org.study.board.dto.User">

@@ -1,5 +1,5 @@
 body {
-    background-color: lightgrey;
+    background-color: whitesmoke;
 }
 .content-area {
     display: flex;
@@ -12,12 +12,15 @@ body {
 table {
     width: 100%;
     border-collapse: collapse;
-
+    background-color: #ffffff;
 }
 th, td {
     padding: 10px;
-    text-align: center;
+    text-align: left;
     border: 1px solid #ddd;
+}
+.highlighted-row {
+    background-color: #F2F5FF;
 }
 .pagination {
     margin-top: 20px;
