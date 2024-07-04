@@ -94,17 +94,8 @@ public class PaginateDto implements Serializable {
             if (nationClose > totalPage) {
                 nationClose = totalPage;
             }
-
-            // 이전 버튼이나 다음 버튼이 비활성화 되어야 하는지 확인
-            if (pageNo <= 1) {
-                nationBegin = 1;
-            }
-            if (pageNo >= totalPage) {
-                nationClose = totalPage;
-            }
         }
     }
-
 
     @Override
     public String toString() {
