@@ -18,27 +18,6 @@
             <div></div>
         </section>
     </section>
-    <!--<ul>
-        <li>
-            <a th:href="@{/admin/user-list}">
-                <span><i class="fa-solid fa-cat"></i></span>
-                <span>회원 관리</span>
-            </a>
-            <ul>
-                <li><a th:href="@{/admin/user-list}">회원 목록</a></li>
-            </ul>
-        </li>
-        <li>
-            <a th:href="@{/0/main}">
-                <span><i class="fa-solid fa-dragon"></i></span>
-                <span>게시판 관리</span>
-            </a>
-            <ul>
-                <li><a th:href="@{/0/main}">공지사항 게시판</a></li>
-                <li><a th:href="@{/1/main}">QnA 게시판</a></li>
-            </ul>
-        </li>
-    </ul>-->
     <ul>
         <li th:each="category : ${categories}">
             <a th:if="${category.ctgPno == '0'}" th:href="@{${category.url}}">

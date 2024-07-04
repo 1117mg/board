@@ -75,9 +75,9 @@ public class BoardController {
         List<Category> categories = adminService.getAllCategories();
 
         // 부모-자식 관계로 카테고리 매핑
-        Map<String, List<Category>> subCategoriesMap = categories.stream()
-                .filter(category -> !category.getCtgPno().equals("0"))
-                .collect(Collectors.groupingBy(Category::getCtgPno));
+        Map<Integer, List<Category>> subCategoriesMap = categories.stream()
+                .filter(category -> category.getCtgPno() != null)
+                .collect(Collectors.groupingBy(category -> Integer.parseInt(category.getCtgPno())));
 
         model.addAttribute("categories", categories);
         model.addAttribute("subCategoriesMap", subCategoriesMap);

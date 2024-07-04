@@ -26,35 +26,14 @@
             <div></div>
         </section>
     </section>
-    <!--<ul>
-        <li>
-            <a th:href="@{/admin/user-list}">
-                <span><i class="fa-solid fa-cat"></i></span>
-                <span>회원 관리</span>
-            </a>
-            <ul>
-                <li><a th:href="@{/admin/user-list}">회원 목록</a></li>
-            </ul>
-        </li>
-        <li>
-            <a th:href="@{/0/main}">
-                <span><i class="fa-solid fa-dragon"></i></span>
-                <span>게시판 관리</span>
-            </a>
-            <ul>
-                <li><a th:href="@{/0/main}">공지사항 게시판</a></li>
-                <li><a th:href="@{/1/main}">QnA 게시판</a></li>
-            </ul>
-        </li>
-    </ul>-->
     <ul>
         <li th:each="category : ${categories}">
-            <a th:href="@{${category.url}}">
+            <a th:if="${category.ctgPno == '0'}" th:href="@{${category.url}}">
                 <span><i class="fa-solid fa-cat"></i></span>
                 <span th:text="${category.ctgNm}">카테고리 이름</span>
             </a>
-            <ul th:if="${subCategoriesMap[#strings.toString(category.ctgNo)] ne null}">
-                <li th:each="subCategory : ${subCategoriesMap[#strings.toString(category.ctgNo)]}">
+            <ul th:if="${subCategoriesMap[category.ctgNo] != null}">
+                <li th:each="subCategory : ${subCategoriesMap[category.ctgNo]}">
                     <a th:href="@{${subCategory.url}}" th:text="${subCategory.ctgNm}">서브카테고리 이름</a>
                 </li>
             </ul>
