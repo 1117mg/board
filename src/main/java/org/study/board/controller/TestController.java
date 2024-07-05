@@ -17,4 +17,7 @@ public class TestController {
     public String main(){
         return "thymeleaf/main";
     }
+
+    @GetMapping("error/403")
+    public String error() { return "thymeleaf/error/403";}
 }

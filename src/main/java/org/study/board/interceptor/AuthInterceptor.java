@@ -116,7 +116,7 @@ public class AuthInterceptor implements HandlerInterceptor {
 
         if (permissionKey != null && permissionType != null) {
             if (!customPermissionEvaluator.hasPermission(authentication, permissionKey, permissionType)) {
-                response.sendError(HttpServletResponse.SC_FORBIDDEN, "Access Denied: Insufficient permissions");
+                response.sendRedirect("/error/403");
                 return false;
             }
         }
