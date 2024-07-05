@@ -64,7 +64,7 @@ public class AuthInterceptor implements HandlerInterceptor {
         return true;*/
 
         // 4. DB에 저장된 접근 권한 확인
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        /*Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         // URL 경로와 권한 타입 매핑
         String requestURI = request.getRequestURI();
@@ -101,6 +101,48 @@ public class AuthInterceptor implements HandlerInterceptor {
             }
         }
 
+        return true;*/
+
+        // mapper 쿼리로 권한 확인
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication == null || !authentication.isAuthenticated()) {
+            response.sendError(HttpServletResponse.SC_FORBIDDEN, "Access Denied: User not authenticated");
+            return false;
+        }
+
+        String requestURI = request.getRequestURI();
+        String permissionKey = getPermissionKey(requestURI);
+        String permissionType = getPermissionType(requestURI);
+
+        if (permissionKey != null && permissionType != null) {
+            if (!customPermissionEvaluator.hasPermission(authentication, permissionKey, permissionType)) {
+                response.sendError(HttpServletResponse.SC_FORBIDDEN, "Access Denied: Insufficient permissions");
+                return false;
+            }
+        }
+
         return true;
+    }
+
+    private String getPermissionKey(String requestURI) {
+        if (requestURI.startsWith("/admin/user-list") || requestURI.startsWith("/admin/user-info")) {
+            return "USER_LIST";
+        } else if (requestURI.startsWith("/0")) {
+            return "NOTICE_BOARD";
+        } else if (requestURI.startsWith("/1")) {
+            return "QNA_BOARD";
+        } else {
+            return null;
+        }
+    }
+
+    private String getPermissionType(String requestURI) {
+        if (requestURI.contains("write")) {
+            return "WRITE";
+        } else if (requestURI.contains("downloadFile")) {
+            return "DOWNLOAD";
+        } else {
+            return "READ";
+        }
     }
 }
