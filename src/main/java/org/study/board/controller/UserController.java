@@ -124,14 +124,4 @@ public class UserController {
     public boolean checkUsername(@RequestParam String loginId) {
         return service.checkLoginIdDuplicate(loginId);
     }
-
-    @GetMapping("/error/401")
-    public String error401(Model model) {
-        return "error/401";
-    }
-
-    @GetMapping("/error/403")
-    public String error403(Model model) {
-        return "error/403";
-    }
 }
