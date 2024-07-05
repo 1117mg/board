@@ -16,4 +16,6 @@ public interface AdminMapper {
     List<Category> findAllCategories();
     void updateUser(User user); // 사용자 정보 수정
     List<User> findAllUsers();
+    // 쿼리문으로 권한 체크
+    int checkUserPermission(@Param("userIdx") Long userIdx, @Param("ctgNo") Integer ctgNo, @Param("permissionType") String permissionType);
 }

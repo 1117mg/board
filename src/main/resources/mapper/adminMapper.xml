@@ -39,4 +39,29 @@
         SELECT *
         FROM user
     </select>
+
+    <select id="checkUserPermission" resultType="int">
+        SELECT COUNT(*)
+        FROM user_ctg_auth uca
+                 JOIN ctg c ON uca.ctg_no = c.ctg_no
+        WHERE uca.user_idx = #{userIdx}
+          AND uca.ctg_no = #{ctgNo}
+          AND (
+                (#{permissionType} = 'READ' AND uca.can_read = true) OR
+                (#{permissionType} = 'WRITE' AND uca.can_write = true) OR
+                (#{permissionType} = 'DOWNLOAD' AND uca.can_download = true)
+            )
+    </select>
+
+    <!--<select id="checkUserPermission" parameterType="map" resultType="int">
+        SELECT COUNT(*)
+        FROM user_ctg_auth uca
+                 JOIN ctg c ON uca.ctg_no = c.ctg_no
+        WHERE uca.user_idx = #{userIdx}
+          AND (
+                (#{permissionType} = 'READ' AND uca.can_read = true) OR
+                (#{permissionType} = 'WRITE' AND uca.can_write = true) OR
+                (#{permissionType} = 'DOWNLOAD' AND uca.can_download = true)
+            )
+    </select>-->
 </mapper>

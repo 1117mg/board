@@ -103,7 +103,7 @@ public class UserController {
         }
 
         Cookie cookie = new Cookie("idx", String.valueOf(loginUser.getIdx()));
-        cookie.setMaxAge(60 * 60);  // 쿠키 유효 시간 : 1시간
+        cookie.setMaxAge(60 * 60 * 24);  // 쿠키 유효 시간 : 1일
         response.addCookie(cookie);
 
         log.info("로그인 성공: {}", loginUser);
