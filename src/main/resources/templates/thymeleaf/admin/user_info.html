@@ -38,15 +38,15 @@
                         var parentCheckbox = document.querySelector('input[id="' + action + '_' + checkbox.dataset.parentId + '"]');
                         if (parentCheckbox) {
                             if (!checkbox.checked) {
-                                parentCheckbox.checked = false; // 자식 체크박스가 하나라도 해제되면 부모 체크박스 해제
-                            } else {
-                                var allChecked = true;
+                                var allUnchecked = true;
                                 document.querySelectorAll('input[id^="' + action + '_"][data-parent-id="' + checkbox.dataset.parentId + '"]').forEach(function(cb) {
-                                    if (!cb.checked) {
-                                        allChecked = false;
+                                    if (cb.checked) {
+                                        allUnchecked = false;
                                     }
                                 });
-                                parentCheckbox.checked = allChecked;
+                                parentCheckbox.checked = !allUnchecked;
+                            } else {
+                                parentCheckbox.checked = true; // 자식 체크박스가 체크되면 부모 체크박스 체크
                             }
                         }
                     }
