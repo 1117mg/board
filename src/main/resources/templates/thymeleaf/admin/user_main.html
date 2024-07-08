@@ -73,7 +73,7 @@
         <tbody>
         <tr th:each="user : ${users}">
             <td th:text="${user.idx}">유저번호</td>
-            <td><a th:href="@{'/admin/user-info/' + ${user.userId}}" th:text="${user.userId}">아이디</a></td>
+            <td><a th:href="@{'/admin/user/' + ${user.userId}}" th:text="${user.userId}">아이디</a></td>
             <td th:text="${user.username}">이름</td>
             <td th:text="${user.regdate}">가입일</td>
         </tr>
