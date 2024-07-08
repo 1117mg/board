@@ -34,11 +34,11 @@ public class CustomPermissionEvaluator {
     private Integer getCtgNoByPermissionKey(String permissionKey) {
         switch (permissionKey) {
             case "USER_LIST":
-                return 1; // USER_LIST에 해당하는 ctg_no를 반환
+                return 3; // USER_LIST에 해당하는 ctg_no를 반환
             case "NOTICE_BOARD":
-                return 2; // NOTICE_BOARD에 해당하는 ctg_no를 반환
+                return 4; // NOTICE_BOARD에 해당하는 ctg_no를 반환
             case "QNA_BOARD":
-                return 3; // QNA_BOARD에 해당하는 ctg_no를 반환
+                return 5; // QNA_BOARD에 해당하는 ctg_no를 반환
             default:
                 return null;
         }
