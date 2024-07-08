@@ -1,4 +1,4 @@
-/* 노멀라이즈 시작 */
+/* 노멀라이즈 */
 body, ul, li {
     margin: 0;
     padding: 0;
@@ -9,12 +9,8 @@ a {
     color: inherit;
     text-decoration: none;
 }
-/* 노멀라이즈 끝 */
 
-/* 커스텀 시작 */
-
-
-/* 사이드바-아이콘 시작 */
+/* 사이드바-아이콘 */
 .side-bar__icon-box {
     display: flex;
     justify-content: flex-start;
@@ -83,9 +79,8 @@ a {
     height: 100%;
     transition: all var(--side-bar__icon), left calc(var(--side-bar__icon) / 2) 0s, right calc(var(--side-bar__icon) / 2) 0s, height calc(var(--side-bar__icon) / 2) calc(var(--side-bar__icon) / 2);
 }
-/* 사이드바-아이콘 끝 */
 
-/* 사이드바-메뉴 시작 */
+/* 사이드바-메뉴 */
 .side-bar > ul ul {
     display: none;
     position: absolute;
@@ -102,10 +97,11 @@ a {
 
 .side-bar {
     position: fixed;
-    min-height: 100vh;
-    width: 100px;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: var(--side-bar-width); /* 고정 너비 설정 */
     background-color: black;
-    overflow: hidden;
     transition: .5s;
 }
 
@@ -176,5 +172,3 @@ a {
     margin-bottom: 10px;
     width: 80%;
 }
-/* 사이드바-메뉴 끝 */
-/* 커스텀 끝 */
