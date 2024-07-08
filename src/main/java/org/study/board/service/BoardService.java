@@ -8,6 +8,9 @@ import org.springframework.http.ContentDisposition;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
@@ -60,12 +63,24 @@ public class BoardService {
     public Integer cntBoard(Integer boardType) {return mapper.cntBoard(boardType);}
 
     public void insertBoard(Board board){
-        if (board.getBno() != null) {
-            mapper.deleteFile(board);
+        // 인증된 현재 사용자 정보 받아옴
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String currentUsername = null;
+        if (authentication != null && authentication.getPrincipal() instanceof UserDetails) {
+            UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+            currentUsername = userDetails.getUsername();
         }
-        if(board.getBno()!=null){
-            mapper.updateBoard(board);
-        }else{
+        if (board.getBno() != null) {
+            // 기존 게시글의 작성자 불러옴
+            Board existingBoard = mapper.getBoard(board.getBno());
+            String originalWriter = existingBoard.getWriter();
+
+            if (currentUsername != null && currentUsername.equals(originalWriter)) {
+                // 작성자가 현재 사용자와 동일할 경우에만 업데이트 수행
+                mapper.deleteFile(board);
+                mapper.updateBoard(board);
+            }
+        } else{
             if (board.getParentBno() != null) {
                 Board parentBoard = mapper.getBoard(board.getParentBno());
                 board.setGno(parentBoard.getGno());

@@ -55,7 +55,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/1/board/**").access("@customPermissionEvaluator.hasPermission(authentication, 'QNA_BOARD', 'READ')")
                 .antMatchers("/1/write").access("@customPermissionEvaluator.hasPermission(authentication, 'QNA_BOARD', 'WRITE')")
                 .antMatchers("/1/downloadFile").access("@customPermissionEvaluator.hasPermission(authentication, 'QNA_BOARD', 'DOWNLOAD')")*/
-                .antMatchers("/check-username","/main","/login","/join","/0/main","/1/main","/css/**","/error/**").permitAll()
+                .antMatchers("/check-username","/main","/login","/join","/0/main","/1/main","/css/**","/error/**","/header").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()

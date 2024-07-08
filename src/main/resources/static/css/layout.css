@@ -87,6 +87,13 @@ a.board-title:hover {
     text-decoration: none;
     color: blue;
 }
+.child-category {
+    font-size: 90%;
+    background-color: whitesmoke;
+    font-weight: lighter;
+    color: dimgrey;
+}
+
 /*헤더*/
 .header-container {
     background-color: white;
