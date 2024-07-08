@@ -2,12 +2,14 @@ body {
     background-color: whitesmoke;
 }
 .content-area {
+    margin-left: var(--side-bar-width); /* 사이드바 너비만큼 왼쪽 여백 */
+    padding-left: 20px; /* 내부 콘텐츠에 추가적인 왼쪽 여백 */
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     height: 100%;
-    padding: 20px;
+    /*padding: 20px;*/
 }
 table {
     width: 100%;
@@ -84,4 +86,19 @@ a.board-title:hover {
     font-weight: bolder;
     text-decoration: none;
     color: blue;
+}
+/*헤더*/
+.header-container {
+    background-color: white;
+    text-align: right;
+    width: 100%; /* 화면 전체 폭 */
+    padding: 10px 0; /* 위아래 여백 추가 */
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* 그림자 효과 추가 */
+}
+.header-container img{
+    position: center;
+    width: auto;
+    height: 80px;
+    margin-top: 10px;
+    margin-left: 100px;
 }

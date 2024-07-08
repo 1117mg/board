@@ -106,7 +106,7 @@ public class AuthInterceptor implements HandlerInterceptor {
         // mapper 쿼리로 권한 확인
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication == null || !authentication.isAuthenticated()) {
-            response.sendError(HttpServletResponse.SC_FORBIDDEN, "Access Denied: User not authenticated");
+            response.sendRedirect("/error/403");
             return false;
         }
 
