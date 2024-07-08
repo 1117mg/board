@@ -42,7 +42,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         return org.springframework.security.core.userdetails.User.builder()
                 .username(user.getUserId())
                 .password(user.getPassword())
-                .authorities(Collections.singletonList(authority))
+                //.authorities(Collections.singletonList(authority))
                 //.accountLocked(user.isLocked())  // locked 상태를 UserDetails에 반영
                 .build();*/
 

@@ -13,17 +13,12 @@
             color: #ff0000;
         }
     </style>
-    <script>
-        function goBack() {
-            history.back();
-        }
-    </script>
 </head>
 <body>
 <div class="container text-center">
     <h1 class="error-message">접근 불가</h1>
     <p>해당 페이지에 접근할 권한이 없습니다.</p>
-    <button onclick="goBack()" class="btn btn-primary">이전으로</button>
+    <button th:onclick="history.back()" class="btn btn-primary">이전으로</button>
 </div>
 </body>
 </html>
