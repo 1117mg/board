@@ -7,7 +7,7 @@
     <style>
         .child-category {
             font-size: 90%;
-            color: grey;
+            background-color: lightgrey;
         }
     </style>
     <script>
@@ -123,13 +123,13 @@
             </thead>
             <tbody>
             <tr th:each="category : ${categories}">
-                <td>
+                <td th:class="${category.ctgPno == '0'} ? '' : 'child-category'">
                     <span th:class="${category.ctgPno == '0'} ? '' : 'child-category'">
                         <span th:if="${category.ctgPno != '0'}" th:text="'🇱 '"></span>
                         <span th:text="${category.ctgNm}"></span>
                     </span>
                 </td>
-                <td>
+                <td th:class="${category.ctgPno == '0'} ? '' : 'child-category'">
                     <label>
                         <input type="checkbox" th:id="'read_' + ${category.ctgNo}"
                                th:name="'read_' + ${category.ctgNo}"
@@ -139,7 +139,7 @@
                         읽기
                     </label>
                 </td>
-                <td>
+                <td th:class="${category.ctgPno == '0'} ? '' : 'child-category'">
                     <label>
                         <input type="checkbox" th:id="'write_' + ${category.ctgNo}"
                                th:name="'write_' + ${category.ctgNo}"
@@ -149,7 +149,7 @@
                         쓰기
                     </label>
                 </td>
-                <td>
+                <td th:class="${category.ctgPno == '0'} ? '' : 'child-category'">
                     <label>
                         <input type="checkbox" th:id="'download_' + ${category.ctgNo}"
                                th:name="'download_' + ${category.ctgNo}"

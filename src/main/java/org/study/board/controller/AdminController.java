@@ -28,7 +28,7 @@ public class AdminController {
     private final AdminService adminService;
     private final UserService userService;
 
-    @GetMapping("/user-list")
+    @GetMapping("/users")
     public String userList(Model model, Principal principal) {
         List<User> users = adminService.getAllUsers();
         List<Category> categories = adminService.getAllCategories();
@@ -72,7 +72,7 @@ public class AdminController {
         return "thymeleaf/admin/user_main";
     }
 
-    @GetMapping("/user-info/{userId}")
+    @GetMapping("/user/{userId}")
     public String userInfo(@PathVariable String userId, Model model) {
         log.info("유저인포 유저아이디: {}", userId);
         User user = userService.getLoginUser(userId);
@@ -160,7 +160,7 @@ public class AdminController {
         }
 
         adminService.updateUserAuth(new ArrayList<>(authMap.values()), userIdx);
-        return "redirect:/admin/user-list";
+        return "redirect:/admin/users";
     }
 
     /*@PostMapping("/user-auth")
@@ -192,7 +192,7 @@ public class AdminController {
 
         List<UserCtgAuth> auths = new ArrayList<>(authMap.values());
         adminService.updateUserAuth(auths);
-        return "redirect:/admin/user-list";
+        return "redirect:/admin/users";
     }*/
 
 }
