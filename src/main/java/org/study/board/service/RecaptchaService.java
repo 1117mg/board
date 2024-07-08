@@ -16,6 +16,7 @@ public class RecaptchaService {
         String url = RECAPTCHA_VERIFY_URL + params;
 
         RecaptchaResponse response = restTemplate.postForObject(url, null, RecaptchaResponse.class);
+        System.out.println("Recaptcha verification response: " + response);
         return response != null && response.isSuccess();
     }
 

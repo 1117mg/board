@@ -86,14 +86,13 @@ public class UserController {
 
         // reCAPTCHA 필요 여부 확인
         if (loginUser.isLocked()) {
-            String recaptchaResponse = request.getParameter("g-recaptcha-response");
+            String recaptchaResponse = request.getParameter("recaptchaResponse");
             // reCAPTCHA 검증
             if (recaptchaResponse == null || !recaptchaService.verifyRecaptcha(recaptchaResponse)) {
                 bindingResult.reject("recaptchaFail", "reCAPTCHA 검증에 실패했습니다.");
                 return "thymeleaf/login";  // 로그인 페이지로 다시 이동
             }
             // reCAPTCHA 검증 통과 후 리셋
-            //loginUser.setRecaptchaRequired(false);
             loginUser.setLocked(false);
             service.updateStatus(loginUser);
         }

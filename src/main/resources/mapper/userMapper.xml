@@ -18,8 +18,8 @@
     </select>
 
     <insert id="save" parameterType="org.study.board.dto.User">
-        INSERT INTO user (userId, password, username, regdate, role, locked, lock_time, recaptcha_required)
-        VALUES (#{userId}, #{password}, #{username}, NOW(), #{role}, #{locked}, #{lockTime}, #{recaptchaRequired})
+        INSERT INTO user (userId, password, username, regdate, role, locked, lock_time)
+        VALUES (#{userId}, #{password}, #{username}, NOW(), #{role}, #{locked}, #{lockTime})
     </insert>
 
     <select id="existsByLoginId" resultType="_int"
