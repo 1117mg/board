@@ -137,7 +137,7 @@ public class AuthInterceptor implements HandlerInterceptor {
     }
 
     private String getPermissionType(String requestURI) {
-        if (requestURI.contains("write")) {
+        if (requestURI.contains("insertBoard")) {
             return "WRITE";
         } else if (requestURI.contains("downloadFile")) {
             return "DOWNLOAD";

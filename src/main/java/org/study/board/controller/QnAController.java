@@ -6,6 +6,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -15,6 +16,7 @@ import org.study.board.dto.Board;
 import org.study.board.dto.Category;
 import org.study.board.dto.FileDto;
 import org.study.board.dto.PaginateDto;
+import org.study.board.handler.CustomPermissionEvaluator;
 import org.study.board.service.AdminService;
 import org.study.board.service.BoardService;
 import org.study.board.util.FileUtil;
@@ -39,6 +41,8 @@ public class QnAController {
     private BoardService boardService;
     @Autowired
     private BoardAop aop;
+    @Autowired
+    private CustomPermissionEvaluator permissionEvaluator;
 
     // 타임리프
     @RequestMapping("/test")
@@ -87,6 +91,12 @@ public class QnAController {
         model.addAttribute("paginate", paginate);
         model.addAttribute("board", boardService.getQnaList(board));
         model.addAttribute("boardType", board.getBoardType());
+
+        // 글작성 권한 체크
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        boolean hasWritePermission = permissionEvaluator.hasWritePermission(authentication, "QNA_BOARD");
+        model.addAttribute("hasWritePermission", hasWritePermission);
+
         return "thymeleaf/board";
     }
 
