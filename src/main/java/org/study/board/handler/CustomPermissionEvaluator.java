@@ -43,4 +43,9 @@ public class CustomPermissionEvaluator {
                 return null;
         }
     }
+
+    // 쓰기 권한 체크
+    public boolean hasWritePermission(Authentication authentication, String permissionKey) {
+        return hasPermission(authentication, permissionKey, "WRITE");
+    }
 }
