@@ -55,16 +55,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/1/board/**").access("@customPermissionEvaluator.hasPermission(authentication, 'QNA_BOARD', 'READ')")
                 .antMatchers("/1/write").access("@customPermissionEvaluator.hasPermission(authentication, 'QNA_BOARD', 'WRITE')")
                 .antMatchers("/1/downloadFile").access("@customPermissionEvaluator.hasPermission(authentication, 'QNA_BOARD', 'DOWNLOAD')")*/
-                .antMatchers("/check-username","/main","/login","/join","/0/main","/1/main","/css/**","/error/**","/header").permitAll()
+                .antMatchers("/check-username","/main","/login","/kakao-login","/join","/0/main","/1/main","/css/**","/img/**","/error/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
                 .loginPage("/login")
                 .loginProcessingUrl("/login")
+                .successHandler(authenticationSuccessHandler)
                 .failureHandler(authenticationFailureHandler)
                 .usernameParameter("loginId")  // 로그인 ID 필드 이름 설정
                 .passwordParameter("password") // 비밀번호 필드 이름 설정
-                .successHandler(authenticationSuccessHandler)
                 //.defaultSuccessUrl("/main", true)  // 로그인 성공 후 리다이렉트 설정
                 .permitAll()
                 .and()

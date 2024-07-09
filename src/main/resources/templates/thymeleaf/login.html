@@ -13,6 +13,30 @@
             border-color: #dc3545;
             color: #dc3545;
         }
+        .kakao_btn {
+            display: block;
+            width: 100%;
+            margin: 0 auto;
+            padding: 10px 0;
+            border: 1px solid transparent;
+            border-radius: 5px;
+        }
+        .kakao_btn img {
+            vertical-align: middle;
+            width: 40%;
+        }
+        .social-login-box {
+            margin-top: 20px;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            text-align: center;
+            background-color: #f9f9f9;
+        }
+        .social-login-box p{
+            color: grey;
+            font-weight: bold;
+        }
     </style>
     <script src="https://www.google.com/recaptcha/api.js"></script>
     <script>
@@ -74,8 +98,24 @@
                 <a th:href="@{/main}" class="w-100 btn btn-secondary btn-lg">취소</a>
             </div>
         </div>
-
+        <br>
     </form>
+    <!--<form action="/kakao-login" method="post" th:object="${loginForm}">
+        <div class="social-login-box">
+            <p>소셜 계정 로그인</p>
+            <a href="https://kauth.kakao.com/oauth/authorize?client_id=a411d09a7888de46a12e564c7859c055&redirect_uri=http://localhost:8080/kakao-login&response_type=code" class="kakao_btn">
+                <img src="/img/kakao_login_large_wide.png" alt="카카오 로그인">
+            </a>
+        </div>
+    </form>-->
+    <div class="social-login-box">
+        <p>소셜 계정 로그인</p>
+        <a th:href="@{https://kauth.kakao.com/oauth/authorize?client_id=a411d09a7888de46a12e564c7859c055&redirect_uri=http://localhost:8080/kakao-login&response_type=code}" class="kakao_btn">
+            <img src="/img/kakao_login_large_wide.png" alt="카카오 로그인">
+        </a>
+    </div>
+
+
 
 </div> <!-- /container -->
 </body>
