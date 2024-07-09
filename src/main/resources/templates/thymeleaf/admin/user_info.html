@@ -67,16 +67,16 @@
     <div class="py-5 text-center">
         <h1>회원 관리</h1>
     </div>
-    <form id="userForm" method="post" th:action="@{/admin/updateUser}">
-        <input type="hidden" th:field="*{user.userId}" />
-        <input type="hidden" th:field="*{user.idx}" />
+    <form id="userForm" method="post" th:action="@{/admin/updateUser}" th:object="${user}">
+        <input type="hidden" th:field="*{userId}" />
+        <input type="hidden" th:field="*{idx}" />
         <div class="py-5 text-center">
             <h4>회원 상세 정보</h4>
         </div>
         <table>
             <tr>
                 <td>아이디</td>
-                <td><input type="text" name="userId" style="width: 95%;" th:value="*{user.userId}" readonly></td>
+                <td><input type="text" name="userId" style="width: 95%;" th:value="*{userId}" readonly></td>
             </tr>
             <tr>
                 <td>비밀번호</td>
@@ -84,7 +84,7 @@
             </tr>
             <tr>
                 <td align="center">이름</td>
-                <td><input type="text" name="username" style="width: 95%;" th:value="*{user.username}"></td>
+                <td><input type="text" name="username" style="width: 95%;" th:value="*{username}"></td>
             </tr>
             <tr>
                 <td>가입 날짜</td>

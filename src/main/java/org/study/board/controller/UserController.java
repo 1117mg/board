@@ -73,7 +73,7 @@ public class UserController {
         if (authentication instanceof AnonymousAuthenticationToken){
             model.addAttribute("loginForm", new LoginForm());
             return "thymeleaf/login";}
-        return "redirect:/main";
+        return "redirect:/0/main";
     }
 
     @PostMapping("/login")

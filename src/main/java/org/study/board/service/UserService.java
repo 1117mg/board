@@ -26,6 +26,14 @@ public class UserService {
 
     public User findById(long idx){return mapper.findById(idx);}
 
+    public User findByLoginId(String userId){return mapper.findByLoginId(userId);}
+
+    public void register(User user) {
+        // 패스워드 암호화 등 추가적인 로직이 필요할 수 있습니다.
+        // 예시로는 패스워드를 그대로 저장하는 것이므로, 실제로는 passwordEncoder를 사용해야 합니다.
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        mapper.save(user);
+    }
 
     public void join(JoinForm form) {
         User user = new User();
