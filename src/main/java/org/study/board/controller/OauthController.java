@@ -1,30 +1,17 @@
 package org.study.board.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
-import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AnonymousAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.study.board.dto.LoginForm;
 import org.study.board.dto.User;
-import org.study.board.repository.UserMapper;
-import org.study.board.service.OauthService;
+import org.study.board.service.KakaoService;
+import org.study.board.service.NaverService;
 import org.study.board.service.UserService;
 
-import javax.json.Json;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import javax.validation.Valid;
 import java.util.HashMap;
 
 @Slf4j
@@ -33,14 +20,16 @@ import java.util.HashMap;
 public class OauthController {
 
     @Autowired
-    private OauthService oauthService;
+    private KakaoService kakaoService;
+    @Autowired
+    private NaverService naverService;
     @Autowired
     private UserService userService;
 
     @GetMapping("/kakao-login")
     public String kakaoLogin(@RequestParam("code") String code, HttpServletResponse response) {
-        String access_Token = oauthService.getKakaoAccessToken(code);
-        HashMap<String, Object> userInfo = oauthService.getUserInfo(access_Token);
+        String access_Token = kakaoService.getKakaoAccessToken(code);
+        HashMap<String, Object> userInfo = kakaoService.getUserInfo(access_Token);
         log.info("카카오 사용자 정보 : " + userInfo);
 
         String email = (String) userInfo.get("email");
@@ -64,6 +53,15 @@ public class OauthController {
         cookie.setMaxAge(60 * 60 * 24);  // 쿠키 유효 시간 : 1일
         response.addCookie(cookie);
 
+        return "redirect:/0/main";
+    }
+
+    @GetMapping("/naver-login")
+    public String naverLogin(@RequestParam("code") String code, HttpServletResponse response) {
+        String access_Token = naverService.getNaverAccessToken(code);
+        log.info(access_Token);
+        HashMap<String, Object> userInfo = naverService.getUserInfo(access_Token);
+        log.info("네이버 사용자 정보 : " + userInfo);
         return "redirect:/0/main";
     }
 }

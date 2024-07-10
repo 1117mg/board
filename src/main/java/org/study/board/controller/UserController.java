@@ -44,7 +44,7 @@ public class UserController {
         if (authentication instanceof AnonymousAuthenticationToken){
             model.addAttribute("JoinForm", new JoinForm());
             return "thymeleaf/join";}
-        return "redirect:/main";
+        return "redirect:/login";
     }
 
     @PostMapping("/join")
@@ -106,7 +106,7 @@ public class UserController {
         response.addCookie(cookie);
 
         log.info("로그인 성공: {}", loginUser);
-        return "redirect:/main";
+        return "redirect:/0/main";
     }
 
     @GetMapping("/logout")
@@ -115,7 +115,7 @@ public class UserController {
         Cookie cookie = new Cookie("idx", null);
         cookie.setMaxAge(0); //쿠키 종료
         response.addCookie(cookie);
-        return "redirect:/main";
+        return "redirect:/0/main";
     }
 
     @GetMapping("/check-username")

@@ -28,7 +28,7 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
         user.setFailedAttempts(0);
         user.setLocked(false);
         mapper.updateStatus(user);
-        response.sendRedirect("/main");
+        response.sendRedirect("/0/main");
 
         /*if (user.isLocked() && !isRecaptchaValid) {
             response.sendRedirect("/login?error=locked");
