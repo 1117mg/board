@@ -70,7 +70,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .logout()
                 .logoutUrl("/logout")
-                .logoutSuccessUrl("/main")  // 로그아웃 성공 후 리다이렉트 설정
+                .logoutSuccessUrl("/0/main")  // 로그아웃 성공 후 리다이렉트 설정
                 .permitAll()
                 .and()
                 .exceptionHandling()

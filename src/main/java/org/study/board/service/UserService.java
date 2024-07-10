@@ -32,9 +32,7 @@ public class UserService {
     public User findByLoginId(String userId){return mapper.findByLoginId(userId);}
 
     public void register(User user) {
-        log.info("DB 저장 전 사용자 정보: {}", user);
         mapper.save(user);
-        log.info("DB 저장 후 사용자 정보: {}", user);
     }
 
     public void loginWithToken(User user, String token){

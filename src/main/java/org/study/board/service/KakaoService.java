@@ -11,7 +11,7 @@ import java.net.URL;
 import java.util.HashMap;
 
 @Service
-public class OauthService{
+public class KakaoService{
 
     public String getKakaoAccessToken (String code) {
         String access_Token = "";
