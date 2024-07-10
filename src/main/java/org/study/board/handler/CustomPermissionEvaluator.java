@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
+import org.study.board.dto.User;
 import org.study.board.repository.AdminMapper;
 
 @Component
@@ -17,8 +18,8 @@ public class CustomPermissionEvaluator {
             return false;
         }
 
-        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-        Long userIdx = ((org.study.board.dto.User) userDetails).getIdx();
+        User userDetails = (User) authentication.getPrincipal();
+        Long userIdx = userDetails.getIdx();
         Integer ctgNo = getCtgNoByPermissionKey(permissionKey);
 
         if (ctgNo == null) {

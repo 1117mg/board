@@ -20,8 +20,8 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException {
-        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-        String userId = userDetails.getUsername();
+        User userDetails = (User) authentication.getPrincipal();
+        String userId = userDetails.getUserId();
         User user = mapper.findByLoginId(userId);
 
 
