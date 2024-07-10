@@ -101,3 +101,7 @@ w
 G.idea/sonarlint/issuestore/8/5/8501f464341d43f39d0c633d07279368991b48d8,5\5\5513c7f2a41bbc319cc1c2eb18a50c117658ce15
 t
 Dsrc/main/java/org/study/board/handler/CustomPermissionEvaluator.java,c\a\cac2bfec9aac0629e6b9ddb0c1662033e4270e8f
+g
+7src/main/java/org/study/board/service/OauthService.java,d\4\d420142a41e5c6290a7dcd13481993f14f765cd2
+m
+=src/main/java/org/study/board/controller/OauthController.java,0\f\0fbb0ecbd325b88fb1c9a1bfa7933061c31e3f56

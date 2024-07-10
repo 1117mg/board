@@ -30,6 +30,21 @@ public class User implements UserDetails{
     private Timestamp lockTime; // 계정 잠금 시간
     //private boolean recaptchaRequired; // reCAPTCHA 필요 여부
 
+    @Override
+    public String toString() {
+        return "User{" +
+                "idx=" + idx +
+                ", userId='" + userId + '\'' +
+                ", password='" + password + '\'' +
+                ", username='" + username + '\'' +
+                ", regdate=" + regdate +
+                ", role='" + role + '\'' +
+                ", failedAttempts=" + failedAttempts +
+                ", locked=" + locked +
+                ", lockTime=" + lockTime +
+                '}';
+    }
+
     // 로그인 실패 횟수 증가
     public void incrementFailedAttempts() {
         this.failedAttempts++;
