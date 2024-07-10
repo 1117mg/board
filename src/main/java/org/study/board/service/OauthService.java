@@ -15,14 +15,12 @@ public class OauthService{
 
     public String getKakaoAccessToken (String code) {
         String access_Token = "";
-        String refresh_Token = "";
+        //String refresh_Token = "";
         String reqURL = "https://kauth.kakao.com/oauth/token";
 
         try {
             URL url = new URL(reqURL);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-
-            //POST 요청을 위해 기본값이 false인 setDoOutput을 true로
             conn.setRequestMethod("POST");
             conn.setDoOutput(true);
 
@@ -53,10 +51,10 @@ public class OauthService{
             //Gson 라이브러리에 포함된 클래스로 JSON파싱 객체 생성
             JsonElement element = JsonParser.parseString(result);
             access_Token = element.getAsJsonObject().get("access_token").getAsString();
-            refresh_Token = element.getAsJsonObject().get("refresh_token").getAsString();
+            //refresh_Token = element.getAsJsonObject().get("refresh_token").getAsString();
 
             System.out.println("access_token : " + access_Token);
-            System.out.println("refresh_token : " + refresh_Token);
+            //System.out.println("refresh_token : " + refresh_Token);
 
             br.close();
             bw.close();
@@ -93,9 +91,8 @@ public class OauthService{
             JsonObject properties = element.getAsJsonObject().get("properties").getAsJsonObject();
             JsonObject kakao_account = element.getAsJsonObject().get("kakao_account").getAsJsonObject();
 
-            String nickname = properties.getAsJsonObject().get("nickname").getAsString();
-            //String email = kakao_account.getAsJsonObject().get("email").getAsString();
-            String email = "lucia_17@naver.com";
+            String nickname = properties.get("nickname").getAsString();
+            String email = kakao_account.get("email").getAsString();
 
             userInfo.put("nickname", nickname);
             userInfo.put("email", email);

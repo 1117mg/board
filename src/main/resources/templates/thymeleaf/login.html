@@ -100,14 +100,6 @@
         </div>
         <br>
     </form>
-    <!--<form action="/kakao-login" method="post" th:object="${loginForm}">
-        <div class="social-login-box">
-            <p>소셜 계정 로그인</p>
-            <a href="https://kauth.kakao.com/oauth/authorize?client_id=a411d09a7888de46a12e564c7859c055&redirect_uri=http://localhost:8080/kakao-login&response_type=code" class="kakao_btn">
-                <img src="/img/kakao_login_large_wide.png" alt="카카오 로그인">
-            </a>
-        </div>
-    </form>-->
     <div class="social-login-box">
         <p>소셜 계정 로그인</p>
         <a th:href="@{https://kauth.kakao.com/oauth/authorize?client_id=a411d09a7888de46a12e564c7859c055&redirect_uri=http://localhost:8080/kakao-login&response_type=code}" class="kakao_btn">

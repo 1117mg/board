@@ -3,6 +3,8 @@ package org.study.board.service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -12,6 +14,7 @@ import org.study.board.dto.JoinForm;
 import org.study.board.dto.User;
 import org.study.board.repository.UserMapper;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,10 +32,15 @@ public class UserService {
     public User findByLoginId(String userId){return mapper.findByLoginId(userId);}
 
     public void register(User user) {
-        // 패스워드 암호화 등 추가적인 로직이 필요할 수 있습니다.
-        // 예시로는 패스워드를 그대로 저장하는 것이므로, 실제로는 passwordEncoder를 사용해야 합니다.
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        log.info("DB 저장 전 사용자 정보: {}", user);
         mapper.save(user);
+        log.info("DB 저장 후 사용자 정보: {}", user);
+    }
+
+    public void loginWithToken(User user, String token){
+        UsernamePasswordAuthenticationToken authenticationToken =
+                new UsernamePasswordAuthenticationToken(user,token, new ArrayList<>());
+        SecurityContextHolder.getContext().setAuthentication(authenticationToken);
     }
 
     public void join(JoinForm form) {

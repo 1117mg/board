@@ -22,11 +22,11 @@ public class CustomUserDetailsService implements UserDetailsService {
     private UserMapper mapper;
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = mapper.findByLoginId(username);
+    public UserDetails loadUserByUsername(String userId) throws UsernameNotFoundException {
+        User user = mapper.findByLoginId(userId);
 
         if (user == null) {
-            throw new UsernameNotFoundException("User not found with username: " + username);
+            throw new UsernameNotFoundException("User not found with username: " + userId);
         }
 
         /*if (user.isLocked()) {
@@ -46,7 +46,7 @@ public class CustomUserDetailsService implements UserDetailsService {
                 //.accountLocked(user.isLocked())  // locked 상태를 UserDetails에 반영
                 .build();*/
 
-        log.info("User: " + username + ", Role: " + user.getRole());
+        log.info("User: " + userId + ", Role: " + user.getRole());
 
         return user;
     }
