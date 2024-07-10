@@ -64,16 +64,6 @@ public class User implements UserDetails{
     }
 
     @Override
-    public String getUsername() {
-        return userId;
-    }
-
-    @Override
-    public String getPassword() {
-        return password;
-    }
-
-    @Override
     public boolean isAccountNonLocked() {
         return !locked;
     }
