@@ -51,8 +51,8 @@ public class NaverService {
             );
 
             JsonObject jsonObj = (JsonObject) JsonParser.parseString(response.getBody());
-            access_Token = String.valueOf(jsonObj.get("access_token"));
-            refresh_Token = String.valueOf(jsonObj.get("refresh_token"));
+            access_Token = jsonObj.get("access_token").getAsString();
+            refresh_Token = jsonObj.get("refresh_token").getAsString();
         } catch (Exception e) {
             throw new Exception("API call failed");
         }
