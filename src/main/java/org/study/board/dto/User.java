@@ -7,17 +7,19 @@ import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class User implements UserDetails{
+public class User implements UserDetails, OAuth2User {
 
     private Long idx;
     private String userId;
@@ -29,6 +31,22 @@ public class User implements UserDetails{
     private boolean locked;
     private Timestamp lockTime; // 계정 잠금 시간
     //private boolean recaptchaRequired; // reCAPTCHA 필요 여부
+
+    // 구글 로그인
+    private String provider;
+    private String providerId;
+
+    private Map<String, Object> attributes;
+
+    @Override
+    public String getName() {
+        return null;
+    }
+
+    @Override
+    public Map<String, Object> getAttributes() {
+        return attributes;
+    }
 
     // 로그인 실패 횟수 증가
     public void incrementFailedAttempts() {
@@ -64,5 +82,4 @@ public class User implements UserDetails{
         // 계정 활성화 여부 로직 (예: 활성화되었다고 가정)
         return true;
     }
-
 }

@@ -38,7 +38,7 @@ public class NaverService {
             params.add("client_id"    , "_Cc29jbVJrmPVE5B8SfS");
             params.add("client_secret", "A9kaJoE_0L");
             params.add("code"         , code);
-            params.add("redirect_uri" , "http://localhost:8080/naver-login");
+            params.add("redirect_uri" , "http://localhost:8080/oauth/naver-login");
 
             RestTemplate restTemplate = new RestTemplate();
             HttpEntity<MultiValueMap<String, String>> httpEntity = new HttpEntity<>(params, headers);
