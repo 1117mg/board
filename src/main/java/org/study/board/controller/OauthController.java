@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.study.board.dto.SnsUser;
 import org.study.board.dto.User;
 import org.study.board.service.KakaoService;
 import org.study.board.service.NaverService;
@@ -35,19 +36,10 @@ public class OauthController {
         String email = (String) userInfo.get("email");
         String nickname = (String) userInfo.get("nickname");
 
-        User user = userService.findByLoginId(email);
+        User user = userService.handleSnsLogin(email, "kakao", nickname);
 
-        if (user == null) {
-            user = new User();
-            user.setUserId(email);
-            user.setPassword(access_Token);
-            user.setUsername(nickname);
-            log.info("등록 전 사용자 정보: {}", user);
-            userService.register(user);
-            log.info("DB 저장 후 사용자 정보: {}", userService.findByLoginId(email));
-        }
-
-        userService.loginWithToken(user,access_Token);
+        // 로그인
+        userService.loginWithToken(user, access_Token);
 
         Cookie cookie = new Cookie("idx", String.valueOf(user.getIdx()));
         cookie.setMaxAge(60 * 60 * 24);  // 쿠키 유효 시간 : 1일
@@ -57,7 +49,7 @@ public class OauthController {
     }
 
     @GetMapping("/naver-login")
-    public String naverLogin(@RequestParam("code") String code, HttpServletResponse response) {
+    public String naverLogin(@RequestParam("code") String code, HttpServletResponse response) throws Exception {
         String access_Token = naverService.getNaverAccessToken(code);
         log.info(access_Token);
         HashMap<String, Object> userInfo = naverService.getUserInfo(access_Token);

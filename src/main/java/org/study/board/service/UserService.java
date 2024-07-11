@@ -11,7 +11,9 @@ import org.springframework.stereotype.Service;
 import org.study.board.controller.UserController;
 import org.study.board.dto.Category;
 import org.study.board.dto.JoinForm;
+import org.study.board.dto.SnsUser;
 import org.study.board.dto.User;
+import org.study.board.repository.OauthMapper;
 import org.study.board.repository.UserMapper;
 
 import java.util.ArrayList;
@@ -23,17 +25,13 @@ public class UserService {
     private static final Logger log = LoggerFactory.getLogger(UserService.class);
     @Autowired
     private UserMapper mapper;
+    @Autowired
+    private OauthMapper oauthMapper;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
 
     public User findById(long idx){return mapper.findById(idx);}
-
-    public User findByLoginId(String userId){return mapper.findByLoginId(userId);}
-
-    public void register(User user) {
-        mapper.save(user);
-    }
 
     public void loginWithToken(User user, String token){
         UsernamePasswordAuthenticationToken authenticationToken =
@@ -68,6 +66,38 @@ public class UserService {
             }
         } else {
             throw new RuntimeException("사용자를 찾을 수 없습니다.");
+        }
+    }
+
+    public User handleSnsLogin(String snsId, String snsType, String snsName) {
+        // sns_id로 sns_user 정보 조회
+        SnsUser snsUser = oauthMapper.selectSnsUserBySnsId(snsId);
+
+        if (snsUser == null) {
+            // sns_user가 존재하지 않으면, 해당 sns_id와 연동된 일반 사용자도 없음
+            // 새로운 사용자 생성
+            User newUser = new User();
+            newUser.setUserId(snsId);
+            newUser.setUsername(snsName);
+            newUser.setPassword(passwordEncoder.encode("default_password")); // 임시 비밀번호 설정
+            newUser.setRole("USER");
+            mapper.save(newUser);
+
+            User savedUser = mapper.findByLoginId(snsId);
+
+            // sns_user 저장
+            snsUser = SnsUser.builder()
+                    .idx(savedUser.getIdx())
+                    .snsId(snsId)
+                    .snsType(snsType)
+                    .snsName(snsName)
+                    .snsConnectDate(new java.sql.Timestamp(System.currentTimeMillis()).toString())
+                    .build();
+            oauthMapper.insertSnsUser(snsUser);
+            return newUser;
+        } else {
+            // sns_user가 존재하면, 연동된 일반 사용자 정보를 반환
+            return findById(snsUser.getIdx());
         }
     }
 

@@ -13,10 +13,13 @@ import java.util.HashMap;
 @Service
 public class KakaoService{
 
+    private final static String KAKAO_AUTH_URI = "https://kauth.kakao.com";
+    private final static String KAKAO_API_URI = "https://kapi.kakao.com";
+
     public String getKakaoAccessToken (String code) {
         String access_Token = "";
         //String refresh_Token = "";
-        String reqURL = "https://kauth.kakao.com/oauth/token";
+        String reqURL = KAKAO_AUTH_URI + "/oauth/token";
 
         try {
             URL url = new URL(reqURL);
@@ -67,7 +70,7 @@ public class KakaoService{
 
     public HashMap<String, Object> getUserInfo(String access_Token) {
         HashMap<String, Object> userInfo = new HashMap<>();
-        String reqURL = "https://kapi.kakao.com/v2/user/me";
+        String reqURL = KAKAO_API_URI + "/v2/user/me";
         try {
             URL url = new URL(reqURL);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
