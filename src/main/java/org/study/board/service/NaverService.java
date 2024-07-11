@@ -3,7 +3,14 @@ package org.study.board.service;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.client.RestTemplate;
 
 import java.io.*;
 import java.net.HttpURLConnection;
@@ -13,54 +20,41 @@ import java.util.HashMap;
 @Service
 public class NaverService {
 
-    public String getNaverAccessToken (String code) {
+    private final static String NAVER_AUTH_URI = "https://nid.naver.com";
+    private final static String NAVER_API_URI = "https://openapi.naver.com";
+
+    public String getNaverAccessToken (String code) throws Exception{
+        if (code == null) throw new Exception("Failed get authorization code");
+
         String access_Token = "";
-        //String refresh_Token = "";
-        String reqURL = "https://nid.naver.com/oauth2.0/token";
+        String refresh_Token = "";
 
         try {
-            URL url = new URL(reqURL);
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setRequestMethod("POST");
-            conn.setDoOutput(true);
+            HttpHeaders headers = new HttpHeaders();
+            headers.add("Content-type", "application/x-www-form-urlencoded");
 
-            //POST 요청에 필요로 요구하는 파라미터 스트림을 통해 전송
-            BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(conn.getOutputStream()));
-            StringBuilder sb = new StringBuilder();
-            sb.append("grant_type=authorization_code");
-            sb.append("&client_id=_Cc29jbVJrmPVE5B8SfS"); // TODO client_id 입력
-            sb.append("&client_secret=A9kaJoE_0L"); // TODO client_secret 입력
-            sb.append("&redirect_uri=http://localhost:8080/naver-login"); // TODO 인가코드 받은 redirect_uri 입력
-            sb.append("&code=" + code);
-            bw.write(sb.toString());
-            bw.flush();
+            MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+            params.add("grant_type"   , "authorization_code");
+            params.add("client_id"    , "_Cc29jbVJrmPVE5B8SfS");
+            params.add("client_secret", "A9kaJoE_0L");
+            params.add("code"         , code);
+            params.add("redirect_uri" , "http://localhost:8080/naver-login");
 
-            //결과 코드가 200이라면 성공
-            int responseCode = conn.getResponseCode();
-            System.out.println("responseCode : " + responseCode);
+            RestTemplate restTemplate = new RestTemplate();
+            HttpEntity<MultiValueMap<String, String>> httpEntity = new HttpEntity<>(params, headers);
 
-            //요청을 통해 얻은 JSON타입의 Response 메세지 읽어오기
-            BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-            String line = "";
-            String result = "";
+            ResponseEntity<String> response = restTemplate.exchange(
+                    NAVER_AUTH_URI + "/oauth2.0/token",
+                    HttpMethod.POST,
+                    httpEntity,
+                    String.class
+            );
 
-            while ((line = br.readLine()) != null) {
-                result += line;
-            }
-            System.out.println("response body : " + result);
-
-            //Gson 라이브러리에 포함된 클래스로 JSON파싱 객체 생성
-            JsonElement element = JsonParser.parseString(result);
-            access_Token = element.getAsJsonObject().get("access_token").getAsString();
-            //refresh_Token = element.getAsJsonObject().get("refresh_token").getAsString();
-
-            System.out.println("access_token : " + access_Token);
-            //System.out.println("refresh_token : " + refresh_Token);
-
-            br.close();
-            bw.close();
-        } catch (IOException e) {
-            e.printStackTrace();
+            JsonObject jsonObj = (JsonObject) JsonParser.parseString(response.getBody());
+            access_Token = String.valueOf(jsonObj.get("access_token"));
+            refresh_Token = String.valueOf(jsonObj.get("refresh_token"));
+        } catch (Exception e) {
+            throw new Exception("API call failed");
         }
 
         return access_Token;
@@ -68,7 +62,7 @@ public class NaverService {
 
     public HashMap<String, Object> getUserInfo(String access_Token) {
         HashMap<String, Object> userInfo = new HashMap<>();
-        String reqURL = "https://openapi.naver.com/v1/nid/me";
+        String reqURL = NAVER_API_URI+"/v1/nid/me";
         try {
             URL url = new URL(reqURL);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -89,13 +83,14 @@ public class NaverService {
             System.out.println("response body : " + result);
 
             JsonElement element = JsonParser.parseString(result);
-            JsonObject properties = element.getAsJsonObject().get("properties").getAsJsonObject();
-            JsonObject naver_account = element.getAsJsonObject().get("naver_account").getAsJsonObject();
+            JsonObject naver_account = element.getAsJsonObject().get("response").getAsJsonObject();
 
-            String nickname = properties.get("nickname").getAsString();
             String email = naver_account.get("email").getAsString();
+            String id = naver_account.get("id").getAsString();
+            String name = naver_account.get("name").getAsString();
 
-            userInfo.put("nickname", nickname);
+            userInfo.put("id",id);
+            userInfo.put("name", name);
             userInfo.put("email", email);
 
         } catch (IOException e) {
