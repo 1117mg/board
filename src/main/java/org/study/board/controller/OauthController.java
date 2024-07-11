@@ -54,6 +54,19 @@ public class OauthController {
         log.info(access_Token);
         HashMap<String, Object> userInfo = naverService.getUserInfo(access_Token);
         log.info("네이버 사용자 정보 : " + userInfo);
+
+        String email = (String) userInfo.get("email");
+        String name = (String) userInfo.get("name");
+
+        User user = userService.handleSnsLogin(email, "naver", name);
+
+        // 로그인
+        userService.loginWithToken(user, access_Token);
+
+        Cookie cookie = new Cookie("idx", String.valueOf(user.getIdx()));
+        cookie.setMaxAge(60 * 60 * 24);  // 쿠키 유효 시간 : 1일
+        response.addCookie(cookie);
+
         return "redirect:/0/main";
     }
 }

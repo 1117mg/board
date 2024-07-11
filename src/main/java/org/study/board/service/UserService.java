@@ -94,6 +94,7 @@ public class UserService {
                     .snsConnectDate(new java.sql.Timestamp(System.currentTimeMillis()).toString())
                     .build();
             oauthMapper.insertSnsUser(snsUser);
+
             return newUser;
         } else {
             // sns_user가 존재하면, 연동된 일반 사용자 정보를 반환
