@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -13,13 +14,12 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.study.board.aop.BoardAop;
-import org.study.board.dto.Board;
-import org.study.board.dto.Category;
-import org.study.board.dto.FileDto;
-import org.study.board.dto.PaginateDto;
+import org.study.board.dto.*;
 import org.study.board.handler.CustomPermissionEvaluator;
+import org.study.board.repository.UserMapper;
 import org.study.board.service.AdminService;
 import org.study.board.service.BoardService;
+import org.study.board.service.UserService;
 import org.study.board.util.FileUtil;
 
 import javax.validation.Valid;
@@ -44,6 +44,8 @@ public class BoardController {
     private BoardAop aop;
     @Autowired
     private CustomPermissionEvaluator permissionEvaluator;
+    @Autowired
+    private UserService userService;
 
     // 타임리프
     @RequestMapping("/test")
@@ -86,8 +88,25 @@ public class BoardController {
         model.addAttribute("categories", categories);
         model.addAttribute("subCategoriesMap", subCategoriesMap);
 
+        // 사용자 이름 설정
         if (principal != null) {
-            model.addAttribute("username", principal.getName());
+            String username = principal.getName();
+
+            if (principal instanceof UsernamePasswordAuthenticationToken) {
+                Object principalObj = ((UsernamePasswordAuthenticationToken) principal).getPrincipal();
+                // sns유저일 경우
+                // 배열 안의 gno와 일치하는 idx를 가진 사용자(연동된 사용자)의 이름을 출력
+                if (principalObj instanceof SnsUser) {
+                    SnsUser snsUser = (SnsUser) principalObj;
+                    Long gno = snsUser.getGno();
+                    User user = userService.findById(gno);
+                    if (user != null) {
+                        username = user.getUsername();
+                    }
+                }
+            }
+
+            model.addAttribute("username", username);
         }
 
         model.addAttribute("paginate", paginate);

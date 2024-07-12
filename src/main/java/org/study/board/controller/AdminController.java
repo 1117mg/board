@@ -2,11 +2,13 @@ package org.study.board.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.study.board.dto.Category;
+import org.study.board.dto.SnsUser;
 import org.study.board.dto.User;
 import org.study.board.dto.UserCtgAuth;
 import org.study.board.service.AdminService;
@@ -41,33 +43,28 @@ public class AdminController {
         model.addAttribute("categories", categories);
         model.addAttribute("subCategoriesMap", subCategoriesMap);
 
+        // 사용자 이름 설정
         if (principal != null) {
-            model.addAttribute("username", principal.getName());
+            String username = principal.getName();
+
+            if (principal instanceof UsernamePasswordAuthenticationToken) {
+                Object principalObj = ((UsernamePasswordAuthenticationToken) principal).getPrincipal();
+                // sns유저일 경우
+                // 배열 안의 gno와 일치하는 idx를 가진 사용자(연동된 사용자)의 이름을 출력
+                if (principalObj instanceof SnsUser) {
+                    SnsUser snsUser = (SnsUser) principalObj;
+                    Long gno = snsUser.getGno();
+                    User user = userService.findById(gno);
+                    if (user != null) {
+                        username = user.getUsername();
+                    }
+                }
+            }
+
+            model.addAttribute("username", username);
         }
 
-        // 각 사용자별 카테고리별 권한 맵 생성
-        /*Map<Long, Map<Integer, UserCtgAuth>> authMap = new HashMap<>();
-        for (User user : users) {
-            Map<Integer, UserCtgAuth> userAuthMap = new HashMap<>();
-            List<UserCtgAuth> auths = adminService.getUserAuth(user.getIdx());
-            for (Category category : categories) {
-                UserCtgAuth userCtgAuth = auths.stream()
-                        .filter(auth -> auth.getCtgNo() == category.getCtgNo())
-                        .findFirst()
-                        .orElseGet(() -> {
-                            UserCtgAuth newAuth = new UserCtgAuth();
-                            newAuth.setCtgNo(category.getCtgNo());
-                            newAuth.setCanRead(false);
-                            newAuth.setCanWrite(false);
-                            return newAuth;
-                        });
-                userAuthMap.put(category.getCtgNo(), userCtgAuth);
-            }
-            authMap.put(user.getIdx(), userAuthMap);
-        }*/
-
         model.addAttribute("users", users);
-        //model.addAttribute("authMap", authMap);
         model.addAttribute("categories", categories);
         return "thymeleaf/admin/user_main";
     }
