@@ -146,6 +146,4 @@
         SET delete_yn=1
         WHERE bno=#{bno} AND delete_yn=0
     </update>
-
-
 </mapper>
