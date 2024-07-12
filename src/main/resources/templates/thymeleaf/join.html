@@ -30,21 +30,25 @@
     <form th:action="@{/join}" method="post">
         <div>
             <label for="loginId">아이디</label>
-            <input type="text" id="loginId" name="loginId"  class="form-control" required>
+            <input th:if="${userId != null}" type="text" name="loginId" class="form-control" th:value="${userId}" readonly>
+            <input th:unless="${userId != null}" type="text" id="loginId" name="loginId" class="form-control" required>
             <button type="button" id="checkUsernameButton" class="btn btn-secondary">중복 확인</button>
             <div id="usernameCheckResult" class="result-message"></div>
         </div>
         <div>
-            <label for="password">비밀번호</label>
-            <input type="password" id="password" name="password" class="form-control" required>
+            <label>비밀번호</label>
+            <input th:if="${password != null}" type="password" name="password" class="form-control" th:value="${password}" readonly>
+            <input th:unless="${password != null}" type="password" name="password" class="form-control" required>
         </div>
         <div>
-            <label for="passwordCheck">비밀번호 확인</label>
-            <input type="password" id="passwordCheck" name="passwordCheck" class="form-control" required>
+            <label>비밀번호 확인</label>
+            <input th:if="${password != null}" type="password" name="passwordCheck" class="form-control" th:value="${password}" readonly>
+            <input th:unless="${password != null}" type="password" name="passwordCheck" class="form-control" required>
         </div>
         <div>
-            <label for="username">이름</label>
-            <input type="text" id="username" name="username" class="form-control" required>
+            <label>이름</label>
+            <input th:if="${username != null}" type="text" name="username" class="form-control" th:value="${username}" readonly>
+            <input th:unless="${username != null}" type="text" name="username" class="form-control" required>
         </div>
         <div id="emptyError" style="color: red"></div>
 
@@ -52,7 +56,8 @@
 
         <div class="row">
             <div class="col">
-            <button type="submit" class="w-100 btn btn-primary btn-lg">가입하기</button>
+                <input type="hidden" name="snsType" th:value="${snsType}">
+                <button type="submit" class="w-100 btn btn-primary btn-lg">가입하기</button>
             </div>
             <div class="col">
                 <button type="button" onclick="history.back()" class="w-100 btn btn-secondary btn-lg">취소</button>

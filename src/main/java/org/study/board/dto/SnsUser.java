@@ -13,7 +13,6 @@ public class SnsUser {
     private Long idx;
     private String snsId;
     private String snsType;
-    private String snsName;
-    private String snsProfile;
     private String snsConnectDate;
+    private Long gno;
 }

@@ -21,4 +21,6 @@ public class JoinForm {
     @NotBlank
     private String username;
 
+    private String snsType;
+
 }
