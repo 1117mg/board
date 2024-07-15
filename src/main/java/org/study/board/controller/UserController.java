@@ -2,11 +2,7 @@ package org.study.board.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.annotation.Secured;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -15,7 +11,6 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
-import org.study.board.dto.Board;
 import org.study.board.dto.JoinForm;
 import org.study.board.dto.LoginForm;
 import org.study.board.dto.User;
@@ -25,8 +20,6 @@ import org.study.board.service.UserService;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.security.Principal;
-import java.util.List;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -50,8 +43,8 @@ public class UserController {
     @PostMapping("/join")
     public String join(@ModelAttribute("JoinForm") JoinForm form, BindingResult bindingResult) {
         if(form.getSnsType()!=null){
-            service.snsJoin(form.getLoginId(), form.getUsername(),form.getSnsType());
-            return "redirect:/login";
+            service.join(form);
+            return "thymeleaf/alert/snsloginsuccess";
         }
 
         // loginId 중복 체크

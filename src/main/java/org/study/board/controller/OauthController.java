@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.study.board.dto.JoinForm;
 import org.study.board.dto.User;
 import org.study.board.service.GoogleService;
 import org.study.board.service.KakaoService;
@@ -44,12 +43,17 @@ public class OauthController {
         String snsType="kakao";
 
         // 최초 가입 시 회원가입 페이지로 이동
-        if(userService.findSnsUser(name,snsType)==null) {
+        if(userService.findByName(name)==null){
             model.addAttribute("userId", email);
             model.addAttribute("password", "default_password");
             model.addAttribute("username", name);
             model.addAttribute("snsType",snsType);
             return "thymeleaf/join";
+        }
+
+        if(userService.findSnsUser(name,snsType)==null) {
+            userService.snsJoin(email, name, snsType);
+            return "thymeleaf/alert/snslogincheck";
         }
 
         User user=userService.findByName(name);
@@ -76,12 +80,17 @@ public class OauthController {
         String snsType="naver";
 
         // 최초 가입 시 회원가입 페이지로 이동
-        if(userService.findSnsUser(name,snsType)==null) {
+        if(userService.findByName(name)==null){
             model.addAttribute("userId", email);
             model.addAttribute("password", "default_password");
             model.addAttribute("username", name);
             model.addAttribute("snsType",snsType);
             return "thymeleaf/join";
+        }
+
+        if(userService.findSnsUser(name,snsType)==null) {
+            userService.snsJoin(email, name, snsType);
+            return "thymeleaf/alert/snslogincheck";
         }
 
         User user=userService.findByName(name);
@@ -108,12 +117,17 @@ public class OauthController {
         String snsType="google";
 
         // 최초 가입 시 회원가입 페이지로 이동
-        if(userService.findSnsUser(name,snsType)==null) {
+        if(userService.findByName(name)==null){
             model.addAttribute("userId", email);
             model.addAttribute("password", "default_password");
             model.addAttribute("username", name);
             model.addAttribute("snsType",snsType);
             return "thymeleaf/join";
+        }
+
+        if(userService.findSnsUser(name,snsType)==null) {
+            userService.snsJoin(email, name, snsType);
+            return "thymeleaf/alert/snslogincheck";
         }
 
         User user=userService.findByName(name);

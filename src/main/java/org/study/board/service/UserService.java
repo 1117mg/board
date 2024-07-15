@@ -49,7 +49,6 @@ public class UserService {
         user.setRole(form.getLoginId().equals("admin") ? "ADMIN" : "USER");
         user.setPhoneNo(form.getPhoneNo());
         mapper.save(user);
-
         // sns 가입자일 경우
         if(form.getSnsType()!=null){
             snsJoin(form.getLoginId(), form.getUsername(), form.getSnsType());
@@ -57,15 +56,13 @@ public class UserService {
     }
 
     public void snsJoin(@NotBlank String loginId,@NotBlank String username, String snsType){
-        //User user=mapper.findByLoginId(loginId);
         User user=mapper.findByName(username);
-        SnsUser snsUser = SnsUser.builder()
-                .snsId(loginId)
-                .snsType(snsType)
-                .snsConnectDate(new java.sql.Timestamp(System.currentTimeMillis()).toString())
-                .gno(user.getIdx())
-                .snsName(user.getUsername())
-                .build();
+        SnsUser snsUser=new SnsUser();
+        snsUser.setSnsId(loginId);
+        snsUser.setSnsType(snsType);
+        snsUser.setSnsConnectDate(new java.sql.Timestamp(System.currentTimeMillis()).toString());
+        snsUser.setGno(user.getIdx());
+        snsUser.setSnsName(user.getUsername());
         oauthMapper.insertSnsUser(snsUser);
     }
 
