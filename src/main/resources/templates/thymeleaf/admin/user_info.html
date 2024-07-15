@@ -173,6 +173,11 @@
                 <button type="button" onclick="history.back()" class="btn btn-secondary btn-block">뒤로가기</button>
             </div>
         </div>
+        <div class="button-container row justify-content-center">
+            <div class="col-md-4">
+                <a th:href="@{/admin/deleteUser/{id}(id=${user.idx})}" class="btn btn-warning btn-block">삭제</a>
+            </div>
+        </div>
     </form>
     <br>
 </div>

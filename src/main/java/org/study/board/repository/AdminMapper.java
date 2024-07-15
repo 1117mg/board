@@ -18,4 +18,5 @@ public interface AdminMapper {
     List<User> findAllUsers();
     // 쿼리문으로 권한 체크
     int checkUserPermission(@Param("userIdx") Long userIdx, @Param("ctgNo") Integer ctgNo, @Param("permissionType") String permissionType);
+    void deleteUser(User user); //회원 삭제
 }

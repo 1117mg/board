@@ -34,4 +34,8 @@ public class AdminService {
 
     public void updateUser(User user){
         mapper.updateUser(user);}
+
+    public void deleteUser(User user){
+        mapper.deleteUser(user);
+    }
 }

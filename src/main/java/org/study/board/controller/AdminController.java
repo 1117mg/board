@@ -11,6 +11,7 @@ import org.study.board.dto.Category;
 import org.study.board.dto.SnsUser;
 import org.study.board.dto.User;
 import org.study.board.dto.UserCtgAuth;
+import org.study.board.repository.UserMapper;
 import org.study.board.service.AdminService;
 import org.study.board.service.UserService;
 
@@ -157,6 +158,13 @@ public class AdminController {
         }
 
         adminService.updateUserAuth(new ArrayList<>(authMap.values()), userIdx);
+        return "redirect:/admin/users";
+    }
+
+    @GetMapping("/deleteUser/{idx}")
+    public String deleteUser(@PathVariable Long idx){
+        User user = userService.findById(idx);
+        adminService.deleteUser(user);
         return "redirect:/admin/users";
     }
 

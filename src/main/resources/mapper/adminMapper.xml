@@ -52,4 +52,10 @@
                 (#{permissionType} = 'DOWNLOAD' AND uca.can_download = true)
             )
     </select>
+
+    <update id="deleteUser" parameterType="org.study.board.dto.User">
+        UPDATE user
+        SET password=null, username=null, role=null, lock_time=null, phone_no=null
+        WHERE idx = #{idx}
+    </update>
 </mapper>

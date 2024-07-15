@@ -125,7 +125,7 @@ public class AuthInterceptor implements HandlerInterceptor {
     }
 
     private String getPermissionKey(String requestURI) {
-        if (requestURI.startsWith("/admin/users") || requestURI.startsWith("/admin/user")) {
+        if (requestURI.startsWith("/admin")) {
             return "USER_LIST";
         } else if (requestURI.startsWith("/0")) {
             return "NOTICE_BOARD";
@@ -137,7 +137,7 @@ public class AuthInterceptor implements HandlerInterceptor {
     }
 
     private String getPermissionType(String requestURI) {
-        if (requestURI.contains("insertBoard")) {
+        if (requestURI.contains("insertBoard") || requestURI.contains("updateUser") || requestURI.contains("deleteUser")) {
             return "WRITE";
         } else if (requestURI.contains("downloadFile")) {
             return "DOWNLOAD";
