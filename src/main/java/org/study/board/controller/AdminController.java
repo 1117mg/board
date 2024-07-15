@@ -160,36 +160,4 @@ public class AdminController {
         return "redirect:/admin/users";
     }
 
-    /*@PostMapping("/user-auth")
-    public String updateUserAuth(@RequestParam Map<String, String> params) {
-        Map<String, UserCtgAuth> authMap = new HashMap<>();
-
-        for (Map.Entry<String, String> entry : params.entrySet()) {
-            if (entry.getKey().startsWith("read_") || entry.getKey().startsWith("write_")) {
-                String[] parts = entry.getKey().split("_");
-                long userIdx = Long.parseLong(parts[1]);
-                int ctgNo = Integer.parseInt(parts[2]);
-                boolean canRead = "read".equals(parts[0]) && "on".equals(entry.getValue());
-                boolean canWrite = "write".equals(parts[0]) && "on".equals(entry.getValue());
-
-                String key = userIdx + "_" + ctgNo;
-                UserCtgAuth auth = authMap.getOrDefault(key, new UserCtgAuth());
-                auth.setUserIdx(userIdx);
-                auth.setCtgNo(ctgNo);
-                if ("read".equals(parts[0])) {
-                    auth.setCanRead(canRead);
-                }
-                if ("write".equals(parts[0])) {
-                    auth.setCanWrite(canWrite);
-                }
-
-                authMap.put(key, auth);
-            }
-        }
-
-        List<UserCtgAuth> auths = new ArrayList<>(authMap.values());
-        adminService.updateUserAuth(auths);
-        return "redirect:/admin/users";
-    }*/
-
 }

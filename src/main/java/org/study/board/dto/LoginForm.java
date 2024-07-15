@@ -12,7 +12,4 @@ public class LoginForm {
 
     @NotEmpty(message = "비밀번호를 입력하세요.")
     private String password;
-
-    @NotEmpty(message = "전화번호를 입력하세요.")
-    private String phoneNo;
 }

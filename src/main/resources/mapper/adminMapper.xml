@@ -31,7 +31,7 @@
 
     <update id="updateUser" parameterType="org.study.board.dto.User">
         UPDATE user
-        SET username=#{username}
+        SET username=#{username}, phone_no=#{phoneNo}
         WHERE userId = #{userId}
     </update>
 

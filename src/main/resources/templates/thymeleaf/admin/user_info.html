@@ -58,6 +58,12 @@
                 checkAll(this);
             });
         });
+
+        function oninputPhone(target) {
+            target.value = target.value
+                .replace(/[^0-9]/g, '')
+                .replace(/(^02.{0}|^01.{1}|[0-9]{3,4})([0-9]{3,4})([0-9]{4})/g, "$1-$2-$3");
+        }
     </script>
 </head>
 <body>
@@ -68,7 +74,6 @@
         <h1>회원 관리</h1>
     </div>
     <form id="userForm" method="post" th:action="@{/admin/updateUser}" th:object="${user}">
-        <input type="hidden" th:field="*{userId}" />
         <input type="hidden" th:field="*{idx}" />
         <div class="py-5 text-center">
             <h4>회원 상세 정보</h4>
@@ -83,12 +88,16 @@
                 <td th:text="${user.password}">비밀번호</td>
             </tr>
             <tr>
-                <td align="center">이름</td>
+                <td>이름</td>
                 <td><input type="text" name="username" style="width: 95%;" th:value="*{username}"></td>
             </tr>
             <tr>
                 <td>가입 날짜</td>
                 <td th:text="${user.regdate}">가입 날짜</td>
+            </tr>
+            <tr>
+                <td>전화번호</td>
+                <td><input type="text" name="phoneNo" oninput="oninputPhone(this)" style="width: 95%;" th:value="*{phoneNo}"></td>
             </tr>
         </table>
         <div class="py-5 text-center">
