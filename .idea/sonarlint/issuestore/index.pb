@@ -107,3 +107,16 @@ g
 7src/main/java/org/study/board/service/KakaoService.java,4\3\43cf7fcbdafd776b6ef44e29d5a24c9c2578243b
 g
 7src/main/java/org/study/board/service/NaverService.java,9\0\90f79490d7ac706f1ed389a84ee69533d2b43318
+9
+	README.md,8\e\8ec9a00bfd09b3190ac6b22251dbb1aa95a0579d
+4
+.env,3\c\3c84dcdc6bbe3d7817c49dcdc327b926fea1808a
+:
+
+.gitignore,a\5\a5cc2925ca8258af241be7e5b0381edf30266302
+i
+9src/main/java/org/study/board/repository/OauthMapper.java,5\c\5c0083c562b59a77895e0e1f1009e8eae44267ce
+h
+8src/main/java/org/study/board/service/GoogleService.java,3\c\3c307d2278508a553ffa1d3ea47bd73fd1dd5249
+^
+.src/main/java/org/study/board/dto/SnsUser.java,2\1\210e24dfb4fac47bd8c352fdb0ecc7677131e1bf

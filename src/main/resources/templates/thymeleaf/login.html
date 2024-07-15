@@ -88,6 +88,12 @@
             <div th:if="${session.notFound}" th:text="${session.notFound}"></div>
         </div>
         <div id="emptyError" style="color: red"></div>
+        <div>
+            <label for="phoneNo">전화번호</label>
+            <input type="phoneNo" id="phoneNo" name="phoneNo" th:field="*{phoneNo}" class="form-control"
+                   th:class="${#fields.hasErrors('phoneNo')} ? 'form-control field-error' : 'form-control'">
+            <div th:if="${#fields.hasErrors('phoneNo')}" th:errors="*{phoneNo}">비밀번호를 다시 확인해주세요.</div>
+        </div>
 
         <hr class="my-4">
 

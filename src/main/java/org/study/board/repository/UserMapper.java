@@ -12,6 +12,7 @@ import java.util.List;
 public interface UserMapper {
     User findById(Long idx);
     User findByLoginId(String userId);
+    User findByName(String username);
     void save(User user);
     int existsByLoginId(String loginId);
     void updateStatus(User user); // 계정잠금 상태

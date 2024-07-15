@@ -44,7 +44,7 @@ public class OauthController {
         String snsType="kakao";
 
         // 최초 가입 시 회원가입 페이지로 이동
-        if(userService.findSnsUser(email,snsType)==null) {
+        if(userService.findSnsUser(name,snsType)==null) {
             model.addAttribute("userId", email);
             model.addAttribute("password", "default_password");
             model.addAttribute("username", name);
@@ -52,10 +52,10 @@ public class OauthController {
             return "thymeleaf/join";
         }
 
-        User user=userService.findByLoginId(email);
+        User user=userService.findByName(name);
 
         // 로그인
-        userService.loginWithToken(email, snsType, access_Token);
+        userService.loginWithToken(name, snsType, access_Token);
 
         Cookie cookie = new Cookie("idx", String.valueOf(user.getIdx()));
         cookie.setMaxAge(60 * 60 * 24);  // 쿠키 유효 시간 : 1일
@@ -76,7 +76,7 @@ public class OauthController {
         String snsType="naver";
 
         // 최초 가입 시 회원가입 페이지로 이동
-        if(userService.findSnsUser(email,snsType)==null) {
+        if(userService.findSnsUser(name,snsType)==null) {
             model.addAttribute("userId", email);
             model.addAttribute("password", "default_password");
             model.addAttribute("username", name);
@@ -84,10 +84,10 @@ public class OauthController {
             return "thymeleaf/join";
         }
 
-        User user=userService.findByLoginId(email);
+        User user=userService.findByName(name);
 
         // 로그인
-        userService.loginWithToken(email, snsType, access_Token);
+        userService.loginWithToken(name, snsType, access_Token);
 
         Cookie cookie = new Cookie("idx", String.valueOf(user.getIdx()));
         cookie.setMaxAge(60 * 60 * 24);  // 쿠키 유효 시간 : 1일
@@ -95,9 +95,9 @@ public class OauthController {
 
         return "redirect:/0/main";
     }
-/*
+
     @GetMapping("/google-login")
-    public String googleLogin(@RequestParam("code") String code, HttpServletResponse response) throws Exception {
+    public String googleLogin(@RequestParam("code") String code, HttpServletResponse response, Model model) throws Exception {
         String access_Token = googleService.getGoogleAccessToken(code);
         log.info(access_Token);
         HashMap<String, Object> userInfo = googleService.getUserInfo(access_Token);
@@ -105,16 +105,26 @@ public class OauthController {
 
         String email = (String) userInfo.get("email");
         String name = (String) userInfo.get("name");
+        String snsType="google";
 
-        User user = userService.handleSnsLogin(email, "google", name);
+        // 최초 가입 시 회원가입 페이지로 이동
+        if(userService.findSnsUser(name,snsType)==null) {
+            model.addAttribute("userId", email);
+            model.addAttribute("password", "default_password");
+            model.addAttribute("username", name);
+            model.addAttribute("snsType",snsType);
+            return "thymeleaf/join";
+        }
+
+        User user=userService.findByName(name);
 
         // 로그인
-        userService.loginWithToken(user, access_Token);
+        userService.loginWithToken(name, snsType, access_Token);
 
         Cookie cookie = new Cookie("idx", String.valueOf(user.getIdx()));
         cookie.setMaxAge(60 * 60 * 24);  // 쿠키 유효 시간 : 1일
         response.addCookie(cookie);
 
         return "redirect:/0/main";
-    }*/
+    }
 }

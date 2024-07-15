@@ -49,15 +49,14 @@ public class UserController {
 
     @PostMapping("/join")
     public String join(@ModelAttribute("JoinForm") JoinForm form, BindingResult bindingResult) {
+        if(form.getSnsType()!=null){
+            service.snsJoin(form.getLoginId(), form.getUsername(),form.getSnsType());
+            return "redirect:/login";
+        }
 
         // loginId 중복 체크
         if(service.checkLoginIdDuplicate(form.getLoginId())) {
-            if(form.getSnsType()!=null){
-                service.snsJoin(form.getLoginId(),form.getSnsType());
-                return "redirect:/login";
-            }else{
-                bindingResult.addError(new FieldError("joinForm", "loginId", "존재하는 아이디입니다."));
-            }
+            bindingResult.addError(new FieldError("joinForm", "loginId", "존재하는 아이디입니다."));
         }
 
         if (bindingResult.hasErrors()) {

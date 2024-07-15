@@ -15,4 +15,5 @@ public class SnsUser {
     private String snsType;
     private String snsConnectDate;
     private Long gno;
+    private String snsName;
 }

@@ -1,22 +1,7 @@
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 5a53150c89c72155fd8fd5de5fc54696f6245b6a
 d
-java:S1075€"ARefactor your code to get this URI from a customizable parameter.(ÆÄ¨«ùÿÿÿÿ8½¨“¹…2
+java:S1075€"ARefactor your code to get this URI from a customizable parameter.(ÆÄ¨«ùÿÿÿÿ8áÙä¥Š2
 I
-java:S1075"&Remove this hard-coded path-delimiter.(Ú ¤Ïûÿÿÿÿ8¾¨“¹…2
+java:S1075"&Remove this hard-coded path-delimiter.(Ú ¤Ïûÿÿÿÿ8áÙä¥Š2
 k
-<<<<<<< HEAD
-java:S1128"IRemove this unused import 'org.springframework.validation.BindingResult'.(‹¶¸ùÿÿÿÿ8ïÛâÔ‰2
-=======
-X	java:S125Q"<This block of commented-out lines of code should be removed.(ÆÔ“8êÖ†Ë„2
-d
-java:S1075ƒ"ARefactor your code to get this URI from a customizable parameter.(ÆÄ¨«ùÿÿÿÿ8´ÔôÊ„2
-I
-java:S1075„"&Remove this hard-coded path-delimiter.(Ú ¤Ïûÿÿÿÿ8´ÔôÊ„2
->>>>>>> b172fd1 (feat : ë‹µë³€í˜• ê²Œì‹œíŒ 1ì°¨)
-=======
-java:S1128"IRemove this unused import 'org.springframework.validation.BindingResult'.(‹¶¸ùÿÿÿÿ8ïÛâÔ‰2
->>>>>>> 5a53150c89c72155fd8fd5de5fc54696f6245b6a
+java:S1128"IRemove this unused import 'org.springframework.validation.BindingResult'.(‹¶¸ùÿÿÿÿ8óÙä¥Š2

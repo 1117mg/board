@@ -32,8 +32,10 @@ public class UserService {
 
     public User findByLoginId(String userId){return mapper.findByLoginId(userId);}
 
-    public void loginWithToken(String userId, String snsType, String token){
-        SnsUser user=oauthMapper.findSnsUserBySIST(userId, snsType);
+    public User findByName(String username){return mapper.findByName(username);}
+
+    public void loginWithToken(String username, String snsType, String token){
+        SnsUser user=oauthMapper.findSnsUserBySNST(username, snsType);
         UsernamePasswordAuthenticationToken authenticationToken =
                 new UsernamePasswordAuthenticationToken(user,token, new ArrayList<>());
         SecurityContextHolder.getContext().setAuthentication(authenticationToken);
@@ -45,21 +47,24 @@ public class UserService {
         user.setUsername(form.getUsername());
         user.setPassword(passwordEncoder.encode(form.getPassword()));  // 비밀번호 암호화
         user.setRole(form.getLoginId().equals("admin") ? "ADMIN" : "USER");
+        user.setPhoneNo(form.getPhoneNo());
         mapper.save(user);
 
         // sns 가입자일 경우
         if(form.getSnsType()!=null){
-            snsJoin(form.getLoginId(), form.getSnsType());
+            snsJoin(form.getLoginId(), form.getUsername(), form.getSnsType());
         }
     }
 
-    public void snsJoin(@NotBlank String loginId, String snsType){
-        User user=mapper.findByLoginId(loginId);
+    public void snsJoin(@NotBlank String loginId,@NotBlank String username, String snsType){
+        //User user=mapper.findByLoginId(loginId);
+        User user=mapper.findByName(username);
         SnsUser snsUser = SnsUser.builder()
-                .snsId(user.getUserId())
+                .snsId(loginId)
                 .snsType(snsType)
                 .snsConnectDate(new java.sql.Timestamp(System.currentTimeMillis()).toString())
                 .gno(user.getIdx())
+                .snsName(user.getUsername())
                 .build();
         oauthMapper.insertSnsUser(snsUser);
     }
@@ -85,8 +90,8 @@ public class UserService {
         }
     }
 
-    public SnsUser findSnsUser(String snsId, String snsType){
-        SnsUser snsUser = oauthMapper.findSnsUserBySIST(snsId,snsType);
+    public SnsUser findSnsUser(String snsName, String snsType){
+        SnsUser snsUser = oauthMapper.findSnsUserBySNST(snsName,snsType);
         return snsUser;
     }
 

@@ -8,17 +8,18 @@
         <result property="snsType" column="sns_type" />
         <result property="snsConnectDate" column="sns_connect_date" />
         <result property="gno" column="gno" />
+        <result property="snsName" column="sns_name" />
     </resultMap>
 
-    <select id="findSnsUserBySIST" resultMap="snsUserResultMap">
-        select idx, sns_id, sns_type, sns_connect_date, gno
+    <select id="findSnsUserBySNST" resultMap="snsUserResultMap">
+        select idx, sns_id, sns_type, sns_connect_date, gno, sns_name
         from sns_info
-        where sns_id = #{snsId} and sns_type = #{snsType}
+        where sns_name = #{snsName} and sns_type = #{snsType}
     </select>
 
     <insert id="insertSnsUser" parameterType="org.study.board.dto.SnsUser">
         insert into
-            sns_info(idx, sns_id, sns_type, sns_connect_date, gno)
-        values (#{idx}, #{snsId}, #{snsType}, now(), #{gno})
+            sns_info(idx, sns_id, sns_type, sns_connect_date, gno, sns_name)
+        values (#{idx}, #{snsId}, #{snsType}, now(), #{gno}, #{snsName})
     </insert>
 </mapper>

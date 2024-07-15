@@ -17,9 +17,16 @@
         WHERE userId = #{userId}
     </select>
 
+    <select id="findByName" resultType="org.study.board.dto.User"
+            parameterType="String">
+        SELECT *
+        FROM user
+        WHERE username = #{username}
+    </select>
+
     <insert id="save" parameterType="org.study.board.dto.User">
-        INSERT INTO user (userId, password, username, regdate, role, locked, lock_time)
-        VALUES (#{userId}, #{password}, #{username}, NOW(), #{role}, #{locked}, #{lockTime})
+        INSERT INTO user (userId, password, username, regdate, role, locked, lock_time, phone_no)
+        VALUES (#{userId}, #{password}, #{username}, NOW(), #{role}, #{locked}, #{lockTime}, #{phoneNo})
     </insert>
 
     <select id="existsByLoginId" resultType="_int"

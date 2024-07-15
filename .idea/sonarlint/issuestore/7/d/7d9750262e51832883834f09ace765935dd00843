@@ -1,11 +1,5 @@
 
-g	java:S112C"FDefine and throw a dedicated exception instead of using a generic one.(÷¶ÓÁÿÿÿÿÿ8õÈöÄ…2
-g	java:S112F"FDefine and throw a dedicated exception instead of using a generic one.(üÔıùÿÿÿÿ8õÈöÄ…2
-
-java:S1128"]Remove this unused import 'org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder'.(åÅÚ…ûÿÿÿÿ8¯‡ÍÓ‰2
-h
-java:S1128"FRemove this unused import 'org.study.board.controller.UserController'.(‚ëñ‚üÿÿÿÿ8¯‡ÍÓ‰2
-[
-java:S1128"9Remove this unused import 'org.study.board.dto.Category'.(¨³ùåıÿÿÿÿ8¯‡ÍÓ‰2
-M
-java:S1128"+Remove this unused import 'java.util.List'.(Õë±Äøÿÿÿÿ8¯‡ÍÓ‰2
+g	java:S112Q"FDefine and throw a dedicated exception instead of using a generic one.(÷¶ÓÁÿÿÿÿÿ8Ó¹¯¯Š2
+g	java:S112T"FDefine and throw a dedicated exception instead of using a generic one.(üÔıùÿÿÿÿ8Ô¹¯¯Š2
+
+java:S1488Y"_Immediately return this expression instead of assigning it to the temporary variable "snsUser".(‘˜šèıÿÿÿÿ8Õ¹¯¯Š2

@@ -50,6 +50,10 @@
             <input th:if="${username != null}" type="text" name="username" class="form-control" th:value="${username}" readonly>
             <input th:unless="${username != null}" type="text" name="username" class="form-control" required>
         </div>
+        <div>
+            <label>전화번호</label>
+            <input type="text" name="phoneNo" oninput="oninputPhone(this)" class="form-control" required>
+        </div>
         <div id="emptyError" style="color: red"></div>
 
         <hr class="my-4">
@@ -67,6 +71,12 @@
 </div>
 
 <script th:inline="javascript">
+    function oninputPhone(target) {
+        target.value = target.value
+            .replace(/[^0-9]/g, '')
+            .replace(/(^02.{0}|^01.{1}|[0-9]{3,4})([0-9]{3,4})([0-9]{4})/g, "$1-$2-$3");
+    }
+
     function checkUsername() {
         const loginIdInput = document.getElementById('loginId');
         const loginId = loginIdInput.value;

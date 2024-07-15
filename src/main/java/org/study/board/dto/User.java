@@ -30,6 +30,7 @@ public class User implements UserDetails, OAuth2User {
     private int failedAttempts;
     private boolean locked;
     private Timestamp lockTime; // 계정 잠금 시간
+    private String phoneNo;
     //private boolean recaptchaRequired; // reCAPTCHA 필요 여부
 
     // 구글 로그인
