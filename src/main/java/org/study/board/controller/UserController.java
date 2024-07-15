@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import org.study.board.dto.JoinForm;
 import org.study.board.dto.LoginForm;
 import org.study.board.dto.User;
+import org.study.board.service.AdminService;
 import org.study.board.service.RecaptchaService;
 import org.study.board.service.UserService;
 
@@ -28,6 +29,8 @@ public class UserController {
 
     @Autowired
     private UserService service;
+    @Autowired
+    private AdminService adminService;
     @Autowired
     private RecaptchaService recaptchaService;
 
@@ -120,5 +123,31 @@ public class UserController {
     @ResponseBody
     public boolean checkUsername(@RequestParam String loginId) {
         return service.checkLoginIdDuplicate(loginId);
+    }
+
+    @GetMapping("/mypage/{userId}")
+    public String mypage(@PathVariable String userId, Model model){
+        log.info(userId);
+        User user = service.findByLoginId(userId);
+        if (user == null) {
+            log.warn("유저확인불가: {}", userId);
+            return "redirect:/login";
+        }
+        model.addAttribute("user", user);
+        return "thymeleaf/mypage";
+    }
+
+    @PostMapping("/mypage/update")
+    public String updateMypage(@ModelAttribute User user){
+        String userId=user.getUserId();
+        adminService.updateUser(user);
+        return "redirect:/mypage/"+userId;
+    }
+
+    @GetMapping("/mypage/delete/{idx}")
+    public String deleteMe(@PathVariable long idx){
+        User user=service.findById(idx);
+        adminService.deleteUser(user);
+        return "redirect:/0/main";
     }
 }

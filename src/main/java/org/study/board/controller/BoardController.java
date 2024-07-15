@@ -106,7 +106,10 @@ public class BoardController {
                 }
             }
 
+            User user=userService.findByName(username);
+
             model.addAttribute("username", username);
+            model.addAttribute("user", user);
         }
 
         model.addAttribute("paginate", paginate);

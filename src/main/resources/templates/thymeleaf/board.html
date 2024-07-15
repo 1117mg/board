@@ -38,6 +38,7 @@
         </div>
         <div th:if="${username != null}" class="text-center">
             <!-- 사용자가 로그인한 경우 -->
+            <input type="button" value="마이페이지" th:attr="onclick=|location.href='/mypage/' + '${user.userId}'|" class="btn btn-success">
             <input type="button" value="로그아웃" onclick="location.href='/logout'" class="btn btn-danger">
         </div>
         <div th:if="${username == null}" class="text-center">

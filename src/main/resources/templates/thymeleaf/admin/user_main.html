@@ -48,6 +48,7 @@
         </div>
         <div th:if="${#httpServletRequest.remoteUser != null}" class="text-center">
             <!-- 사용자가 로그인한 경우 -->
+            <input type="button" value="마이페이지" th:attr="onclick=|location.href='/mypage/' + '${user.userId}'|" class="btn btn-success">
             <input type="button" value="로그아웃" onclick="location.href='/logout'" class="btn btn-danger">
         </div>
         <div th:if="${#httpServletRequest.remoteUser == null}" class="text-center">
@@ -79,42 +80,6 @@
         </tr>
         </tbody>
     </table>
-    <!--<div class="py-5 text-center">
-        <h1>게시판 별 접근 권한</h1>
-    </div>
-    <form id="user-auth" th:action="@{/admin/user-auth}" th:object="${users}" method="post">
-        <table>
-            <thead>
-            <tr>
-                <th rowspan="2">사용자 이름</th>
-                <th th:each="category : ${categories}">
-                    <span th:text="${category.ctgNm}"></span>
-                </th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:each="user : ${users}">
-                <td th:text="${user.username}"></td>
-                <th:block th:each="category : ${categories}">
-                    &lt;!&ndash; 수정: 읽기/쓰기 체크박스를 한 열에 표시 &ndash;&gt;
-                    <td>
-                        <input type="checkbox"
-                               th:name="'read_' + ${user.idx} + '_' + ${category.ctgNo}"
-                               th:checked="${authMap.get(user.idx).get(category.ctgNo).canRead}" />
-                        <label>읽기</label>
-                        <input type="checkbox"
-                               th:name="'write_' + ${user.idx} + '_' + ${category.ctgNo}"
-                               th:checked="${authMap.get(user.idx).get(category.ctgNo).canWrite}" />
-                        <label>쓰기</label>
-                    </td>
-                </th:block>
-            </tr>
-            </tbody>
-        </table>
-        <br>
-        <button type="submit" class="w-100 btn btn-secondary btn-lg">저장</button>
-
-    </form>-->
 </div>
 </body>
 </html>

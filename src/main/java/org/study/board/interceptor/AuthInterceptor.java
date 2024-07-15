@@ -3,6 +3,7 @@ package org.study.board.interceptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.study.board.handler.CustomPermissionEvaluator;
@@ -12,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 @Component
@@ -19,6 +21,12 @@ public class AuthInterceptor implements HandlerInterceptor {
 
     @Autowired
     private CustomPermissionEvaluator customPermissionEvaluator;
+
+    // 접근을 모두 허용할 페이지
+    private final List<String> permittedUrls = Arrays.asList(
+            "/check-username", "/main", "/login", "/oauth/**", "/join",
+            "/0/main", "/1/main", "/error/**", "/mypage/**"
+    );
 
     @Override
     public boolean preHandle(final HttpServletRequest request, final HttpServletResponse response,Object handler) throws Exception {
@@ -103,6 +111,16 @@ public class AuthInterceptor implements HandlerInterceptor {
 
         return true;*/
 
+        String requestURI = request.getRequestURI();
+
+        // 모든 접근 허용된 페이지는 항상 true
+        for (String url : permittedUrls) {
+            AntPathRequestMatcher matcher = new AntPathRequestMatcher(url);
+            if (matcher.matches(request)) {
+                return true;
+            }
+        }
+
         // mapper 쿼리로 권한 확인
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication == null || !authentication.isAuthenticated()) {
@@ -110,7 +128,6 @@ public class AuthInterceptor implements HandlerInterceptor {
             return false;
         }
 
-        String requestURI = request.getRequestURI();
         String permissionKey = getPermissionKey(requestURI);
         String permissionType = getPermissionType(requestURI);
 

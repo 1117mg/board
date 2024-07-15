@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>마이페이지</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/layout.css">
+    <script>
+        function oninputPhone(target) {
+            target.value = target.value
+                .replace(/[^0-9]/g, '')
+                .replace(/(^02.{0}|^01.{1}|[0-9]{3,4})([0-9]{3,4})([0-9]{4})/g, "$1-$2-$3");
+        }
+    </script>
+</head>
+<body>
+<header th:replace="thymeleaf/header :: header"></header>
+
+<div class="content-area">
+    <div class="py-5 text-center">
+        <h1>마이 페이지</h1>
+    </div>
+    <form id="userForm" method="post" th:action="@{/mypage/update}">
+        <input type="hidden" th:field="*{user.idx}" />
+        <div class="py-5 text-center">
+            <h4>내 정보 관리</h4>
+        </div>
+        <table>
+            <tr>
+                <td>아이디</td>
+                <td><input type="text" name="userId" style="width: 95%;" th:value="*{user.userId}" readonly></td>
+            </tr>
+            <tr>
+                <td>비밀번호</td>
+                <td th:text="${user.password}">비밀번호</td>
+            </tr>
+            <tr>
+                <td>이름</td>
+                <td><input type="text" name="username" style="width: 95%;" th:value="*{user.username}"></td>
+            </tr>
+            <tr>
+                <td>가입 날짜</td>
+                <td th:text="${user.regdate}">가입 날짜</td>
+            </tr>
+            <tr>
+                <td>전화번호</td>
+                <td><input type="text" name="phoneNo" oninput="oninputPhone(this)" style="width: 95%;" th:value="*{user.phoneNo}"></td>
+            </tr>
+        </table>
+        <div class="button-container row justify-content-center">
+            <div class="col-md-4">
+                <button type="submit" class="btn btn-info btn-block">수정</button>
+            </div>
+            <div class="col-md-4">
+                <button type="button" onclick="history.back()" class="btn btn-secondary btn-block">뒤로가기</button>
+            </div>
+        </div>
+        <div class="button-container row justify-content-center">
+            <div class="col-md-4">
+                <a th:href="@{/mypage/delete/{id}(id=${user.idx})}" class="btn btn-warning btn-block">탈퇴</a>
+            </div>
+        </div>
+    </form>
+</div>
+
+</body>
+</html>
