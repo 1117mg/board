@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import org.study.board.dto.JoinForm;
 import org.study.board.dto.LoginForm;
 import org.study.board.dto.User;
+import org.study.board.dto.UserBackup;
 import org.study.board.service.AdminService;
 import org.study.board.service.RecaptchaService;
 import org.study.board.service.UserService;
@@ -22,6 +23,8 @@ import org.study.board.service.UserService;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.time.LocalDateTime;
+import java.util.List;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -45,15 +48,30 @@ public class UserController {
     }
 
     @PostMapping("/join")
-    public String join(@ModelAttribute("JoinForm") JoinForm form, BindingResult bindingResult) {
-        if(form.getSnsType()!=null){
+    public String join(@ModelAttribute("JoinForm") JoinForm form, BindingResult bindingResult, Model model) {
+        if(form.getSnsType()!=""){
             service.join(form);
             return "thymeleaf/alert/snsloginsuccess";
         }
 
         // loginId 중복 체크
-        if(service.checkLoginIdDuplicate(form.getLoginId())) {
-            bindingResult.addError(new FieldError("joinForm", "loginId", "존재하는 아이디입니다."));
+        if (service.checkLoginIdDuplicate(form.getLoginId())) {
+            bindingResult.addError(new FieldError("JoinForm", "loginId", "존재하는 아이디입니다."));
+            model.addAttribute("errorMessage", "존재하는 아이디입니다.");
+            return "thymeleaf/join";
+        }
+
+        // phoneNo 중복 체크
+        if (service.findByPhoneNo(form.getPhoneNo()) != null) {
+            model.addAttribute("errorMessage", "입력하신 전화번호로 가입내역이 존재합니다.");
+            return "thymeleaf/join";
+        }
+
+        // 최근 탈퇴한 사용자인지 체크
+        UserBackup recentBackup = service.findRecentBackup(form.getPhoneNo(), LocalDateTime.now().minusDays(30));
+        if (recentBackup != null) {
+            model.addAttribute("errorMessage", "탈퇴 후 30일 이내 동일 번호로 재가입은 불가합니다.");
+            return "thymeleaf/join";
         }
 
         if (bindingResult.hasErrors()) {
@@ -62,6 +80,7 @@ public class UserController {
 
         if (!form.getPassword().equals(form.getPasswordCheck())) {
             bindingResult.rejectValue("passwordCheck", "passwordCheck", "비밀번호가 일치하지 않습니다.");
+            model.addAttribute("errorMessage", "비밀번호가 일치하지 않습니다.");
             return "thymeleaf/join";
         }
 

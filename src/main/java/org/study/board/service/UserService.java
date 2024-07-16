@@ -7,6 +7,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.study.board.dto.UserBackup;
 import org.study.board.dto.JoinForm;
 import org.study.board.dto.SnsUser;
 import org.study.board.dto.User;
@@ -14,6 +15,8 @@ import org.study.board.repository.OauthMapper;
 import org.study.board.repository.UserMapper;
 
 import javax.validation.constraints.NotBlank;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Optional;
 
@@ -33,6 +36,12 @@ public class UserService {
     public User findByLoginId(String userId){return mapper.findByLoginId(userId);}
 
     public User findByName(String username){return mapper.findByName(username);}
+
+    public User findByPhoneNo(String phoneNo){return mapper.findByPhoneNo(phoneNo);}
+
+    public UserBackup findRecentBackup(String phoneNo, LocalDateTime backupDate) {
+        return mapper.findRecentBackup(phoneNo, backupDate);
+    }
 
     public void loginWithToken(String username, String snsType, String token){
         SnsUser user=oauthMapper.findSnsUserBySNST(username, snsType);

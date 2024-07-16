@@ -40,7 +40,7 @@ public class AdminService {
 
     @Transactional
     public void deleteUser(User user){
-        user.setPhoneNo(encodeService.encryptPhoneNo(user.getPhoneNo()));
+        //user.setPhoneNo(encodeService.encryptPhoneNo(user.getPhoneNo()));
         user.setUsername(encodeService.encryptUsername(user.getUsername()));
 
         mapper.backupUser(user);

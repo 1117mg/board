@@ -24,6 +24,21 @@
         WHERE username = #{username}
     </select>
 
+    <select id="findByPhoneNo" resultType="org.study.board.dto.User"
+            parameterType="String">
+        SELECT *
+        FROM user
+        WHERE phone_no = #{phoneNo}
+    </select>
+
+    <select id="findRecentBackup" resultType="org.study.board.dto.UserBackup">
+        SELECT * FROM user_backup
+        WHERE phone_no = #{phoneNo}
+          AND backup_date >= #{backupDate}
+        ORDER BY backup_date DESC
+            LIMIT 1
+    </select>
+
     <insert id="save" parameterType="org.study.board.dto.User">
         INSERT INTO user (userId, password, username, regdate, role, locked, lock_time, phone_no)
         VALUES (#{userId}, #{password}, #{username}, NOW(), #{role}, #{locked}, #{lockTime}, #{phoneNo})
