@@ -20,6 +20,13 @@
             document.getElementById('userForm').submit();
         }
 
+        function confirmDelete(userId, idx) {
+            const url = `/mypage/delete/${idx}`;
+            confirmAction('탈퇴하시겠습니까?', function() {
+                deleteUser(url);
+            });
+        }
+
         function deleteUser(url) {
             window.location.href = url;
         }
@@ -70,7 +77,7 @@
         <div class="button-container row justify-content-center">
             <div class="col-md-4">
                 <a th:href="@{/mypage/delete/{id}(id=${user.idx})}" class="btn btn-danger btn-block"
-                   onclick="event.preventDefault(); confirmAction('탈퇴하시겠습니까?', function() { deleteUser(this.href); })">탈퇴</a>
+                   onclick="event.preventDefault(); confirmDelete('${user.userId}', ${user.idx});">탈퇴</a>
             </div>
         </div>
     </form>
