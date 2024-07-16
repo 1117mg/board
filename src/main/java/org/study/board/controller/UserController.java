@@ -61,9 +61,17 @@ public class UserController {
             return "thymeleaf/join";
         }
 
+        // username 중복 체크
+        // 현재 sns사용자를 휴대폰 번호 대신 이름으로 구분하고 있기 때문
+        // 추후에 휴대폰 번호로 구분할 시 해당 로직은 필요없음
+        if (service.findByName(form.getUsername()) != null) {
+            model.addAttribute("errorMessage", "해당 이름으로 가입 이력이 존재합니다.");
+            return "thymeleaf/join";
+        }
+
         // phoneNo 중복 체크
         if (service.findByPhoneNo(form.getPhoneNo()) != null) {
-            model.addAttribute("errorMessage", "입력하신 전화번호로 가입내역이 존재합니다.");
+            model.addAttribute("errorMessage", "해당 전화번호로 가입 이력이 존재합니다.");
             return "thymeleaf/join";
         }
 
