@@ -3,6 +3,7 @@ package org.study.board.dto;
 import lombok.Builder;
 import lombok.Data;
 
+import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
@@ -14,8 +15,11 @@ import java.util.List;
 public class Board {
 
     private Integer bno;
+    @NotBlank
     private String title;
+    @NotBlank
     private String content;
+    @NotBlank
     private String writer;
     private Date regdate;
     private Integer hit;

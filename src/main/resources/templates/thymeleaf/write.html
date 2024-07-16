@@ -27,7 +27,7 @@
     <p th:text="${parent.content}"></p>
 </div>
 
-<form id="boardForm" method="post" th:action="@{'/' + ${board.boardType} + '/insertBoard'}">
+<form id="boardForm" method="post" th:action="@{'/' + ${board.boardType} + '/insertBoard'}" onsubmit="return validateForm()">
     <table width="90%">
         <tr width="90%">
             <td align="center">작성자</td>
@@ -68,10 +68,12 @@
                 <input type="hidden" name="sorts" th:value="${board.sorts}">
                 <input type="hidden" name="depth" th:value="${board.depth}">
                 <input type="hidden" name="parentBno" th:value="${board.parentBno}">
-                <button type="submit" th:if="${board.boardType==0 or board.bno==null or hasChildBoards != null and !hasChildBoards}" class="btn btn-primary">등록</button>
-                <button type="button" th:onclick="'location.href=\'/' + ${board.boardType} + '/main\''" class="btn btn-success">목록</button>
-                <button type="button" th:if="${board.bno}" onclick="deleteBoard()" class="btn btn-danger">삭제</button>
-                <button type="button" th:if="${board.bno != null and board.boardType == 1}" th:onclick="'location.href=\'/1/write?parentBno=' + ${board.bno} + '\''" class="btn btn-primary">답변글쓰기</button>
+                <div class="button-container">
+                    <button type="submit" th:if="${board.boardType==0 or board.bno==null or hasChildBoards != null and !hasChildBoards}" class="btn btn-primary">등록</button>
+                    <button type="button" th:onclick="'location.href=\'/' + ${board.boardType} + '/main\''" class="btn btn-success">취소</button>
+                    <button type="button" th:if="${board.bno}" onclick="deleteBoard()" class="btn btn-danger">삭제</button>
+                    <button type="button" th:if="${board.bno != null and board.boardType == 1}" th:onclick="'location.href=\'/1/write?parentBno=' + ${board.bno} + '\''" class="btn btn-primary">답변글쓰기</button>
+                </div>
             </td>
         </tr>
     </table>
@@ -93,6 +95,18 @@
         if (link) {
             window.location.href = link.href;
         }
+    }
+
+    function validateForm() {
+        var title = document.getElementsByName("title")[0].value.trim();
+        var content = document.getElementsByName("content")[0].value.trim();
+
+        if (title === '' || content === '') {
+            alert('제목과 내용을 입력해주세요.');
+            return false;
+        }
+
+        return true;
     }
 
     // delBtn 개별 삭제 버튼
