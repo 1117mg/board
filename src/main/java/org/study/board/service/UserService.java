@@ -27,6 +27,8 @@ public class UserService {
     private UserMapper mapper;
     @Autowired
     private OauthMapper oauthMapper;
+    @Autowired
+    private EncryptService encryptService;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -40,7 +42,9 @@ public class UserService {
     public User findByPhoneNo(String phoneNo){return mapper.findByPhoneNo(phoneNo);}
 
     public UserBackup findRecentBackup(String phoneNo, LocalDateTime backupDate) {
-        return mapper.findRecentBackup(phoneNo, backupDate);
+        String d_phoneNo=encryptService.decryptInfo(phoneNo);
+        String d_backupDate=encryptService.decryptInfo(String.valueOf(backupDate));
+        return mapper.findRecentBackup(d_phoneNo, LocalDateTime.parse(d_backupDate));
     }
 
     public void loginWithToken(String username, String snsType, String token){
