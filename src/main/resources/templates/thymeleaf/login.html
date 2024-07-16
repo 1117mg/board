@@ -84,8 +84,6 @@
                 <div class="g-recaptcha" data-sitekey="6Ldk4_0pAAAAAM2zBfNUpWElpaKdKWeVzL0LBHbK" data-callback="verifyRecaptchaCallback"></div>
                 <input type="hidden" id="recaptchaResponse" name="recaptchaResponse">
             </div>
-            <!--        <div th:if="${param.error != null and param.error[0] eq 'notFound'}">등록되지 않은 계정입니다.</div>-->
-            <div th:if="${session.notFound}" th:text="${session.notFound}"></div>
         </div>
         <div id="emptyError" style="color: red"></div>
 
@@ -96,7 +94,7 @@
                 <button class="w-100 btn btn-primary btn-lg" type="submit">로그인</button>
             </div>
             <div class="col">
-                <button type="button" onclick="history.back()" class="w-100 btn btn-secondary btn-lg">취소</button>
+                <a th:href="@{/0/main}" class="w-100 btn btn-secondary btn-lg">취소</a>
             </div>
         </div>
         <br>

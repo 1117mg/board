@@ -14,6 +14,8 @@ import java.util.List;
 public class AdminService {
 
     @Autowired
+    private EncodeService encodeService;
+    @Autowired
     private AdminMapper mapper;
 
     public List<UserCtgAuth> getUserAuth(long idx) {
@@ -38,6 +40,9 @@ public class AdminService {
 
     @Transactional
     public void deleteUser(User user){
+        user.setPhoneNo(encodeService.encryptPhoneNo(user.getPhoneNo()));
+        user.setUsername(encodeService.encryptUsername(user.getUsername()));
+
         mapper.backupUser(user);
         mapper.deleteUser(user);
     }

@@ -81,6 +81,8 @@ public class UserController {
     @PostMapping("/login")
     public String login(@ModelAttribute("loginForm") LoginForm form, BindingResult bindingResult, HttpServletRequest request, HttpServletResponse response) {
         User loginUser = service.login(form.getLoginId(), form.getPassword());
+
+        // 로그인 성공 시 처리
         if (loginUser == null) {
             bindingResult.reject("loginFail", "아이디 또는 비밀번호가 맞지 않습니다.");
             return "thymeleaf/login";

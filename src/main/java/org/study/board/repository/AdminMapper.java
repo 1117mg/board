@@ -19,5 +19,5 @@ public interface AdminMapper {
     // 쿼리문으로 권한 체크
     int checkUserPermission(@Param("userIdx") Long userIdx, @Param("ctgNo") Integer ctgNo, @Param("permissionType") String permissionType);
     void deleteUser(User user); //회원 삭제
-    void backupUser(User user);
+    void backupUser(User user); //삭제된 회원 백업
 }
