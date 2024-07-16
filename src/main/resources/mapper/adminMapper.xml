@@ -53,9 +53,18 @@
             )
     </select>
 
-    <update id="deleteUser" parameterType="org.study.board.dto.User">
+    <!-- 사용자 정보를 백업 테이블에 삽입하는 쿼리 -->
+    <insert id="backupUser">
+        INSERT INTO user_backup (phone_no, regdate, username)
+        SELECT phone_no, regdate, username
+        FROM user
+        WHERE idx = #{idx}
+    </insert>
+
+    <!-- 사용자 정보를 null로 설정하는 쿼리 -->
+    <update id="deleteUser">
         UPDATE user
-        SET password=null, username=null, role=null, lock_time=null, phone_no=null
+        SET password = null, username = null, role = null, lock_time = null, phone_no = null
         WHERE idx = #{idx}
     </update>
 </mapper>

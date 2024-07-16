@@ -61,7 +61,7 @@
         </table>
         <div class="button-container row justify-content-center">
             <div class="col-md-4">
-                <button type="button" onclick="confirmAction('수정하시겠습니까?', submitForm)" class="btn btn-info btn-block">수정</button>
+                <button type="button" onclick="confirmAction('수정하시겠습니까?', submitForm)" class="btn btn-success btn-block">수정</button>
             </div>
             <div class="col-md-4">
                 <a th:href="@{/0/main}" class="btn btn-secondary btn-block">메인으로</a>
@@ -69,7 +69,7 @@
         </div>
         <div class="button-container row justify-content-center">
             <div class="col-md-4">
-                <a th:href="@{/mypage/delete/{id}(id=${user.idx})}" class="btn btn-warning btn-block"
+                <a th:href="@{/mypage/delete/{id}(id=${user.idx})}" class="btn btn-danger btn-block"
                    onclick="event.preventDefault(); confirmAction('탈퇴하시겠습니까?', function() { deleteUser(this.href); })">탈퇴</a>
             </div>
         </div>

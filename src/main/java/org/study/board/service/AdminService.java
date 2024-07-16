@@ -2,6 +2,7 @@ package org.study.board.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.study.board.dto.Category;
 import org.study.board.dto.User;
 import org.study.board.dto.UserCtgAuth;
@@ -35,7 +36,9 @@ public class AdminService {
     public void updateUser(User user){
         mapper.updateUser(user);}
 
+    @Transactional
     public void deleteUser(User user){
+        mapper.backupUser(user);
         mapper.deleteUser(user);
     }
 }

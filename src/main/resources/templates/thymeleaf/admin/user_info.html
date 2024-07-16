@@ -167,7 +167,7 @@
         </table>
         <div class="button-container row justify-content-center">
             <div class="col-md-4">
-                <button type="submit" class="btn btn-info btn-block">수정</button>
+                <button type="submit" class="btn btn-success btn-block">수정</button>
             </div>
             <div class="col-md-4">
                 <a th:href="@{/admin/users}" class="btn btn-secondary btn-block">목록으로</a>
@@ -175,7 +175,7 @@
         </div>
         <div class="button-container row justify-content-center">
             <div class="col-md-4">
-                <a th:href="@{/admin/deleteUser/{id}(id=${user.idx})}" class="btn btn-warning btn-block">삭제</a>
+                <a th:href="@{/admin/deleteUser/{id}(id=${user.idx})}" class="btn btn-danger btn-block">삭제</a>
             </div>
         </div>
     </form>
