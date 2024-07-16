@@ -59,25 +59,20 @@ public class QnAController {
         // 게시글 총 개수
         int total = boardService.cntBoard(board.getBoardType());
         model.addAttribute("cntBoard", total);
+
         // 페이징
         PaginateDto paginate = new PaginateDto(5, 3);
         paginate.setPageNo(page);
         paginate.setTotalSize(total);
-
-        // 현재 요청의 쿼리 파라미터를 포함한 URL을 생성
-        String params = "boardType=" + boardType; // 필요한 다른 파라미터를 추가
-        paginate.setParams(params);
-
-        paginate._calc(); // 페이지 네비게이션 계산
+        paginate.setParams("boardType=" + boardType);
+        paginate._calc();
 
         board.setPageNo(page);
         board.setPageSize(paginate.getPageSize());
         board.setPageOffset(paginate.getPageOffset());
 
-        // 카테고리
+        // 카테고리 매핑
         List<Category> categories = adminService.getAllCategories();
-
-        // 부모-자식 관계로 카테고리 매핑
         Map<Integer, List<Category>> subCategoriesMap = categories.stream()
                 .filter(category -> category.getCtgPno() != null)
                 .collect(Collectors.groupingBy(category -> Integer.parseInt(category.getCtgPno())));
@@ -85,37 +80,40 @@ public class QnAController {
         model.addAttribute("categories", categories);
         model.addAttribute("subCategoriesMap", subCategoriesMap);
 
-        // 사용자 이름 설정
+        // 사용자 정보 설정
         if (principal != null) {
-            String username = principal.getName();
-
-            if (principal instanceof UsernamePasswordAuthenticationToken) {
-                Object principalObj = ((UsernamePasswordAuthenticationToken) principal).getPrincipal();
-                // sns유저일 경우
-                // 배열 안의 gno와 일치하는 idx를 가진 사용자(연동된 사용자)의 이름을 출력
-                if (principalObj instanceof SnsUser) {
-                    SnsUser snsUser = (SnsUser) principalObj;
-                    Long gno = snsUser.getGno();
-                    User user = userService.findById(gno);
-                    if (user != null) {
-                        username = user.getUsername();
-                    }
-                }
-            }
-
-            model.addAttribute("username", username);
+            setUserDetails(principal, model);
         }
 
         model.addAttribute("paginate", paginate);
-        model.addAttribute("board", boardService.getQnaList(board));
-        model.addAttribute("boardType", board.getBoardType());
+        model.addAttribute("board", boardService.getBoardlist(board));
+        model.addAttribute("boardType", boardType);
 
         // 글작성 권한 체크
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        boolean hasWritePermission = permissionEvaluator.hasWritePermission(authentication, "QNA_BOARD");
+        boolean hasWritePermission = permissionEvaluator.hasWritePermission(authentication, "NOTICE_BOARD");
         model.addAttribute("hasWritePermission", hasWritePermission);
 
         return "thymeleaf/board";
+    }
+
+    private void setUserDetails(Principal principal, Model model) {
+        String username = principal.getName();
+
+        if (principal instanceof UsernamePasswordAuthenticationToken) {
+            Object principalObj = ((UsernamePasswordAuthenticationToken) principal).getPrincipal();
+            if (principalObj instanceof SnsUser) {
+                SnsUser snsUser = (SnsUser) principalObj;
+                User user = userService.findById(snsUser.getGno());
+                if (user != null) {
+                    username = user.getUsername();
+                }
+            }
+        }
+
+        User user = userService.findByName(username);
+        model.addAttribute("username", username);
+        model.addAttribute("user", user);
     }
 
     @GetMapping("/board/{bno}")

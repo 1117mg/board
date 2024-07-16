@@ -120,3 +120,5 @@ h
 8src/main/java/org/study/board/service/GoogleService.java,3\c\3c307d2278508a553ffa1d3ea47bd73fd1dd5249
 ^
 .src/main/java/org/study/board/dto/SnsUser.java,2\1\210e24dfb4fac47bd8c352fdb0ecc7677131e1bf
+k
+;src/main/resources/templates/thymeleaf/admin/user_info.html,0\5\057ff748c915a2ef8aad9a3843e172929374f7c0

@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -145,9 +146,16 @@ public class UserController {
     }
 
     @GetMapping("/mypage/delete/{idx}")
-    public String deleteMe(@PathVariable long idx){
+    public String deleteMe(@PathVariable long idx, HttpServletRequest request, HttpServletResponse response){
         User user=service.findById(idx);
         adminService.deleteUser(user);
+
+        // 탈퇴 후 로그아웃 처리
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null) {
+            new SecurityContextLogoutHandler().logout(request, response, authentication);
+        }
+
         return "redirect:/0/main";
     }
 }

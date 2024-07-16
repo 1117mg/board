@@ -52,7 +52,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .failureHandler(authenticationFailureHandler)
                 .usernameParameter("loginId")  // 로그인 ID 필드 이름 설정
                 .passwordParameter("password") // 비밀번호 필드 이름 설정
-                //.defaultSuccessUrl("/main", true)  // 로그인 성공 후 리다이렉트 설정
                 .permitAll()
                 .and()
                 .logout()

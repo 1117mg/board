@@ -10,6 +10,19 @@
                 .replace(/[^0-9]/g, '')
                 .replace(/(^02.{0}|^01.{1}|[0-9]{3,4})([0-9]{3,4})([0-9]{4})/g, "$1-$2-$3");
         }
+        function confirmAction(message, action) {
+            if (confirm(message)) {
+                action();
+            }
+        }
+
+        function submitForm() {
+            document.getElementById('userForm').submit();
+        }
+
+        function deleteUser(url) {
+            window.location.href = url;
+        }
     </script>
 </head>
 <body>
@@ -48,15 +61,16 @@
         </table>
         <div class="button-container row justify-content-center">
             <div class="col-md-4">
-                <button type="submit" class="btn btn-info btn-block">수정</button>
+                <button type="button" onclick="confirmAction('수정하시겠습니까?', submitForm)" class="btn btn-info btn-block">수정</button>
             </div>
             <div class="col-md-4">
-                <button type="button" onclick="history.back()" class="btn btn-secondary btn-block">뒤로가기</button>
+                <a th:href="@{/0/main}" class="btn btn-secondary btn-block">메인으로</a>
             </div>
         </div>
         <div class="button-container row justify-content-center">
             <div class="col-md-4">
-                <a th:href="@{/mypage/delete/{id}(id=${user.idx})}" class="btn btn-warning btn-block">탈퇴</a>
+                <a th:href="@{/mypage/delete/{id}(id=${user.idx})}" class="btn btn-warning btn-block"
+                   onclick="event.preventDefault(); confirmAction('탈퇴하시겠습니까?', function() { deleteUser(this.href); })">탈퇴</a>
             </div>
         </div>
     </form>

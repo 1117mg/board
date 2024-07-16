@@ -33,15 +33,15 @@
     </ul>
     <!-- 로그인/로그아웃 버튼 추가 -->
     <div class="side-bar__login">
-        <div th:if="${username != null}" class="text-center">
+        <div th:if="${user != null}" class="text-center">
             <span th:text="${username}">ㅇㅇㅇ</span> 님 환영합니다!<br><br>
         </div>
-        <div th:if="${username != null}" class="text-center">
+        <div th:if="${user != null}" class="text-center">
             <!-- 사용자가 로그인한 경우 -->
             <input type="button" value="마이페이지" th:attr="onclick=|location.href='/mypage/' + '${user.userId}'|" class="btn btn-success">
             <input type="button" value="로그아웃" onclick="location.href='/logout'" class="btn btn-danger">
         </div>
-        <div th:if="${username == null}" class="text-center">
+        <div th:if="${user == null}" class="text-center">
             <!-- 사용자가 로그인하지 않은 경우 -->
             <input type="button" value="로그인" onclick="location.href='/login'" class="btn btn-primary">
             <input type="button" value="회원가입" onclick="location.href='/join'" class="btn btn-success">
