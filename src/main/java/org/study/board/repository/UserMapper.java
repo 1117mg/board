@@ -1,6 +1,7 @@
 package org.study.board.repository;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.study.board.dto.Category;
 import org.study.board.dto.JoinForm;
 import org.study.board.dto.User;
@@ -14,7 +15,7 @@ public interface UserMapper {
     User findByLoginId(String userId);
     User findByName(String username);
     void save(User user);
-    int existsByLoginId(String loginId);
+    int existsByLoginId(@Param("loginId") String loginId);
     void updateStatus(User user); // 계정잠금 상태
     List<User> findLockedUsers(); // 잠긴 계정을 찾는 메서드
 }

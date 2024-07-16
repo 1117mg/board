@@ -122,7 +122,8 @@ public class UserController {
 
     @GetMapping("/check-username")
     @ResponseBody
-    public boolean checkUsername(@RequestParam String loginId) {
+    public boolean checkUsername(@RequestParam("loginId") String loginId) {
+        log.info("자바스크립트에서 아이디를 제대로 읽어오고 있을까?: {}", loginId);
         return service.checkLoginIdDuplicate(loginId);
     }
 
