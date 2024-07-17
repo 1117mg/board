@@ -15,20 +15,16 @@
                 action();
             }
         }
-
         function submitForm() {
             document.getElementById('userForm').submit();
         }
-
-        function confirmDelete(userId, idx) {
-            const url = `/mypage/delete/${idx}`;
-            confirmAction('탈퇴하시겠습니까?', function() {
-                deleteUser(url);
-            });
-        }
-
-        function deleteUser(url) {
-            window.location.href = url;
+        function confirmDelete() {
+            var idx = document.getElementById("idxInput").value;
+            if (confirm("정말로 탈퇴하시겠습니까?")) {
+                window.location.href = `/mypage/delete/${idx}`;
+            } else {
+                console.log("탈퇴 취소");
+            }
         }
     </script>
 </head>
@@ -76,8 +72,8 @@
         </div>
         <div class="button-container row justify-content-center">
             <div class="col-md-4">
-                <a th:href="@{/mypage/delete/{id}(id=${user.idx})}" class="btn btn-danger btn-block"
-                   onclick="event.preventDefault(); confirmDelete('${user.userId}', ${user.idx});">탈퇴</a>
+                <input type="hidden" id="idxInput" name="idx" th:value="${user.idx}">
+                <button type="button" onclick="confirmDelete()" class="btn btn-danger btn-block">탈퇴</button>
             </div>
         </div>
     </form>

@@ -64,6 +64,22 @@
                 .replace(/[^0-9]/g, '')
                 .replace(/(^02.{0}|^01.{1}|[0-9]{3,4})([0-9]{3,4})([0-9]{4})/g, "$1-$2-$3");
         }
+        function confirmAction(message, action) {
+            if (confirm(message)) {
+                action();
+            }
+        }
+        function submitForm() {
+            document.getElementById('userForm').submit();
+        }
+        function confirmDelete() {
+            var idx = document.getElementById("idxInput").value;
+            if (confirm("정말로 삭제하시겠습니까?")) {
+                window.location.href = `/admin/deleteUser/${idx}`;
+            } else {
+                console.log("삭제 취소");
+            }
+        }
     </script>
 </head>
 <body>
@@ -167,7 +183,7 @@
         </table>
         <div class="button-container row justify-content-center">
             <div class="col-md-4">
-                <button type="submit" class="btn btn-success btn-block">수정</button>
+                <button type="button" onclick="confirmAction('수정하시겠습니까?', submitForm)" class="btn btn-success btn-block">수정</button>
             </div>
             <div class="col-md-4">
                 <a th:href="@{/admin/users}" class="btn btn-secondary btn-block">목록으로</a>
@@ -175,7 +191,8 @@
         </div>
         <div class="button-container row justify-content-center">
             <div class="col-md-4">
-                <a th:href="@{/admin/deleteUser/{id}(id=${user.idx})}" class="btn btn-danger btn-block">삭제</a>
+                <input type="hidden" id="idxInput" name="idx" th:value="${user.idx}">
+                <button type="button" onclick="confirmDelete()" class="btn btn-danger btn-block">삭제</button>
             </div>
         </div>
     </form>
