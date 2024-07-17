@@ -53,13 +53,6 @@
             )
     </select>
 
-    <!-- 사용자 정보를 백업 테이블에 삽입하는 쿼리 -->
-<!--    <insert id="backupUser">
-        INSERT INTO user_backup (idx, phone_no, regdate, username, backup_date)
-        SELECT #{idx}, phone_no, regdate, username, NOW()
-        FROM user
-        WHERE idx = #{idx}
-    </insert>-->
     <insert id="backupUser">
         INSERT INTO user_backup (idx, phone_no, regdate, username, backup_date)
         SELECT #{idx}, #{phoneNo}, #{regdate}, #{username}, NOW()

@@ -32,3 +32,10 @@
     color: grey;
     font-weight: bold;
 }
+.input-group {
+    margin-bottom: 15px;
+}
+.input-group input[type=text],
+.input-group input[type=password] {
+    width: 100%;
+}

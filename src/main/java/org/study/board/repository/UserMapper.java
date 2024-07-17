@@ -21,4 +21,5 @@ public interface UserMapper {
     void updateStatus(User user); // 계정잠금 상태
     List<User> findLockedUsers(); // 잠긴 계정을 찾는 메서드
     UserBackup findRecentBackup(@Param("phoneNo") String phoneNo, @Param("backupDate") LocalDateTime backupDate);
+    void deleteOldBackups();
 }

@@ -62,4 +62,9 @@
         FROM user
         WHERE locked = true
     </select>
+
+    <delete id="deleteOldBackups">
+        DELETE FROM user_backup
+        WHERE backup_date &lt; DATE_SUB(NOW(), INTERVAL 5 YEAR)
+    </delete>
 </mapper>

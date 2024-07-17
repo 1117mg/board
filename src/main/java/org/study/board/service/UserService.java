@@ -116,4 +116,8 @@ public class UserService {
         return optionalUser.orElse(null);
     }
 
+    public void deleteOldBackups(){
+        mapper.deleteOldBackups();
+    }
+
 }
