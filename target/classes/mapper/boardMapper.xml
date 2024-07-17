@@ -24,7 +24,7 @@
                     ELSE f.filename
             END file_name
         FROM board b
-                 LEFT JOIN file f ON b.bno = f.bno
+        LEFT JOIN file f ON b.bno = f.bno
         WHERE b.delete_yn != 1 AND b.board_type=#{boardType}
         GROUP BY b.bno
         ORDER BY b.gno DESC, b.sorts ASC

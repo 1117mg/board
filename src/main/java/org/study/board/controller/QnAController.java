@@ -86,7 +86,7 @@ public class QnAController {
         }
 
         model.addAttribute("paginate", paginate);
-        model.addAttribute("board", boardService.getBoardlist(board));
+        model.addAttribute("board", boardService.getQnaList(board));
         model.addAttribute("boardType", boardType);
 
         // 글작성 권한 체크

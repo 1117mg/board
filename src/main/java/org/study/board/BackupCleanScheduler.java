@@ -15,6 +15,6 @@ public class BackupCleanScheduler {
     public void cleanUpOldBackups() {
         String sql = "DELETE FROM user_backup WHERE backup_date < DATE_SUB(NOW(), INTERVAL 5 YEAR)";
         int rowsAffected = jdbcTemplate.update(sql);
-        System.out.println("5년이 지난 회원 데이터가 자동삭제되었습니다."+rowsAffected);
+        System.out.println("5년이 지난 회원정보 백업 데이터가 자동삭제되었습니다."+rowsAffected);
     }
 }
