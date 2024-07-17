@@ -49,83 +49,65 @@
     </div>
 </aside>
 <div class="content-area">
-<div th:if="${boardType==0}">
     <div class="py-5 text-center">
-        <h1>공지사항 게시판</h1>
+        <h1 th:text="${boardType == 0 ? '공지사항 게시판' : 'QnA 게시판'}"></h1>
     </div>
-</div>
-<div th:if="${boardType==1}">
-    <div class="py-5 text-center">
-        <h1>QnA 게시판</h1>
-    </div>
-</div>
-
-<!--게시판 총 <span th:text="${cntBoard}">0</span> 개<br>-->
-<table>
-    <thead>
-    <tr>
-        <th class="one wide">번호</th>
-        <th class="ten wide">글제목</th>
-        <th class="two wide">작성자</th>
-        <th class="three wide">작성일</th>
-        <th class="four wide">조회수</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="board : ${board}">
-        <td><span th:text="${board.bno}">1</span></td>
-        <td>
-            <a th:href="@{board/{bno}(bno=${board.bno})}"  class="board-title">
-                <span th:if="${board.depth > 0}" th:each="i : ${#numbers.sequence(1, board.depth)}" class="reply">&nbsp;↪RE:</span>
-                <span th:text="${board.title}">제목</span>
-                <span th:if="${board.new}" class="new">🆕</span>
-            </a>
-        </td>
-        <td><span th:text="${board.writer}">작성자</span></td>
-        <td><span th:text="${board.regdate}">작성일</span></td>
-        <td><span th:text="${board.hit}">조회수</span></td>
-    </tr>
-    </tbody>
-</table>
-    <div class="button-container">
-        <!--<div th:if="${#httpServletRequest.remoteUser != null}">-->
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th class="one wide">번호</th>
+            <th class="ten wide">글제목</th>
+            <th class="two wide">작성자</th>
+            <th class="three wide">작성일</th>
+            <th class="four wide">조회수</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="board : ${board}">
+            <td th:text="${board.bno}">1</td>
+            <td>
+                <a th:href="@{board/{bno}(bno=${board.bno})}" class="board-title">
+                    <span th:if="${board.depth > 0}" th:each="i : ${#numbers.sequence(1, board.depth)}" class="reply">&nbsp;↪RE:</span>
+                    <span th:text="${board.title}">제목</span>
+                    <span th:if="${board.new}" class="new">🆕</span>
+                </a>
+            </td>
+            <td th:text="${board.writer}">작성자</td>
+            <td th:text="${board.regdate}">작성일</td>
+            <td th:text="${board.hit}">조회수</td>
+        </tr>
+        </tbody>
+    </table>
+    <div class="button-container text-center">
         <div th:if="${hasWritePermission}">
-            <!-- 사용자가 로그인한 경우 -->
             <input type="button" value="글 작성" onclick="location.href='write'" class="btn btn-primary">
         </div>
     </div>
-<br>
-<!-- 페이징 처리 시작 -->
-<div class="col-sm-12 col-md-7" style="margin: auto">
-    <nav aria-label="Page navigation example">
-        <ul class="pagination justify-content-center">
-            <!-- 이전 페이지 링크 -->
-            <li class="page-item" th:classappend="${paginate.pageNo <= 1} ? 'disabled'">
-                <a class="page-link" th:if="${paginate.pageNo > 1}" th:href="@{|/${boardType}/main?${paginate.params}&${paginate.pageName}=${paginate.pageNo - 1}|}" aria-label="Previous">
-                    <span aria-hidden="true">&laquo; 이전</span>
-                </a>
-                <a class="page-link disabled" th:if="${paginate.pageNo <= 1}">
-                    <span aria-hidden="true">&laquo; 이전</span>
-                </a>
-            </li>
-
-            <!-- 페이지 번호 링크 -->
-            <li th:each="pageNum : ${#numbers.sequence(paginate.nationBegin, paginate.nationClose)}" class="page-item" th:classappend="${pageNum == paginate.pageNo} ? 'active'">
-                <a class="page-link" th:href="@{|/${boardType}/main?${paginate.params}&${paginate.pageName}=${pageNum}|}" th:text="${pageNum}">1</a>
-            </li>
-
-            <!-- 다음 페이지 링크 -->
-            <li class="page-item" th:classappend="${paginate.pageNo >= paginate.totalPage} ? 'disabled'">
-                <a class="page-link" th:if="${paginate.pageNo < paginate.totalPage}" th:href="@{|/${boardType}/main?${paginate.params}&${paginate.pageName}=${paginate.pageNo + 1}|}" aria-label="Next">
-                    <span aria-hidden="true">다음 &raquo;</span>
-                </a>
-                <a class="page-link disabled" th:if="${paginate.pageNo >= paginate.totalPage}">
-                    <span aria-hidden="true">다음 &raquo;</span>
-                </a>
-            </li>
-        </ul>
-    </nav>
-</div>
+    <div class="col-sm-12 col-md-7 mx-auto">
+        <nav aria-label="Page navigation example">
+            <ul class="pagination justify-content-center">
+                <li class="page-item" th:classappend="${paginate.pageNo <= 1} ? 'disabled'">
+                    <a class="page-link" th:if="${paginate.pageNo > 1}" th:href="@{|/${boardType}/main?${paginate.params}&${paginate.pageName}=${paginate.pageNo - 1}|}" aria-label="Previous">
+                        <span aria-hidden="true">&laquo; 이전</span>
+                    </a>
+                    <a class="page-link disabled" th:if="${paginate.pageNo <= 1}">
+                        <span aria-hidden="true">&laquo; 이전</span>
+                    </a>
+                </li>
+                <li th:each="pageNum : ${#numbers.sequence(paginate.nationBegin, paginate.nationClose)}" class="page-item" th:classappend="${pageNum == paginate.pageNo} ? 'active'">
+                    <a class="page-link" th:href="@{|/${boardType}/main?${paginate.params}&${paginate.pageName}=${pageNum}|}" th:text="${pageNum}">1</a>
+                </li>
+                <li class="page-item" th:classappend="${paginate.pageNo >= paginate.totalPage} ? 'disabled'">
+                    <a class="page-link" th:if="${paginate.pageNo < paginate.totalPage}" th:href="@{|/${boardType}/main?${paginate.params}&${paginate.pageName}=${paginate.pageNo + 1}|}" aria-label="Next">
+                        <span aria-hidden="true">다음 &raquo;</span>
+                    </a>
+                    <a class="page-link disabled" th:if="${paginate.pageNo >= paginate.totalPage}">
+                        <span aria-hidden="true">다음 &raquo;</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
 </div>
 </body>
 </html>
