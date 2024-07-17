@@ -3,6 +3,7 @@ package org.study.board;
 import java.security.SecureRandom;
 import java.util.Base64;
 
+// 양방향 비밀키 생성
 public class SymmetricKeyGenerator {
     public static void main(String[] args) {
         SecureRandom secureRandom = new SecureRandom();

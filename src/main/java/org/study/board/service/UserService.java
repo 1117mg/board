@@ -63,7 +63,7 @@ public class UserService {
         user.setPhoneNo(form.getPhoneNo());
         mapper.save(user);
         // sns 가입자일 경우
-        if(form.getSnsType()!=null){
+        if(form.getSnsType()!=""){
             snsJoin(form.getLoginId(), form.getUsername(), form.getSnsType());
         }
     }
