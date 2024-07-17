@@ -1,9 +1,13 @@
 
 m
-java:S1192L"PDefine a constant instead of duplicating this literal "thymeleaf/login" 4 times.(Â¤ÜŠ8ò­Ø¨‹2
+java:S1192h"PDefine a constant instead of duplicating this literal "thymeleaf/login" 4 times.(Â¤ÜŠ8´ÅÃÏ‹2
+j
+java:S1192<"MDefine a constant instead of duplicating this literal "errorMessage" 5 times.(ÃáõÈ8Òƒ£Ò‹2
 n
-java:S1192M"QDefine a constant instead of duplicating this literal "redirect:/0/main" 4 times.(³ì¬Õ8ò­Ø¨‹2
+java:S1192i"QDefine a constant instead of duplicating this literal "redirect:/0/main" 4 times.(³ì¬Õ8µÅÃÏ‹2
 m
-java:S1192+"PDefine a constant instead of duplicating this literal "redirect:/login" 3 times.(ØÆŠú8ò­Ø¨‹2
+java:S1192/"PDefine a constant instead of duplicating this literal "redirect:/login" 3 times.(ØÆŠú8µÅÃÏ‹2
 l
-java:S1192*"ODefine a constant instead of duplicating this literal "thymeleaf/join" 3 times.(®­Êÿ8ò­Ø¨‹2
+java:S1192."ODefine a constant instead of duplicating this literal "thymeleaf/join" 7 times.(®­Êÿ8µÅÃÏ‹2
+Y
+java:S49734"<Strings and Boxed types should be compared using "equals()".(’“°Î8÷¬ÿÑ‹2

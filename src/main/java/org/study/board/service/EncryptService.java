@@ -6,6 +6,8 @@ import org.springframework.stereotype.Service;
 
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 @Service
 @RequiredArgsConstructor
@@ -13,21 +15,34 @@ public class EncryptService {
 
     private final AesBytesEncryptor encryptor;
 
-    // 암호화
-    public String encryptInfo(String info) {
+    // 전화번호 암호화
+    public String encryptPhoneNo(String info) {
         // 전화번호 형식의 문자열에서 대시('-')를 제거
         String sanitizedInfo = info.replaceAll("-", "");
         byte[] encrypt = encryptor.encrypt(sanitizedInfo.getBytes(StandardCharsets.UTF_8));
         return byteArrayToString(encrypt);
     }
 
-    // 복호화
-    public String decryptInfo(String encryptString) {
+    // 전화번호 복호화
+    public String decryptPhoneNo(String encryptString) {
         byte[] decryptBytes = stringToByteArray(encryptString);
         byte[] decrypt = encryptor.decrypt(decryptBytes);
         String decryptedInfo = new String(decrypt, StandardCharsets.UTF_8);
         // 복호화된 전화번호에 대시('-')를 추가할 필요가 없으면 이 부분을 생략 가능
         return decryptedInfo;
+    }
+
+    // 사용자 이름 암호화
+    public String encryptUsername(String username) {
+        byte[] encrypt = encryptor.encrypt(username.getBytes(StandardCharsets.UTF_8));
+        return byteArrayToString(encrypt);
+    }
+
+    // 사용자 이름 복호화
+    public String decryptUsername(String encryptString) {
+        byte[] decryptBytes = stringToByteArray(encryptString);
+        byte[] decrypt = encryptor.decrypt(decryptBytes);
+        return new String(decrypt, StandardCharsets.UTF_8);
     }
 
     // byte -> String

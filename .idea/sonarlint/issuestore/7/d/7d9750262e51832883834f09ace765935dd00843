@@ -1,5 +1,9 @@
 
-g	java:S112S"FDefine and throw a dedicated exception instead of using a generic one.(÷¶ÓÁÿÿÿÿÿ8¤ÜÌ¨‹2
-g	java:S112V"FDefine and throw a dedicated exception instead of using a generic one.(üÔıùÿÿÿÿ8¤ÜÌ¨‹2
+g	java:S112a"FDefine and throw a dedicated exception instead of using a generic one.(÷¶ÓÁÿÿÿÿÿ8âÒ¾Ô‹2
+g	java:S112d"FDefine and throw a dedicated exception instead of using a generic one.(üÔıùÿÿÿÿ8âÒ¾Ô‹2
+r	java:S117."QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ÁÊñúÿÿÿÿ8ğ”ìÔ‹2
+m	java:S117/"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ûœÔ²8ñ”ìÔ‹2
 
-java:S1488["_Immediately return this expression instead of assigning it to the temporary variable "snsUser".(ıÖáµüÿÿÿÿ8¦ÜÌ¨‹2
+java:S1488i"_Immediately return this expression instead of assigning it to the temporary variable "snsUser".(ıÖáµüÿÿÿÿ8äÒ¾Ô‹2
+R
+java:S1128"0Remove this unused import 'java.time.LocalDate'.(›‘¬èıÿÿÿÿ8ñª–Õ‹2
