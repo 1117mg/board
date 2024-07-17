@@ -1,0 +1,39 @@
+.container {
+    max-width: 560px;
+    margin: 0 auto;
+    padding-top: 20px;
+}
+.field-error {
+    border-color: #dc3545;
+    color: #dc3545;
+}
+.result-message {
+    margin-top: 5px;
+    font-size: 14px;
+}
+.input-group {
+    margin-bottom: 15px;
+}
+.small-text {
+    font-size: small;
+    color: cadetblue;
+    margin-top: 5px;
+}
+.error-message {
+    color: red;
+    margin-top: 5px;
+}
+.input-group input[type=text],
+.input-group input[type=password] {
+    width: 100%;
+}
+.input-group .btn-secondary {
+    width: 30%;
+}
+.input-group label {
+    margin-bottom: 5px;
+    display: block;
+}
+.input-group p{
+    margin-left:5px;
+}

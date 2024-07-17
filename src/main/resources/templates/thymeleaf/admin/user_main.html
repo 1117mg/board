@@ -15,6 +15,11 @@
             var form = document.getElementById("user-auth");
             form.addEventListener("submit", confirmSubmit);
         }
+        document.querySelectorAll('label').forEach(function(label) {
+            label.addEventListener('click', function() {
+                checkAll(this);
+            });
+        });
         function filterUsers() {
             var checkbox = document.getElementById("excludeInactive");
             var rows = document.querySelectorAll("tbody tr");
@@ -22,7 +27,7 @@
             if (checkbox.checked) {
                 rows.forEach(function(row) {
                     var usernameCell = row.querySelector("td:nth-child(3)").textContent;
-                    if (usernameCell.trim() === "(탈퇴한 사용자입니다)") {
+                    if (usernameCell.trim() === "") {
                         row.style.display = "none";
                     } else {
                         row.style.display = "";
@@ -82,7 +87,9 @@
         <h1>회원 목록</h1>
     </div>
     <div class="text-right mb-3">
-        <input type="checkbox" id="excludeInactive" onchange="filterUsers()"> 탈퇴 회원 제외
+        <label>
+            <input type="checkbox" id="excludeInactive" onchange="filterUsers()"> 탈퇴 회원 제외
+        </label>
     </div>
     <table>
         <thead>

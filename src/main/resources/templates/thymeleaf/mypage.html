@@ -5,11 +5,6 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="/css/layout.css">
     <script>
-        function oninputPhone(target) {
-            target.value = target.value
-                .replace(/[^0-9]/g, '')
-                .replace(/(^02.{0}|^01.{1}|[0-9]{3,4})([0-9]{3,4})([0-9]{4})/g, "$1-$2-$3");
-        }
         function confirmAction(message, action) {
             if (confirm(message)) {
                 action();
@@ -25,6 +20,11 @@
             } else {
                 console.log("탈퇴 취소");
             }
+        }
+        function oninputPhone(target) {
+            target.value = target.value
+                .replace(/[^0-9]/g, '')
+                .replace(/(^02.{0}|^01.{1}|[0-9]{3,4})([0-9]{3,4})([0-9]{4})/g, "$1-$2-$3");
         }
     </script>
 </head>

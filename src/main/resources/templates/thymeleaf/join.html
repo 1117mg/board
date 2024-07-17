@@ -3,22 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <title>회원가입페이지</title>
-    <style>
-        .container {
-            max-width: 560px;
-            margin: 0 auto;
-            padding-top: 20px;
-        }
-        .field-error {
-            border-color: #dc3545;
-            color: #dc3545;
-        }
-        .result-message {
-            margin-top: 5px;
-            font-size: 14px;
-        }
-    </style>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/join.css">
 </head>
 <body>
 <div class="container">
@@ -27,36 +13,50 @@
         <h2>회원가입</h2>
     </div>
 
-    <form th:action="@{/join}" method="post">
-        <div>
+    <form th:action="@{/join}" method="post" onsubmit="return validateForm()">
+        <div class="input-group">
             <label for="loginId">아이디</label>
-            <input th:if="${userId != null}" type="text" name="loginId" class="form-control" th:value="${userId}" readonly>
-            <input th:unless="${userId != null}" type="text" id="loginId" name="loginId" class="form-control" required>
-            <button th:unless="${userId != null}" type="button" id="checkUsernameButton" class="btn btn-secondary">중복 확인</button>
-            <div id="usernameCheckResult" class="result-message"></div>
+            <p class="small-text">4~12글자, 영어 소문자 또는 숫자 조합</p>
+            <div class="input-group">
+                <input th:if="${userId != null}" type="text" name="loginId" class="form-control" th:value="${userId}" readonly>
+                <input th:unless="${userId != null}" type="text" id="loginId" name="loginId" class="form-control"
+                       pattern="[a-z0-9]{4,12}" title="영어 소문자와 숫자로 4~12자 이내로 입력하세요." required>
+                <button th:unless="${userId != null}" type="button" id="checkUsernameButton" class="btn btn-secondary">중복 확인</button>
+                <div id="usernameCheckResult" class="result-message"></div>
+                <div id="usernameCheckError" class="error-message" style="display: none;">아이디 중복 확인을 해주세요.</div>
+            </div>
         </div>
-        <div>
+        <div class="input-group">
             <label>비밀번호</label>
-            <input th:if="${password != null}" type="password" name="password" class="form-control" th:value="${password}" readonly>
-            <input th:unless="${password != null}" type="password" name="password" class="form-control" required>
+            <p class="small-text">8글자 이상, 영문, 숫자, 특수문자(@$!%*#?&) 포함</p>
+            <div class="input-group">
+                <input th:if="${password != null}" type="password" name="password" class="form-control" th:value="${password}" readonly>
+                <input th:unless="${password != null}" type="password" id="password" name="password" class="form-control"
+                       pattern="(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[@$!%*#?&])[a-zA-Z0-9@$!%*#?&]{8,}"
+                       title="8글자 이상, 영문, 숫자, 특수문자(@$!%*#?&)를 사용하세요." required>
+            </div>
         </div>
-        <div>
+        <div class="input-group">
             <label>비밀번호 확인</label>
-            <input th:if="${password != null}" type="password" name="passwordCheck" class="form-control" th:value="${password}" readonly>
-            <input th:unless="${password != null}" type="password" name="passwordCheck" class="form-control" required>
+            <div class="input-group">
+                <input th:if="${password != null}" type="password" name="passwordCheck" class="form-control" th:value="${password}" readonly>
+                <input th:unless="${password != null}" type="password" name="passwordCheck" class="form-control" required>
+            </div>
         </div>
-        <div>
+        <div class="input-group">
             <label>이름</label>
-            <input th:if="${username != null}" type="text" name="username" class="form-control" th:value="${username}" readonly>
-            <input th:unless="${username != null}" type="text" name="username" class="form-control" required>
+            <div class="input-group">
+                <input th:if="${username != null}" type="text" name="username" class="form-control" th:value="${username}" readonly>
+                <input th:unless="${username != null}" type="text" name="username" class="form-control" required>
+            </div>
         </div>
-        <div>
+        <div class="input-group">
             <label>전화번호</label>
             <input type="text" name="phoneNo" oninput="oninputPhone(this)" class="form-control" required>
         </div>
-        <div id="emptyError" style="color: red"></div>
+        <div id="emptyError" class="error-message"></div>
 
-        <div th:if="${errorMessage}" class="error-message" th:text="${errorMessage}" style="color: red"></div>
+        <div th:if="${errorMessage}" class="error-message" th:text="${errorMessage}"></div>
 
         <hr class="my-4">
 
@@ -76,13 +76,14 @@
     function oninputPhone(target) {
         target.value = target.value
             .replace(/[^0-9]/g, '')
-            .replace(/(^02.{0}|^01.{1}|[0-9]{3,4})([0-9]{3,4})([0-9]{4})/g, "$1-$2-$3");
+            .replace(/(^02.{0}|^01.{1}|[0-9]{3,4})([0-9]{3,4})([0-9]{4})/g, "$1-$2-$3"); // 전화번호 형식으로 변환
     }
 
     function checkUsername() {
         const loginIdInput = document.getElementById('loginId');
         const loginId = loginIdInput.value;
         const resultDiv = document.getElementById('usernameCheckResult');
+        const checkErrorDiv = document.getElementById('usernameCheckError');
 
         console.log('loginId:', loginIdInput.value);
 
@@ -100,10 +101,12 @@
                     resultDiv.textContent = '이미 사용 중인 아이디입니다.';
                     resultDiv.style.color = 'red';
                     loginIdInput.classList.add('field-error');
+                    checkErrorDiv.style.display = 'none';
                 } else {
                     resultDiv.textContent = '사용 가능한 아이디입니다.';
                     resultDiv.style.color = 'green';
                     loginIdInput.classList.remove('field-error');
+                    checkErrorDiv.style.display = 'none';
                 }
             })
             .catch(error => {
@@ -111,6 +114,19 @@
                 resultDiv.style.color = 'red';
                 console.error('Error:', error);
             });
+    }
+
+    function validateForm() {
+        const loginIdInput = document.getElementById('loginId');
+        const resultDiv = document.getElementById('usernameCheckResult');
+        const checkErrorDiv = document.getElementById('usernameCheckError');
+
+        if (!loginIdInput.readOnly && !resultDiv.textContent.includes('사용 가능')) {
+            checkErrorDiv.style.display = 'block';
+            return false;
+        }
+
+        return true;
     }
 
     document.addEventListener('DOMContentLoaded', function() {

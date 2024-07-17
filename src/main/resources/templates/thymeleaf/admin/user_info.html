@@ -5,6 +5,14 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="/css/layout.css">
     <script>
+        function confirmDelete() {
+            var idx = document.getElementById("idxInput").value;
+            if (confirm("정말로 삭제하시겠습니까?")) {
+                window.location.href = `/admin/deleteUser/${idx}`;
+            } else {
+                console.log("삭제 취소");
+            }
+        }
         function confirmSubmit(event) {
             if (!confirm("변경사항을 저장하시겠습니까?")) {
                 event.preventDefault();
@@ -63,22 +71,6 @@
             target.value = target.value
                 .replace(/[^0-9]/g, '')
                 .replace(/(^02.{0}|^01.{1}|[0-9]{3,4})([0-9]{3,4})([0-9]{4})/g, "$1-$2-$3");
-        }
-        function confirmAction(message, action) {
-            if (confirm(message)) {
-                action();
-            }
-        }
-        function submitForm() {
-            document.getElementById('userForm').submit();
-        }
-        function confirmDelete() {
-            var idx = document.getElementById("idxInput").value;
-            if (confirm("정말로 삭제하시겠습니까?")) {
-                window.location.href = `/admin/deleteUser/${idx}`;
-            } else {
-                console.log("삭제 취소");
-            }
         }
     </script>
 </head>
@@ -183,7 +175,7 @@
         </table>
         <div class="button-container row justify-content-center">
             <div class="col-md-4">
-                <button type="button" onclick="confirmAction('수정하시겠습니까?', submitForm)" class="btn btn-success btn-block">수정</button>
+                <button type="submit" class="btn btn-success btn-block">수정</button>
             </div>
             <div class="col-md-4">
                 <a th:href="@{/admin/users}" class="btn btn-secondary btn-block">목록으로</a>

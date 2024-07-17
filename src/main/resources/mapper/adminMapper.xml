@@ -70,7 +70,7 @@
     <!-- 사용자 정보를 null로 설정하는 쿼리 -->
     <update id="deleteUser">
         UPDATE user
-        SET password = null, username = "(탈퇴한 사용자입니다)", role = null, lock_time = null, phone_no = null
+        SET password = null, username = null, role = null, lock_time = null, phone_no = null, regdate=null
         WHERE idx = #{idx}
     </update>
 </mapper>
