@@ -85,7 +85,15 @@
         const resultDiv = document.getElementById('usernameCheckResult');
         const checkErrorDiv = document.getElementById('usernameCheckError');
 
-        console.log('loginId:', loginIdInput.value);
+        if (!loginId) {
+            resultDiv.textContent = '아이디를 입력해주세요.';
+            resultDiv.style.color = 'red';
+            loginIdInput.classList.add('field-error');
+            checkErrorDiv.style.display = 'none';
+            return;
+        }
+
+        console.log('loginId:', loginId);
 
         const url = `/check-username?loginId=${loginId}`;
 

@@ -16,13 +16,15 @@
 }
 .small-text {
     font-size: small;
-    /*color: cadetblue;*/
-    color: yellowgreen;
+    color: darkgray;
     margin-top: 5px;
 }
 .error-message {
     color: red;
     margin-top: 5px;
+}
+.result-message{
+    margin-top: 10px;
 }
 .input-group input[type=text],
 .input-group input[type=password] {

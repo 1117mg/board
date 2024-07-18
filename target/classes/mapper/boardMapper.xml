@@ -132,7 +132,6 @@
         WHERE bno IN (SELECT bno FROM child_board);
     </update>
 
-    <!-- 파일 정보를 삽입하는 쿼리 -->
     <insert id="insertFile" parameterType="org.study.board.dto.Board">
         INSERT INTO file (bno, uuid, filename, content_type)
         VALUES
