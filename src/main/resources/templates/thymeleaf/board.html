@@ -69,7 +69,7 @@
                 <a th:href="@{board/{bno}(bno=${board.bno})}" class="board-title">
                     <span th:if="${board.depth > 0}" th:each="i : ${#numbers.sequence(1, board.depth)}" class="reply">&nbsp;↪RE:</span>
                     <span th:text="${board.title}">제목</span>
-                    <span th:if="${board.new}" class="new">🆕</span>
+                    <span th:if="${board.new}" class="badge badge-success">New!</span>
                 </a>
             </td>
             <td th:text="${board.writer}">작성자</td>

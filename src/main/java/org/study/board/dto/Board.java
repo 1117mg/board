@@ -24,7 +24,7 @@ public class Board {
     private Date regdate;
     private Integer hit;
     private boolean deleteYn;
-    private Integer userIdx;
+    private Long userIdx;
     private Integer boardType; // 0: 공지사항 게시판, 1: QnA 게시판
 
     //계층형 게시판

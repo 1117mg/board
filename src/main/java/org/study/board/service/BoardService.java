@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
 import org.study.board.dto.Board;
 import org.study.board.dto.FileDto;
+import org.study.board.dto.User;
 import org.study.board.repository.BoardMapper;
 
 import java.io.IOException;
@@ -68,17 +69,18 @@ public class BoardService {
     public void insertBoard(Board board){
         // 인증된 현재 사용자 정보 받아옴
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String currentUsername = null;
-        if (authentication != null && authentication.getPrincipal() instanceof UserDetails) {
-            UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-            currentUsername = userDetails.getUsername();
+        Long currentUserId = null;
+        if (authentication != null && authentication.getPrincipal() instanceof User) {
+            User user = (User) authentication.getPrincipal();
+            currentUserId = user.getIdx();
+            board.setUserIdx(currentUserId);
         }
         if (board.getBno() != null) {
             // 기존 게시글의 작성자 불러옴
             Board existingBoard = mapper.getBoard(board.getBno());
-            String originalWriter = existingBoard.getWriter();
+            Long originalWriterId = existingBoard.getUserIdx();
 
-            if (currentUsername != null && currentUsername.equals(originalWriter)) {
+            if (currentUserId != null && currentUserId.equals(originalWriterId)) {
                 // 작성자가 현재 사용자와 동일할 경우에만 업데이트 수행
                 mapper.deleteFile(board);
                 mapper.updateBoard(board);

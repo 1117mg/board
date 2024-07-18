@@ -5,7 +5,6 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://cdn.ckeditor.com/ckeditor5/34.0.0/classic/ckeditor.js"></script>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/ckeditor5-base64-upload-adapter@1.0.2/src/Base64UploadAdapter.min.js">
     <link rel="stylesheet" href="/css/aside.css">
     <link rel="stylesheet" href="/css/layout.css">
     <style>
@@ -39,6 +38,7 @@
             <label for="writer" class="col-sm-2 col-form-label text-right">작성자</label>
             <div class="col-sm-10">
                 <p id="writer" class="form-control-plaintext" th:text="${board.writer ?: user}">사용자</p>
+                <input type="hidden" id="userIdx" name="userIdx" th:value="${board.userIdx}">
             </div>
         </div>
         <div class="form-group row">
@@ -102,7 +102,7 @@
 
     ClassicEditor
         .create(document.querySelector('#content'), {
-            language:'ko',
+            language: 'ko',
             ckfinder: {
                 uploadUrl: '/uploadImage'
             }
