@@ -26,6 +26,9 @@
                 .replace(/[^0-9]/g, '')
                 .replace(/(^02.{0}|^01.{1}|[0-9]{3,4})([0-9]{3,4})([0-9]{4})/g, "$1-$2-$3");
         }
+        function linkSocialAccount(provider) {
+            alert(provider + " 연동 기능은 아직 구현되지 않았습니다.");
+        }
     </script>
 </head>
 <body>
@@ -116,12 +119,5 @@
         </div>
     </section>
 </div>
-
-<script>
-    function linkSocialAccount(provider) {
-        alert(provider + " 연동 기능은 아직 구현되지 않았습니다.");
-    }
-</script>
-
 </body>
 </html>

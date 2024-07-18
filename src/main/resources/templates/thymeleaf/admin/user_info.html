@@ -77,114 +77,134 @@
 <body>
 <header th:replace="thymeleaf/header :: header"></header>
 
-<div class="content-area">
+<div class="container mt-5">
     <div class="py-5 text-center">
         <h1>회원 관리</h1>
     </div>
     <form id="userForm" method="post" th:action="@{/admin/updateUser}" th:object="${user}">
         <input type="hidden" th:field="*{idx}" />
-        <div class="py-5 text-center">
-            <h4>회원 상세 정보</h4>
-        </div>
-        <table>
-            <tr>
-                <td>아이디</td>
-                <td><input type="text" name="userId" style="width: 95%;" th:value="*{userId}" readonly></td>
-            </tr>
-            <tr>
-                <td>비밀번호</td>
-                <td th:text="${user.password}">비밀번호</td>
-            </tr>
-            <tr>
-                <td>이름</td>
-                <td><input type="text" name="username" style="width: 95%;" th:value="*{username}"></td>
-            </tr>
-            <tr>
-                <td>가입 날짜</td>
-                <td th:text="${user.regdate}">가입 날짜</td>
-            </tr>
-            <tr>
-                <td>전화번호</td>
-                <td><input type="text" name="phoneNo" oninput="oninputPhone(this)" style="width: 95%;" th:value="*{phoneNo}"></td>
-            </tr>
-        </table>
-        <div class="py-5 text-center">
-            <h4>권한 설정</h4>
-        </div>
-        <table class="table table-bordered">
-            <thead>
-            <tr class="highlighted-row">
-                <th>카테고리</th>
-                <th>
-                    <label>
-                        <input type="checkbox" id="selectAllRead" onchange="checkAll(this, 'read')"> 읽기 전체선택
-                    </label>
-                </th>
-                <th>
-                    <label>
-                        <input type="checkbox" id="selectAllWrite" onchange="checkAll(this, 'write')"> 쓰기 전체선택
-                    </label>
-                </th>
-                <th>
-                    <label>
-                        <input type="checkbox" id="selectAllDownload" onchange="checkAll(this, 'download')"> 파일 다운로드 전체선택
-                    </label>
-                </th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:each="category : ${categories}">
-                <td th:class="${category.ctgPno == '0'} ? '' : 'child-category'">
+        <section class="mb-5">
+            <div class="card">
+                <div class="card-header">
+                    회원 정보
+                </div>
+                <div class="card-body">
+                    <table>
+                        <tr>
+                            <td>아이디</td>
+                            <td><input type="text" name="userId" style="width: 95%;" th:value="*{userId}" readonly></td>
+                        </tr>
+                        <tr>
+                            <td>비밀번호</td>
+                            <td><input type="password" name="password" style="width: 95%;" th:value="${user.password}" readonly></td>
+
+                        </tr>
+                        <tr>
+                            <td>이름</td>
+                            <td><input type="text" name="username" style="width: 95%;" th:value="*{username}"></td>
+                        </tr>
+                        <tr>
+                            <td>가입 날짜</td>
+                            <td th:text="${user.regdate}">가입 날짜</td>
+                        </tr>
+                        <tr>
+                            <td>전화번호</td>
+                            <td><input type="text" name="phoneNo" oninput="oninputPhone(this)" style="width: 95%;" th:value="*{phoneNo}"></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </section>
+        <section class="mb-5">
+            <div class="card">
+                <div class="card-header">
+                    메뉴 접근 권한
+                </div>
+                <div class="card-body">
+                    <table class="table table-bordered">
+                        <thead>
+                        <tr class="highlighted-row">
+                            <th>메뉴</th>
+                            <th>
+                                <label>
+                                    <input type="checkbox" id="selectAllRead" onchange="checkAll(this, 'read')"> 읽기 전체선택
+                                </label>
+                            </th>
+                            <th>
+                                <label>
+                                    <input type="checkbox" id="selectAllWrite" onchange="checkAll(this, 'write')"> 쓰기 전체선택
+                                </label>
+                            </th>
+                            <th>
+                                <label>
+                                    <input type="checkbox" id="selectAllDownload" onchange="checkAll(this, 'download')"> 파일 다운로드 전체선택
+                                </label>
+                            </th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="category : ${categories}">
+                            <td th:class="${category.ctgPno == '0'} ? '' : 'child-category'">
                     <span th:class="${category.ctgPno == '0'} ? '' : 'child-category'">
                         <span th:if="${category.ctgPno != '0'}" th:text="'🇱 '"></span>
                         <span th:text="${category.ctgNm}"></span>
                     </span>
-                </td>
-                <td th:class="${category.ctgPno == '0'} ? '' : 'child-category'">
-                    <label>
-                        <input type="checkbox" th:id="'read_' + ${category.ctgNo}"
-                               th:name="'read_' + ${category.ctgNo}"
-                               th:checked="${authMap[category.ctgNo]?.canRead}"
-                               th:data-parent="${category.ctgPno == '0'}"
-                               th:data-parent-id="${category.ctgPno}" />
-                        읽기
-                    </label>
-                </td>
-                <td th:class="${category.ctgPno == '0'} ? '' : 'child-category'">
-                    <label>
-                        <input type="checkbox" th:id="'write_' + ${category.ctgNo}"
-                               th:name="'write_' + ${category.ctgNo}"
-                               th:checked="${authMap[category.ctgNo]?.canWrite}"
-                               th:data-parent="${category.ctgPno == '0'}"
-                               th:data-parent-id="${category.ctgPno}" />
-                        쓰기
-                    </label>
-                </td>
-                <td th:class="${category.ctgPno == '0'} ? '' : 'child-category'">
-                    <label>
-                        <input type="checkbox" th:id="'download_' + ${category.ctgNo}"
-                               th:name="'download_' + ${category.ctgNo}"
-                               th:checked="${authMap[category.ctgNo]?.canDownload}"
-                               th:data-parent="${category.ctgPno == '0'}"
-                               th:data-parent-id="${category.ctgPno}" />
-                        파일 다운로드
-                    </label>
-                </td>
-            </tr>
-            </tbody>
-        </table>
+                            </td>
+                            <td th:class="${category.ctgPno == '0'} ? '' : 'child-category'">
+                                <label>
+                                    <input type="checkbox" th:id="'read_' + ${category.ctgNo}"
+                                           th:name="'read_' + ${category.ctgNo}"
+                                           th:checked="${authMap[category.ctgNo]?.canRead}"
+                                           th:data-parent="${category.ctgPno == '0'}"
+                                           th:data-parent-id="${category.ctgPno}" />
+                                    읽기
+                                </label>
+                            </td>
+                            <td th:class="${category.ctgPno == '0'} ? '' : 'child-category'">
+                                <label>
+                                    <input type="checkbox" th:id="'write_' + ${category.ctgNo}"
+                                           th:name="'write_' + ${category.ctgNo}"
+                                           th:checked="${authMap[category.ctgNo]?.canWrite}"
+                                           th:data-parent="${category.ctgPno == '0'}"
+                                           th:data-parent-id="${category.ctgPno}" />
+                                    쓰기
+                                </label>
+                            </td>
+                            <td th:class="${category.ctgPno == '0'} ? '' : 'child-category'">
+                                <label>
+                                    <input type="checkbox" th:id="'download_' + ${category.ctgNo}"
+                                           th:name="'download_' + ${category.ctgNo}"
+                                           th:checked="${authMap[category.ctgNo]?.canDownload}"
+                                           th:data-parent="${category.ctgPno == '0'}"
+                                           th:data-parent-id="${category.ctgPno}" />
+                                    파일 다운로드
+                                </label>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+        <!-- 회원 탈퇴 섹션 -->
+        <section class="mb-5">
+            <div class="card">
+                <div class="card-header">
+                    회원 삭제
+                </div>
+                <div class="card-body">
+                    <p>회원 삭제 시 모든 정보가 삭제됩니다.</p>
+                    <input type="hidden" id="idxInput" name="idx" th:value="${user.idx}">
+                    <button type="button" onclick="confirmDelete()" class="btn btn-danger">삭제</button>
+                </div>
+            </div>
+        </section>
         <div class="button-container row justify-content-center">
             <div class="col-md-4">
                 <button type="submit" class="btn btn-success btn-block">수정</button>
             </div>
             <div class="col-md-4">
                 <a th:href="@{/admin/users}" class="btn btn-secondary btn-block">목록으로</a>
-            </div>
-        </div>
-        <div class="button-container row justify-content-center">
-            <div class="col-md-4">
-                <input type="hidden" id="idxInput" name="idx" th:value="${user.idx}">
-                <button type="button" onclick="confirmDelete()" class="btn btn-danger btn-block">삭제</button>
             </div>
         </div>
     </form>

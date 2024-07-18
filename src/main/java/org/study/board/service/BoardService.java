@@ -23,6 +23,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,6 +31,8 @@ import java.util.List;
 @Service
 public class BoardService {
 
+    // 파일 다운로드
+    private static final String FILE_DIRECTORY = "d:\\image";
     @Autowired
     private BoardMapper mapper;
 
@@ -122,22 +125,21 @@ public class BoardService {
         }
     }
 
-    // 파일 다운로드
-    public ResponseEntity<Resource> downloadFile(FileDto fileDto) throws IOException {
-        // 파일 저장 경로 설정
-        String filePath = "d:\\image";
-        Path path = Paths.get(filePath + "/" + fileDto.getUuid() + "_" + fileDto.getFilename());
-        String contentType = Files.probeContentType(path);
-        // header를 통해서 다운로드 되는 파일의 정보를 설정한다.
+    public ResponseEntity<Resource> downloadFile(String uuid, String filename) throws IOException {
+        Path filePath = Paths.get(FILE_DIRECTORY, uuid + "_" + filename);
+        Resource resource = new InputStreamResource(Files.newInputStream(filePath, StandardOpenOption.READ));
+
+        String contentType = Files.probeContentType(filePath);
+
         HttpHeaders headers = new HttpHeaders();
         headers.setContentDisposition(ContentDisposition.builder("attachment")
-                .filename(fileDto.getFilename(), StandardCharsets.UTF_8)
+                .filename(filename, StandardCharsets.UTF_8)
                 .build());
         headers.add(HttpHeaders.CONTENT_TYPE, contentType);
 
-        Resource resource = new InputStreamResource(Files.newInputStream(path));
-
-        return new ResponseEntity<>(resource, headers, HttpStatus.OK);
+        return ResponseEntity.ok()
+                .headers(headers)
+                .body(resource);
     }
 
     //Transactional : 모든 업데이트가 원자적으로 수행되도록 한다.

@@ -3,16 +3,9 @@
 <head>
     <title>글 상세</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script src="https://cdn.ckeditor.com/ckeditor5/34.0.0/classic/ckeditor.js"></script>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/ckeditor5-base64-upload-adapter@1.0.2/src/Base64UploadAdapter.min.js">
     <link rel="stylesheet" href="/css/aside.css">
     <link rel="stylesheet" href="/css/layout.css">
-    <style>
-        .ck-editor__editable { height: 500px; }
-        .ck-content { font-size: 13px; }
-        .ck-editor__editable p {margin: 0}
-    </style>
 </head>
 <body>
 <div th:if="${board.bno}">
@@ -53,6 +46,22 @@
                 <textarea class="form-control" id="content" name="content" rows="6" th:text="${board.content}"></textarea>
             </div>
         </div>
+        <div class="form-group row">
+            <label for="files" class="col-sm-2 col-form-label text-right">첨부파일 등록</label>
+            <div class="col-sm-10">
+                <input type="file" class="form-control-file" id="files" name="files" multiple onchange="uploadFile(this)">
+                <div id="uploadDiv">
+                    <div th:each="file, status : ${getFile}" class="uploadResult">
+                        <span th:text="${status.index + 1} + '. '">1. </span>
+                        <a th:href="@{downloadFile(uuid=${file.uuid}, fileName=${file.filename})}" th:text="${file.filename}" download>파일명</a>
+                        <input type="hidden" name="uuids" th:value="${file.uuid}">
+                        <input type="hidden" name="filenames" th:value="${file.filename}">
+                        <input type="hidden" name="contentTypes" th:value="${file.contentType}">
+                        <label class="delBtn">◀ 삭제</label>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="form-group row justify-content-center">
             <input type="hidden" name="bno" th:value="${board.bno}">
             <input type="hidden" name="boardType" th:value="${board.boardType}">
@@ -89,8 +98,8 @@
     }
 
     function validateForm() {
-        var title = document.getElementById("title").value.trim();
-        var content = document.getElementById("content").value.trim();
+        var title = document.getElementsByName("title")[0].value.trim();
+        var content = document.getElementsByName("content")[0].value.trim();
 
         if (title === '' || content === '') {
             alert('제목과 내용을 입력해주세요.');
@@ -100,19 +109,59 @@
         return true;
     }
 
-    ClassicEditor
-        .create(document.querySelector('#content'), {
-            language:'ko',
-            ckfinder: {
-                uploadUrl: '/uploadImage'
-            }
-        })
-        .then(editor => {
-            console.log('Editor was initialized', editor);
-        })
-        .catch(error => {
-            console.error('Editor initialization error', error);
+    // delBtn 개별 삭제 버튼
+    $(function () {
+        delBtnFile();
+    });
+
+    function delBtnFile() {
+        $(".delBtn").on("click", function () {
+            $(this).parent().remove();
+            stCnt();
         });
+    }
+
+    // status.count ajax사용시 다시 그려주기
+    function stCnt() {
+        $('.uploadResult').each(function(index, item){
+            $(this).children('span').html(index + 1 + '. ');
+        });
+    }
+
+    // ajax 첨부파일 업로드
+    function uploadFile(obj) {
+        let files = obj.files;
+        let formData = new FormData();
+
+        for (let i = 0; i < files.length; i++){
+            formData.append("files", files[i]);
+        }
+
+        $.ajax({
+            type: 'post',
+            enctype: 'multipart/form-data',
+            url: '/ajaxFile',
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function(data) {
+                console.log(data);
+                let result = "";
+                let cnt = $('.uploadResult').length;
+                for (let i = 0; i < data.length; i++){
+                    result += '<div class="uploadResult">';
+                    result += '<span>' + (cnt + i + 1)  +  '. </span><a href="/downloadFile?uuid=' + data[i].uuid + '&filename=' + data[i].filename + '" download>' + data[i].filename + '</a>';
+                    result += '<input type="hidden" name="uuids" value="' + data[i].uuid + '">';
+                    result += '<input type="hidden" name="filenames" value="' + data[i].filename + '">';
+                    result += '<input type="hidden" name="contentTypes" value="' + data[i].contentType + '">';
+                    result += '<label type="button" class="delBtn"> ◀ 삭제</label>';
+                    result += '</div>';
+                }
+                $('#uploadDiv').append(result);
+                delBtnFile();
+            }
+        });
+    }
 
     function confirmDelete() {
         if (confirm("정말 삭제하시겠습니까?")) {
@@ -132,21 +181,23 @@
     function deleteBoard() {
         const bno = document.getElementsByName("bno")[0].value;
         const boardType = document.getElementsByName("boardType")[0].value;
-        fetch(`/${boardType}/delete/${bno}`, {
-            method: 'DELETE'
-        })
-            .then(response => {
-                if (response.ok) {
-                    alert("삭제되었습니다.");
-                    location.href = `/${boardType}/main`;
-                } else {
-                    alert("삭제에 실패하였습니다.");
-                }
+        if (confirm("정말 삭제하시겠습니까?")) {
+            fetch(`/${boardType}/delete/${bno}`, {
+                method: 'DELETE'
             })
-            .catch(error => {
-                console.error("Error:", error);
-                alert("삭제 중 오류가 발생하였습니다.");
-            });
+                .then(response => {
+                    if (response.ok) {
+                        alert("삭제되었습니다.");
+                        location.href = `/${boardType}/main`;
+                    } else {
+                        alert("삭제에 실패하였습니다.");
+                    }
+                })
+                .catch(error => {
+                    console.error("Error:", error);
+                    alert("삭제 중 오류가 발생하였습니다.");
+                });
+        }
     }
 </script>
 </body>
