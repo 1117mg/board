@@ -8,13 +8,10 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.study.board.handler.CustomPermissionEvaluator;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 
 @Component
 public class AuthInterceptor implements HandlerInterceptor {

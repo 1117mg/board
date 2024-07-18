@@ -27,7 +27,6 @@ public class NaverService {
         if (code == null) throw new Exception("Failed get authorization code");
 
         String access_Token = "";
-        String refresh_Token = "";
 
         try {
             HttpHeaders headers = new HttpHeaders();
@@ -52,7 +51,6 @@ public class NaverService {
 
             JsonObject jsonObj = (JsonObject) JsonParser.parseString(response.getBody());
             access_Token = jsonObj.get("access_token").getAsString();
-            refresh_Token = jsonObj.get("refresh_token").getAsString();
         } catch (Exception e) {
             throw new Exception("API call failed");
         }

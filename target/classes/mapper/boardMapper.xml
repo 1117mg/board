@@ -98,8 +98,8 @@
     </select>
 
     <insert id="insertBoard" parameterType="org.study.board.dto.Board">
-        INSERT INTO board (title, content, writer, regdate, hit, delete_yn, board_type, gno, sorts, depth, parent_bno)
-        VALUES (#{title}, #{content}, #{writer}, NOW(), 0, 0, #{boardType}, #{gno}, #{sorts}, #{depth}, #{parentBno})
+        INSERT INTO board (title, content, writer, regdate, hit, delete_yn, board_type, gno, sorts, depth, parent_bno, user_idx)
+        VALUES (#{title}, #{content}, #{writer}, NOW(), 0, 0, #{boardType}, #{gno}, #{sorts}, #{depth}, #{parentBno}, #{userIdx})
         <selectKey keyProperty="bno" resultType="int" order="AFTER">
             SELECT LAST_INSERT_ID()
         </selectKey>
@@ -107,7 +107,7 @@
 
     <update id="updateBoard" parameterType="org.study.board.dto.Board">
         UPDATE board
-        SET title=#{title}, content=#{content}, writer=#{writer}, regdate=NOW(), delete_yn=0, board_type=#{boardType}
+        SET title=#{title}, content=#{content}, writer=#{writer}, regdate=NOW(), delete_yn=0, board_type=#{boardType}, user_idx=#{userIdx}
         WHERE bno = #{bno}
     </update>
 

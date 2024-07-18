@@ -1,7 +1,6 @@
 package org.study.board;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.study.board.dto.User;
 import org.study.board.repository.UserMapper;

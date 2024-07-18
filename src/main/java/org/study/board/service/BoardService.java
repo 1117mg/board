@@ -6,14 +6,11 @@ import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.ContentDisposition;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.validation.BindingResult;
 import org.study.board.dto.Board;
 import org.study.board.dto.FileDto;
 import org.study.board.dto.User;
@@ -144,12 +141,10 @@ public class BoardService {
                 .body(resource);
     }
 
-    //Transactional : 모든 업데이트가 원자적으로 수행되도록 한다.
     @Transactional
     public boolean deleteBoard(Integer bno){
         // 하위 게시글 삭제
         mapper.deleteChildBoards(bno);
         return mapper.deleteBoard(bno);
     }
-
 }

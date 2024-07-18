@@ -3,7 +3,6 @@ package org.study.board;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
-import org.study.board.repository.UserMapper;
 import org.study.board.service.UserService;
 
 @Component

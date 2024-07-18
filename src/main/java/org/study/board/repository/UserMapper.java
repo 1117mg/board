@@ -5,7 +5,6 @@ import org.apache.ibatis.annotations.Param;
 import org.study.board.dto.UserBackup;
 import org.study.board.dto.User;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -15,7 +14,6 @@ public interface UserMapper {
     User findByLoginId(String userId);
     User findByName(String username);
     User findByPhoneNo(String phoneNo);
-
     void save(User user);
     int existsByLoginId(@Param("loginId") String loginId);
     void updateStatus(User user); // 계정잠금 상태

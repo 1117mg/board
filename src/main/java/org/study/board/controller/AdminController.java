@@ -3,7 +3,6 @@ package org.study.board.controller;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -11,7 +10,6 @@ import org.study.board.dto.Category;
 import org.study.board.dto.SnsUser;
 import org.study.board.dto.User;
 import org.study.board.dto.UserCtgAuth;
-import org.study.board.repository.UserMapper;
 import org.study.board.service.AdminService;
 import org.study.board.service.UserService;
 

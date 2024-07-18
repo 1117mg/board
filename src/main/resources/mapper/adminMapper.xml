@@ -60,7 +60,6 @@
         WHERE idx = #{idx}
     </insert>
 
-    <!-- 사용자 정보를 null로 설정하는 쿼리 -->
     <update id="deleteUser">
         UPDATE user
         SET password = null, username = null, role = null, lock_time = null, phone_no = null, regdate=null

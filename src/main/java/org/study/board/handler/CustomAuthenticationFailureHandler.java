@@ -58,38 +58,6 @@ public class CustomAuthenticationFailureHandler extends SimpleUrlAuthenticationF
             }
         }
 
-        /*if (user == null) {
-            // 등록되지 않은 계정일 경우
-            request.getSession().setAttribute("notFoundMessage", "등록되지 않은 계정입니다.");
-            super.setDefaultFailureUrl("/login?error=notFound");
-        } else {
-            // 등록된 계정이지만 비밀번호가 틀린 경우
-            user.incrementFailedAttempts();
-            mapper.updateStatus(user);
-
-            if (user.getFailedAttempts() >= 5) {
-                if(isRecaptchaValid){
-                    user.setFailedAttempts(0);
-                    user.setLocked(false);
-                    user.setLockTime(null);
-                    mapper.updateStatus(user);
-                    request.getSession().removeAttribute("SPRING_SECURITY_LAST_EXCEPTION");
-                    response.sendRedirect("/main");
-                    return;
-                }else{
-                    // 계정 잠금 처리
-                    user.setLocked(true);
-                    user.setLockTime(new Timestamp(System.currentTimeMillis()));
-                    mapper.updateStatus(user);
-                    super.setDefaultFailureUrl("/login?error=locked");
-                }
-            } else {
-                // 남은 시도 횟수 계산
-                int remainingAttempts = 5 - user.getFailedAttempts();
-                super.setDefaultFailureUrl("/login?error=true&remainingAttempts=" + remainingAttempts);
-            }
-        }*/
-
         super.onAuthenticationFailure(request, response, exception);
     }
 }

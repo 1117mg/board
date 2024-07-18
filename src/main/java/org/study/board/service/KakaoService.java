@@ -18,7 +18,6 @@ public class KakaoService{
 
     public String getKakaoAccessToken (String code) {
         String access_Token = "";
-        //String refresh_Token = "";
         String reqURL = KAKAO_AUTH_URI + "/oauth/token";
 
         try {
@@ -49,15 +48,10 @@ public class KakaoService{
             while ((line = br.readLine()) != null) {
                 result += line;
             }
-            System.out.println("response body : " + result);
 
             //Gson 라이브러리에 포함된 클래스로 JSON파싱 객체 생성
             JsonElement element = JsonParser.parseString(result);
             access_Token = element.getAsJsonObject().get("access_token").getAsString();
-            //refresh_Token = element.getAsJsonObject().get("refresh_token").getAsString();
-
-            System.out.println("access_token : " + access_Token);
-            //System.out.println("refresh_token : " + refresh_Token);
 
             br.close();
             bw.close();

@@ -10,7 +10,6 @@ import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.List;
 
-//@Builder
 @Data
 public class Board {
 

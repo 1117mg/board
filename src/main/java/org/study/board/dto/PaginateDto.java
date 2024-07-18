@@ -14,11 +14,9 @@ public class PaginateDto implements Serializable {
 
     private int pageNo = 1;				// 현재 페이지 번호
     private final int pageSize;				// 페이지 당 항목 수
-    private String pageName = "page";	// 페이지 파라미터명
+    private final String pageName = "page";	// 페이지 파라미터명
 
-    private String boardType;           // 게시판 타입
-
-    private boolean pageLoop = false;	// 페이지 순환 여부(pageNo가 totalPage보다 클 경우 pageNo 설정 방법)
+    private final boolean pageLoop = false;	// 페이지 순환 여부(pageNo가 totalPage보다 클 경우 pageNo 설정 방법)
 
     private int pageOffset;				// 현재 페이지 이전 항목 수
     private int pageFinal;				// 현재 페이지 마지막 항목 수
@@ -34,26 +32,14 @@ public class PaginateDto implements Serializable {
         this.nationSize = nationSize;
     }
 
-    public PaginateDto(int pageSize) {
-        this(pageSize, 0);
-    }
-
     public void setPageNo(int pageNo) {
         this.pageNo = pageNo;
-    }
-
-    public void setPageLoop(boolean pageLoop) {
-        this.pageLoop = pageLoop;
     }
 
     public void setTotalSize(int totalSize) {
         this.totalSize = totalSize;
 
         this._calc();
-    }
-
-    public void setPageName(String pageName) {
-        this.pageName = pageName;
     }
 
     public void setParams(String params) {

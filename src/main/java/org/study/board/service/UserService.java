@@ -15,7 +15,6 @@ import org.study.board.repository.OauthMapper;
 import org.study.board.repository.UserMapper;
 
 import javax.validation.constraints.NotBlank;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Optional;
@@ -42,7 +41,6 @@ public class UserService {
     public User findByPhoneNo(String phoneNo){return mapper.findByPhoneNo(phoneNo);}
 
     public UserBackup findRecentBackup(String phoneNo, LocalDateTime backupDate) {
-        //decrypt가 아니라 encrypt인가?? 테스트해보기!
         String d_phoneNo=encryptService.encryptPhoneNo(phoneNo);
         return mapper.findRecentBackup(d_phoneNo, backupDate);
     }
