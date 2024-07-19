@@ -53,7 +53,7 @@ public class QnAController {
         model.addAttribute("cntBoard", total);
 
         // 페이징
-        PaginateDto paginate = new PaginateDto(5, 3);
+        PaginateDto paginate = new PaginateDto(5, 5);
         paginate.setPageNo(page);
         paginate.setTotalSize(total);
         paginate.setParams("boardType=" + boardType);
