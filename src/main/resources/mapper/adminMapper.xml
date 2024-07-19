@@ -9,6 +9,11 @@
         WHERE user_idx = #{idx}
     </select>
 
+    <select id="cntUser" resultType="Integer">
+        SELECT count(*)
+        FROM user
+    </select>
+
     <delete id="deleteAuth" parameterType="long">
         DELETE FROM user_ctg_auth
         WHERE user_idx = #{idx}
@@ -35,9 +40,11 @@
         WHERE userId = #{userId}
     </update>
 
-    <select id="findAllUsers" resultType="org.study.board.dto.User">
+    <select id="findAllUsers" parameterType="map" resultType="org.study.board.dto.User">
         SELECT *
         FROM user
+        ORDER BY idx
+            LIMIT #{limit} OFFSET #{offset}
     </select>
 
     <select id="checkUserPermission" resultType="int">

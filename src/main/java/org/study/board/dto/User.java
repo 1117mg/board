@@ -82,4 +82,9 @@ public class User implements UserDetails, OAuth2User {
         // 계정 활성화 여부 로직 (예: 활성화되었다고 가정)
         return true;
     }
+
+    /*페이징 기능*/
+    private Integer pageNo;	    // 현재 페이지 번호
+    private int pageSize;	    // 페이지 당 항목 수
+    private int pageOffset; 	// 현재 페이지 이전 항목 수
 }

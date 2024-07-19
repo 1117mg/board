@@ -105,10 +105,35 @@
             <td th:text="${user.idx}">유저번호</td>
             <td><a th:href="@{'/admin/user/' + ${user.userId}}" th:text="${user.userId}">아이디</a></td>
             <td th:text="${user.username}">이름</td>
-            <td th:text="${user.regdate}">가입일</td>
+            <td th:text="${#dates.format(user.regdate, 'yyyy-MM-dd')}">가입일</td>
         </tr>
         </tbody>
     </table>
+    <div class="col-sm-12 col-md-7 mx-auto">
+        <nav aria-label="Page navigation example">
+            <ul class="pagination justify-content-center">
+                <li class="page-item" th:classappend="${paginate.pageNo <= 1} ? 'disabled'">
+                    <a class="page-link" th:if="${paginate.pageNo > 1}" th:href="@{|/admin/users?${paginate.pageName}=${paginate.pageNo - 1}|}" aria-label="Previous">
+                        <span aria-hidden="true">&laquo; 이전</span>
+                    </a>
+                    <a class="page-link disabled" th:if="${paginate.pageNo <= 1}">
+                        <span aria-hidden="true">&laquo; 이전</span>
+                    </a>
+                </li>
+                <li th:each="pageNum : ${#numbers.sequence(paginate.nationBegin, paginate.nationClose)}" class="page-item" th:classappend="${pageNum == paginate.pageNo} ? 'active'">
+                    <a class="page-link" th:href="@{|/admin/users?${paginate.pageName}=${pageNum}|}" th:text="${pageNum}">1</a>
+                </li>
+                <li class="page-item" th:classappend="${paginate.pageNo >= paginate.totalPage} ? 'disabled'">
+                    <a class="page-link" th:if="${paginate.pageNo < paginate.totalPage}" th:href="@{|/admin/users?${paginate.pageName}=${paginate.pageNo + 1}|}" aria-label="Next">
+                        <span aria-hidden="true">다음 &raquo;</span>
+                    </a>
+                    <a class="page-link disabled" th:if="${paginate.pageNo >= paginate.totalPage}">
+                        <span aria-hidden="true">다음 &raquo;</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
 </div>
 </body>
 </html>

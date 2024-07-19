@@ -6,10 +6,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.study.board.dto.Category;
-import org.study.board.dto.SnsUser;
-import org.study.board.dto.User;
-import org.study.board.dto.UserCtgAuth;
+import org.study.board.dto.*;
 import org.study.board.service.AdminService;
 import org.study.board.service.UserService;
 
@@ -30,8 +27,22 @@ public class AdminController {
     private final UserService userService;
 
     @GetMapping("/users")
-    public String userList(Model model, Principal principal) {
-        List<User> users = adminService.getAllUsers();
+    public String userList(User user, Model model, Principal principal, @RequestParam(defaultValue = "1") int page) {
+        int total = adminService.cntUser();
+
+        // 페이징
+        PaginateDto paginate = new PaginateDto(7, 3);
+        paginate.setPageNo(page);
+        paginate.setTotalSize(total);
+        paginate._calc();
+
+        user.setPageNo(page);
+        user.setPageSize(paginate.getPageSize());
+        user.setPageOffset(paginate.getPageOffset());
+
+        int offset = (page - 1) * paginate.getPageSize();
+        List<User> users = adminService.getAllUsersWithPagination(offset, paginate.getPageSize());
+
         List<Category> categories = adminService.getAllCategories();
 
         // 부모-자식 관계로 카테고리 매핑
@@ -53,19 +64,20 @@ public class AdminController {
                 if (principalObj instanceof SnsUser) {
                     SnsUser snsUser = (SnsUser) principalObj;
                     Long gno = snsUser.getGno();
-                    User user = userService.findById(gno);
+                    user = userService.findById(gno);
                     if (user != null) {
                         username = user.getUsername();
                     }
                 }
             }
 
-            User user=userService.findByName(username);
+            user = userService.findByName(username);
 
             model.addAttribute("username", username);
             model.addAttribute("user", user);
         }
 
+        model.addAttribute("paginate", paginate);
         model.addAttribute("users", users);
         model.addAttribute("categories", categories);
         return "thymeleaf/admin/user_main";

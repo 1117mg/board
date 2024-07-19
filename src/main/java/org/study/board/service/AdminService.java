@@ -18,6 +18,8 @@ public class AdminService {
     @Autowired
     private EncryptService encryptService;
 
+    public Integer cntUser() {return mapper.cntUser();}
+
     public List<UserCtgAuth> getUserAuth(long idx) {
         return mapper.findAuthByUserId(idx);
     }
@@ -31,8 +33,8 @@ public class AdminService {
         return mapper.findAllCategories();
     }
 
-    public List<User> getAllUsers() {
-        return mapper.findAllUsers();
+    public List<User> getAllUsersWithPagination(int offset, int limit) {
+        return mapper.findAllUsers(offset, limit);
     }
 
     public void updateUser(User user){

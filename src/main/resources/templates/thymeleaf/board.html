@@ -73,14 +73,18 @@
                 </a>
             </td>
             <td th:text="${board.writer}">작성자</td>
-            <td th:text="${board.regdate}">작성일</td>
+            <td th:text="${#dates.format(user.regdate, 'yyyy-MM-dd')}">작성일</td>
             <td th:text="${board.hit}">조회수</td>
         </tr>
         </tbody>
     </table>
-    <div class="button-container text-center">
-        <div th:if="${hasWritePermission}">
-            <input type="button" value="글 작성" onclick="location.href='write'" class="btn btn-primary">
+    <div class="container">
+        <div class="row">
+            <div class="col text-right">
+                <div th:if="${hasWritePermission}">
+                    <input type="button" value="글 작성" onclick="location.href='write'" class="btn btn-primary">
+                </div>
+            </div>
         </div>
     </div>
     <div class="col-sm-12 col-md-7 mx-auto">

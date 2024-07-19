@@ -15,13 +15,12 @@ body {
 table {
     width: 100%;
     border-collapse: collapse;
-    background-color: #ffffff;
 }
 
 th, td {
     padding: 15px;
     text-align: left;
-    border: 1px solid #ddd;
+    border: none;
 }
 
 .table-hover tbody tr:hover {
